@@ -1,0 +1,170 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import BlogCard from '../../components/BlogCard.astro';
+import FinalCTA from '../../components/FinalCTA.astro';
+import { getCollection } from 'astro:content';
+
+const allPosts = (await getCollection('blog')).sort(
+  (a, b) => b.data.date.valueOf() - a.data.date.valueOf()
+);
+
+const featuredPost = allPosts[0];
+const remainingPosts = allPosts.slice(1);
+
+const categories = ['All', 'ADHD', 'DBT', 'Anxiety & Depression', 'Therapy & Wellbeing'];
+
+const categoryCounts: Record<string, number> = {};
+allPosts.forEach((p) => {
+  categoryCounts[p.data.category] = (categoryCounts[p.data.category] || 0) + 1;
+});
+
+const schema = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'CollectionPage',
+  name: 'Blog — Jared Dubbs Counselling',
+  url: 'https://jareddubbs.com/blog',
+  description: 'Articles on ADHD, DBT, anxiety, depression, and mental health in Hong Kong.',
+});
+---
+
+<BaseLayout
+  title="Blog — ADHD, DBT & Mental Health"
+  shortSuffix
+  description="Practical insights on ADHD, DBT, anxiety, depression, and mental health from a counsellor in Central Hong Kong."
+  schema={schema}
+>
+  <section class="py-16 md:py-20">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12">
+        <h1 class="mb-4">Blog</h1>
+        <p class="text-[var(--color-text-light)] mx-auto max-w-2xl">
+          Practical insights on ADHD, DBT, anxiety, and mental health. Written by Jared Dubbs, MoC.
+        </p>
+      </div>
+
+      <!-- Category Filter -->
+      <div class="flex flex-wrap justify-center gap-2 mb-12" role="tablist" aria-label="Filter by category">
+        {categories.map((cat) => (
+          <button
+            type="button"
+            class="category-btn px-5 py-2.5 rounded-full text-sm font-medium transition-all duration-200 min-h-[44px] border border-transparent"
+            data-category={cat}
+            aria-pressed={cat === 'All' ? 'true' : 'false'}
+          >
+            {cat}
+            {cat !== 'All' && (
+              <span class="ml-1.5 text-xs opacity-60">({categoryCounts[cat] || 0})</span>
+            )}
+          </button>
+        ))}
+      </div>
+
+      <!-- Featured Post -->
+      <div class="mb-10 blog-post animate-card" data-category={featuredPost.data.category} style="--delay: 0">
+        <BlogCard
+          title={featuredPost.data.title}
+          slug={featuredPost.id}
+          excerpt={featuredPost.data.description}
+          category={featuredPost.data.category}
+          readTime={featuredPost.data.readTime}
+          date={featuredPost.data.date}
+          image={featuredPost.data.image}
+          featured
+        />
+      </div>
+
+      <!-- Posts Grid -->
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-7" id="posts-grid">
+        {remainingPosts.map((post, i) => (
+          <div class="blog-post animate-card" data-category={post.data.category} style={`--delay: ${i}`}>
+            <BlogCard
+              title={post.data.title}
+              slug={post.id}
+              excerpt={post.data.description}
+              category={post.data.category}
+              readTime={post.data.readTime}
+              date={post.data.date}
+              image={post.data.image}
+            />
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <FinalCTA
+    heading="If something here resonated with you"
+    subtext="Book a free discovery call and let's talk about what you're going through."
+  />
+</BaseLayout>
+
+<style>
+  .animate-card {
+    opacity: 0;
+    transform: translateY(24px);
+    animation: cardFadeIn 0.5s ease-out forwards;
+    animation-delay: calc(var(--delay, 0) * 80ms + 200ms);
+  }
+
+  @keyframes cardFadeIn {
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
+  .category-btn[aria-pressed="true"] {
+    background-color: var(--color-primary);
+    color: white;
+    box-shadow: 0 2px 8px rgba(155, 133, 68, 0.3);
+  }
+
+  .category-btn[aria-pressed="false"] {
+    background-color: var(--color-bg-alt);
+    color: var(--color-text);
+  }
+
+  .category-btn[aria-pressed="false"]:hover {
+    background-color: var(--color-gold-light);
+    color: white;
+    border-color: transparent;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .animate-card {
+      opacity: 1;
+      transform: none;
+      animation: none;
+    }
+  }
+</style>
+
+<script>
+  const btns = document.querySelectorAll('.category-btn');
+  const posts = document.querySelectorAll('.blog-post');
+
+  btns.forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const cat = btn.getAttribute('data-category');
+
+      btns.forEach((b) => b.setAttribute('aria-pressed', String(b === btn)));
+
+      posts.forEach((post, i) => {
+        const postCat = post.getAttribute('data-category');
+        const shouldShow = cat === 'All' || postCat === cat;
+
+        if (shouldShow) {
+          post.classList.remove('hidden');
+          // Re-trigger animation
+          const el = post as HTMLElement;
+          el.style.animation = 'none';
+          el.offsetHeight; // force reflow
+          el.style.setProperty('--delay', String(i));
+          el.style.animation = '';
+        } else {
+          post.classList.add('hidden');
+        }
+      });
+    });
+  });
+</script>

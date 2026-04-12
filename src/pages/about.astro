@@ -1,0 +1,117 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import FinalCTA from '../components/FinalCTA.astro';
+
+const schema = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'Person',
+  name: 'Jared Dubbs',
+  jobTitle: 'Counsellor',
+  description: 'DBT and ADHD specialist counsellor based in Central, Hong Kong',
+  url: 'https://jareddubbs.com/about',
+  worksFor: {
+    '@type': 'LocalBusiness',
+    name: 'Jared Dubbs Counselling',
+  },
+  alumniOf: [
+    { '@type': 'CollegeOrUniversity', name: 'Monash University', description: "Master's in Counselling" },
+    { '@type': 'CollegeOrUniversity', name: 'University of Hong Kong', description: 'Post Graduate Diploma in Education' },
+    { '@type': 'CollegeOrUniversity', name: 'Austin College', description: 'BA in Philosophy' },
+  ],
+  knowsAbout: ['DBT', 'ADHD', 'Counselling', 'ACT', 'CBT', 'Schema Therapy', 'SPACE'],
+});
+---
+
+<BaseLayout
+  title="About Jared Dubbs — Counsellor in Central, Hong Kong"
+  description="Meet Jared Dubbs — a counsellor in Central HK specialising in DBT and ADHD with personal lived experience. Monash-trained, SPACE-certified (Yale)."
+  schema={schema}
+>
+  <Hero
+    title="Meet Jared"
+    subtitle="A counsellor who brings both professional expertise and personal understanding to every session."
+    showPhoto={true}
+    photoSrc="/images/jared-headshot-sm.jpg"
+    photoAlt="Jared Dubbs, counsellor"
+    ctaText="Book a Free Discovery Call"
+    ctaLink="/book"
+    compact={true}
+  />
+
+  <!-- Story -->
+  <section class="py-16 md:py-20">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="mb-8">Why I Became a Therapist</h2>
+      <p class="text-[var(--color-text-light)] leading-relaxed mb-6">
+        As a dedicated counsellor based in Central Hong Kong, I hold a Master's in Counselling and have a strong background in education, enhancing my ability to provide effective psychoeducation. I work with adults, teens, and couples facing ADHD, anxiety, depression, neurodiversity, BPD, and LGBTQ+ challenges.
+      </p>
+      <p class="text-[var(--color-text-light)] leading-relaxed mb-6">
+        I've struggled with ADHD my whole life. That personal experience isn't just background — it fundamentally shapes how I practise. I understand what it's like to feel different, to struggle with things that seem easy for everyone else, and to wonder if something is wrong with you. Spoiler: nothing is wrong with you. Your brain just works differently, and that's something we can work with.
+      </p>
+      <p class="text-[var(--color-text-light)] leading-relaxed">
+        My approach is inclusive, safe, and friendly, ensuring a supportive environment for everyone who walks through my door. I believe that asking for help is a sign of strength, not weakness.
+      </p>
+    </div>
+  </section>
+
+  <!-- Qualifications -->
+  <section class="py-16 md:py-20 bg-[var(--color-bg-alt)]">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="mb-8">Qualifications & Training</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-white rounded-[var(--radius-lg)] p-6">
+          <h3 class="text-lg font-bold mb-1">Master of Counselling</h3>
+          <p class="text-[var(--color-primary)] font-medium mb-2">Monash University, Australia</p>
+          <p class="text-[var(--color-text-light)] text-[var(--text-sm)]">Comprehensive clinical training in evidence-based therapeutic approaches.</p>
+        </div>
+        <div class="bg-white rounded-[var(--radius-lg)] p-6">
+          <h3 class="text-lg font-bold mb-1">Post Graduate Diploma in Education</h3>
+          <p class="text-[var(--color-primary)] font-medium mb-2">University of Hong Kong (HKU)</p>
+          <p class="text-[var(--color-text-light)] text-[var(--text-sm)]">Education background enhancing psychoeducation and skills training delivery.</p>
+        </div>
+        <div class="bg-white rounded-[var(--radius-lg)] p-6">
+          <h3 class="text-lg font-bold mb-1">BA in Philosophy</h3>
+          <p class="text-[var(--color-primary)] font-medium mb-2">Austin College, Texas</p>
+          <p class="text-[var(--color-text-light)] text-[var(--text-sm)]">Foundational training in critical thinking and ethical reasoning.</p>
+        </div>
+        <div class="bg-white rounded-[var(--radius-lg)] p-6">
+          <h3 class="text-lg font-bold mb-1">SPACE Programme</h3>
+          <p class="text-[var(--color-primary)] font-medium mb-2">Yale University</p>
+          <p class="text-[var(--color-text-light)] text-[var(--text-sm)]">Supporting Parents of Anxious Childhood Emotions — evidence-based parent-focused treatment.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Therapeutic Approach -->
+  <section class="py-16 md:py-20">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="mb-8">My Approach</h2>
+      <p class="text-[var(--color-text-light)] leading-relaxed mb-6">
+        I am trained in Dialectical Behavioural Therapy (DBT), Acceptance and Commitment Therapy (ACT), Cognitive Behavioural Therapy (CBT), CBT for Insomnia (CBT-i), Schema Therapy, and SPACE from Yale University.
+      </p>
+      <p class="text-[var(--color-text-light)] leading-relaxed mb-6">
+        In plain language: I use approaches that are backed by research, but I deliver them with warmth and understanding. Therapy with me isn't clinical or cold — it's a collaborative conversation where you feel heard, understood, and supported.
+      </p>
+      <p class="text-[var(--color-text-light)] leading-relaxed">
+        Every person is different, which means every therapeutic plan is different. I'll work with you to find what actually helps, not just what a textbook says should help.
+      </p>
+    </div>
+  </section>
+
+  <!-- Personal Touch -->
+  <section class="py-16 md:py-20 bg-[var(--color-bg-alt)]">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="mb-8">Beyond the Office</h2>
+      <p class="text-[var(--color-text-light)] leading-relaxed">
+        When I'm not in session, you'll find me exploring Hong Kong, staying active, and continually learning. I believe that a therapist who lives a full life brings more depth and understanding to the room. I'm also actively involved in ADHD advocacy and neurodiversity awareness — speaking at conferences, schools, and corporate events across Hong Kong.
+      </p>
+    </div>
+  </section>
+
+  <FinalCTA
+    heading="Taking the first step is a sign of strength"
+    subtext="Reach out today, and let's find a way forward together."
+  />
+</BaseLayout>

@@ -1,0 +1,92 @@
+---
+interface Props {
+  title: string;
+  subtitle?: string;
+  ctaText?: string;
+  ctaLink?: string;
+  secondaryCta?: string;
+  secondaryCtaLink?: string;
+  showTrustBar?: boolean;
+  trustItems?: string[];
+  showPhoto?: boolean;
+  photoSrc?: string;
+  photoAlt?: string;
+  bgColor?: 'default' | 'alt';
+  compact?: boolean;
+}
+
+const {
+  title,
+  subtitle,
+  ctaText = 'Book a Free Discovery Call',
+  ctaLink = '/book',
+  secondaryCta,
+  secondaryCtaLink,
+  showTrustBar = false,
+  trustItems = [],
+  showPhoto = false,
+  photoSrc = '/images/jared-headshot-sm.jpg',
+  photoAlt = 'Jared Dubbs, counsellor in Central Hong Kong',
+  bgColor = 'default',
+  compact = false,
+} = Astro.props;
+
+const bgClass = bgColor === 'alt' ? 'bg-[var(--color-bg-alt)]' : 'bg-[var(--color-bg)]';
+const paddingClass = compact ? 'py-12 md:py-16' : 'py-16 md:py-24';
+---
+
+<section class={`${bgClass} ${paddingClass}`}>
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class={`${showPhoto ? 'grid grid-cols-1 lg:grid-cols-5 gap-12 items-center' : ''}`}>
+      <div class={showPhoto ? 'lg:col-span-3' : 'max-w-3xl'}>
+        <h1 class="mb-6" set:html={title} />
+        {subtitle && <p class="text-[var(--color-text-light)] text-lg md:text-xl mb-8 leading-relaxed">{subtitle}</p>}
+
+        <div class="flex flex-wrap gap-4 mb-8">
+          {ctaText && (
+            <a
+              href={ctaLink}
+              class="inline-flex items-center px-6 py-3.5 bg-[var(--color-primary)] text-white font-semibold rounded-[var(--radius)] no-underline hover:bg-[var(--color-primary-hover)] transition-colors min-h-[44px]"
+            >
+              {ctaText}
+            </a>
+          )}
+          {secondaryCta && secondaryCtaLink && (
+            <a
+              href={secondaryCtaLink}
+              class="inline-flex items-center px-6 py-3.5 border-2 border-[var(--color-primary)] text-[var(--color-primary)] font-semibold rounded-[var(--radius)] no-underline hover:bg-[var(--color-bg-alt)] transition-colors min-h-[44px]"
+            >
+              {secondaryCta}
+            </a>
+          )}
+        </div>
+
+        {showTrustBar && trustItems.length > 0 && (
+          <div class="flex flex-wrap gap-x-4 gap-y-2 text-[var(--text-sm)] text-[var(--color-text-light)]">
+            {trustItems.map((item, i) => (
+              <span class="flex items-center gap-1.5">
+                <svg class="w-4 h-4 text-[var(--color-primary)] shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+                {item}
+              </span>
+            ))}
+          </div>
+        )}
+      </div>
+
+      {showPhoto && (
+        <div class="lg:col-span-2 flex justify-center">
+          <img
+            src={photoSrc}
+            alt={photoAlt}
+            width="400"
+            height="500"
+            class="rounded-[var(--radius-lg)] shadow-xl ring-1 ring-[var(--color-gold)]/20 max-w-full h-auto"
+            loading={compact ? 'lazy' : 'eager'}
+          />
+        </div>
+      )}
+    </div>
+  </div>
+</section>

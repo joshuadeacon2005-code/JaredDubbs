@@ -1,0 +1,171 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/Hero.astro';
+import FAQAccordion from '../../components/FAQAccordion.astro';
+import Testimonials from '../../components/Testimonials.astro';
+import FinalCTA from '../../components/FinalCTA.astro';
+
+const testimonials = [
+  {
+    quote: "A truly transformative experience. As an adult with ADHD, finding a therapist who genuinely understands the condition from personal experience made all the difference.",
+    attribution: "E.R.",
+  },
+  {
+    quote: "Working with Jared has been a game changer. His approach helped me manage impulsivity, develop better organisational skills, and understand my ADHD in a completely new way.",
+    attribution: "J.K.",
+  },
+];
+
+const workAreas = [
+  'Unpacking and understanding how ADHD has affected your life',
+  'Unmasking and embracing who you really are',
+  'Strategies for when things feel overwhelming or ineffective',
+  'Identifying why certain tasks are difficult and developing skills',
+  'Building a stronger sense of self and self-compassion',
+  'Emotional regulation techniques',
+  'Distress tolerance techniques',
+  'Standing up for your needs and setting effective boundaries',
+  'Executive functioning skills for daily life',
+];
+
+const faqItems = [
+  {
+    question: 'Do I need an ADHD diagnosis to work with you?',
+    answer: "No. Whether you have a formal diagnosis, suspect you might have ADHD, or are simply struggling with attention, focus, and emotional regulation, you're welcome here. We can explore what's going on together.",
+  },
+  {
+    question: 'How is ADHD therapy different from general therapy?',
+    answer: "ADHD therapy is tailored to how ADHD brains work. We focus on practical strategies for executive functioning, emotional dysregulation, and the unique challenges ADHD presents — rather than using generic approaches that may not account for how your brain processes information.",
+  },
+  {
+    question: 'Can you help with ADHD assessment?',
+    answer: "I can help you understand your experiences in the context of ADHD and support you through the assessment process. For formal diagnosis, I work alongside psychiatrists and clinical psychologists in Hong Kong who specialise in adult ADHD assessment.",
+  },
+  {
+    question: 'Do you only work with adults with ADHD?',
+    answer: "I work with teens and adults with ADHD, as well as parents of children with ADHD through the SPACE programme (Yale). Whether you're newly diagnosed, self-identified, or supporting a family member, I can help.",
+  },
+];
+
+const schema = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'MedicalWebPage',
+  name: 'ADHD Therapy Hong Kong',
+  description: 'ADHD support from a therapist with personal and professional ADHD experience.',
+  url: 'https://jareddubbs.com/services/adhd',
+  breadcrumb: {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://jareddubbs.com' },
+      { '@type': 'ListItem', position: 2, name: 'Services', item: 'https://jareddubbs.com/services' },
+      { '@type': 'ListItem', position: 3, name: 'ADHD Therapy' },
+    ],
+  },
+});
+---
+
+<BaseLayout
+  title="ADHD Therapy Hong Kong — A Therapist Who Truly Gets It | Jared Dubbs"
+  description="ADHD support from a therapist with personal and professional ADHD experience. Adult ADHD, executive function, emotional regulation in Central HK."
+  schema={schema}
+>
+  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 text-[var(--text-sm)]" aria-label="Breadcrumb">
+    <ol class="flex items-center gap-2" role="list">
+      <li><a href="/" class="text-[var(--color-text-light)] hover:text-[var(--color-primary)] no-underline">Home</a></li>
+      <li class="text-[var(--color-text-light)]">/</li>
+      <li><a href="/services/adhd" class="text-[var(--color-text-light)] hover:text-[var(--color-primary)] no-underline">Services</a></li>
+      <li class="text-[var(--color-text-light)]">/</li>
+      <li class="text-[var(--color-primary)] font-medium" aria-current="page">ADHD Therapy</li>
+    </ol>
+  </nav>
+
+  <Hero
+    title="ADHD therapy from someone who truly gets it — because I live it too"
+    subtitle="I've struggled with ADHD my whole life. That lived experience, combined with professional training, means I understand what you're going through in a way that textbooks can't teach."
+    ctaText="Book a Free Discovery Call"
+    ctaLink="/book"
+    showPhoto={true}
+    compact={true}
+  />
+
+  <!-- Personal Connection -->
+  <section class="py-16 md:py-20 bg-[var(--color-bg-alt)]">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="mb-8">I Get It Personally</h2>
+      <p class="text-[var(--color-text-light)] leading-relaxed mb-6">
+        I have struggled with issues related to ADHD my whole life. Helping people who have ADHD or are neurodivergent is a mission of mine. I know what it's like to feel like your brain works differently from everyone else's — because mine does too.
+      </p>
+      <p class="text-[var(--color-text-light)] leading-relaxed mb-6">
+        That personal understanding shapes everything about how I work with ADHD clients. I won't suggest you "just try harder" or "use a planner." Instead, we'll work together to understand your unique brain, build strategies that actually work for you, and develop a sense of self that isn't defined by what you struggle with.
+      </p>
+      <p class="text-[var(--color-text)] font-medium text-lg">
+        Take ownership of your otherness.
+      </p>
+    </div>
+  </section>
+
+  <!-- What We Work On -->
+  <section class="py-16 md:py-20">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="mb-8">What We Work On</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {workAreas.map((area) => (
+          <div class="flex items-start gap-3 bg-[var(--color-bg-alt)] rounded-[var(--radius)] p-4">
+            <svg class="w-5 h-5 text-[var(--color-primary)] shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+            </svg>
+            <p class="text-[var(--color-text)]">{area}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- ADHD Assessment -->
+  <section class="py-16 md:py-20 bg-[var(--color-bg-alt)]">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="mb-8">ADHD Assessment Support</h2>
+      <p class="text-[var(--color-text-light)] leading-relaxed mb-6">
+        If you suspect you might have ADHD, I can help you understand your experiences and support you through the assessment process. I work alongside psychiatrists and clinical psychologists in Hong Kong who specialise in adult ADHD assessment.
+      </p>
+      <p class="text-[var(--color-text-light)] leading-relaxed">
+        Whether you're seeking a formal diagnosis or simply want to understand yourself better, therapy can be a valuable starting point.
+      </p>
+    </div>
+  </section>
+
+  <!-- Speaking & Research -->
+  <section class="py-16 md:py-20">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="mb-8">Speaking & Advocacy</h2>
+      <p class="text-[var(--color-text-light)] leading-relaxed mb-8">
+        Beyond individual therapy, I'm passionate about raising awareness and understanding of ADHD and neurodivergence. I've spoken at:
+      </p>
+      <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+        {[
+          { org: 'HSBC', topic: 'Supporting parents of neurodivergent youth; What does ADHD look like?' },
+          { org: 'NCPC 2025', topic: 'Practical Approaches to ADHD — National Counselling & Psychotherapy Conference' },
+          { org: 'FOCUS', topic: 'Strategies for nurturing focus, confidence, and resilience' },
+          { org: 'Schools', topic: 'Neurodiversity awareness and ADHD education' },
+        ].map((talk) => (
+          <div class="bg-[var(--color-bg-alt)] rounded-[var(--radius)] p-5">
+            <p class="font-bold text-[var(--color-secondary)]">{talk.org}</p>
+            <p class="text-[var(--color-text-light)] text-[var(--text-sm)] mt-1">{talk.topic}</p>
+          </div>
+        ))}
+      </div>
+      <p class="mt-6">
+        <a href="/talks" class="text-[var(--color-primary)] font-semibold no-underline hover:underline">See all talks & events &rarr;</a>
+      </p>
+    </div>
+  </section>
+
+  <Testimonials items={testimonials} heading="What ADHD Clients Say" />
+
+  <FAQAccordion items={faqItems} />
+
+  <FinalCTA
+    heading="Ready to work with someone who truly understands?"
+    subtext="Book a free discovery call. No referral needed, no waitlist."
+  />
+</BaseLayout>

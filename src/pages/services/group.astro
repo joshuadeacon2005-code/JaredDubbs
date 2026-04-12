@@ -1,0 +1,103 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/Hero.astro';
+import FinalCTA from '../../components/FinalCTA.astro';
+
+const schema = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'MedicalWebPage',
+  name: 'Group Therapy & DBT Skills Groups in Hong Kong',
+  url: 'https://jareddubbs.com/services/group',
+  breadcrumb: {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://jareddubbs.com' },
+      { '@type': 'ListItem', position: 2, name: 'Services', item: 'https://jareddubbs.com/services' },
+      { '@type': 'ListItem', position: 3, name: 'Group Therapy' },
+    ],
+  },
+});
+---
+
+<BaseLayout
+  title="Group Therapy & DBT Skills Groups in Hong Kong | Jared Dubbs"
+  description="Group therapy and DBT skills groups in Central Hong Kong. ADHD support groups, DBT skills training, and PEERS social skills groups."
+  schema={schema}
+>
+  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 text-[var(--text-sm)]" aria-label="Breadcrumb">
+    <ol class="flex items-center gap-2" role="list">
+      <li><a href="/" class="text-[var(--color-text-light)] hover:text-[var(--color-primary)] no-underline">Home</a></li>
+      <li class="text-[var(--color-text-light)]">/</li>
+      <li><a href="/services/group" class="text-[var(--color-text-light)] hover:text-[var(--color-primary)] no-underline">Services</a></li>
+      <li class="text-[var(--color-text-light)]">/</li>
+      <li class="text-[var(--color-primary)] font-medium" aria-current="page">Group Therapy</li>
+    </ol>
+  </nav>
+
+  <Hero
+    title="There's something powerful about realising you're not the only one"
+    subtitle="Group therapy offers a unique opportunity to learn alongside others, share experiences, and practise new skills in a supportive environment."
+    ctaText="Enquire About Groups"
+    ctaLink="/book"
+    compact={true}
+  />
+
+  <!-- What Is Group Therapy -->
+  <section class="py-16 md:py-20">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="mb-8">What Is Group Therapy?</h2>
+      <p class="text-[var(--color-text-light)] leading-relaxed mb-6">
+        Group therapy brings together a small number of people who share similar challenges. Led by a trained therapist, the group provides a safe, confidential space to share experiences, learn from others, and practise new skills together.
+      </p>
+      <p class="text-[var(--color-text-light)] leading-relaxed mb-6">
+        Research consistently shows that group therapy can be as effective as individual therapy for many issues — and it offers something individual therapy can't: the experience of connecting with others who understand what you're going through.
+      </p>
+      <p class="text-[var(--color-text-light)] leading-relaxed">
+        Group therapy works well alongside individual sessions, giving you additional practice and support between your one-on-one work.
+      </p>
+    </div>
+  </section>
+
+  <!-- Available Groups -->
+  <section class="py-16 md:py-20 bg-[var(--color-bg-alt)]">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="mb-8">Available Groups</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-white rounded-[var(--radius-lg)] p-8">
+          <h3 class="text-xl font-bold mb-3">DBT Skills Group</h3>
+          <p class="text-[var(--color-text-light)] leading-relaxed mb-4">
+            A structured programme covering all four DBT modules: Mindfulness, Distress Tolerance, Emotion Regulation, and Interpersonal Effectiveness. Learn and practise skills in a group setting.
+          </p>
+          <p class="text-[var(--text-sm)] text-[var(--color-text-light)]">Typically runs alongside individual DBT sessions.</p>
+        </div>
+        <div class="bg-white rounded-[var(--radius-lg)] p-8">
+          <h3 class="text-xl font-bold mb-3">ADHD Support Group</h3>
+          <p class="text-[var(--color-text-light)] leading-relaxed mb-4">
+            Connect with other adults navigating life with ADHD. Share strategies, challenges, and victories in a space where everyone gets it.
+          </p>
+          <p class="text-[var(--text-sm)] text-[var(--color-text-light)]">Open to diagnosed and self-identified individuals.</p>
+        </div>
+        <div class="bg-white rounded-[var(--radius-lg)] p-8">
+          <h3 class="text-xl font-bold mb-3">PEERS Social Skills</h3>
+          <p class="text-[var(--color-text-light)] leading-relaxed mb-4">
+            An evidence-based social skills programme for teens and young adults, particularly helpful for those with ADHD or autism spectrum conditions.
+          </p>
+          <p class="text-[var(--text-sm)] text-[var(--color-text-light)]">For teens and young adults.</p>
+        </div>
+        <div class="bg-white rounded-[var(--radius-lg)] p-8">
+          <h3 class="text-xl font-bold mb-3">LGBTQ+ Support</h3>
+          <p class="text-[var(--color-text-light)] leading-relaxed mb-4">
+            A safe, affirming space for LGBTQ+ individuals in Hong Kong to explore identity, share experiences, and build community.
+          </p>
+          <p class="text-[var(--text-sm)] text-[var(--color-text-light)]">Open to all LGBTQ+ individuals.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <FinalCTA
+    heading="Interested in joining a group?"
+    subtext="Get in touch to learn about upcoming groups and availability."
+    ctaText="Enquire Now"
+  />
+</BaseLayout>

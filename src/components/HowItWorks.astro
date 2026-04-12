@@ -1,0 +1,46 @@
+---
+const steps = [
+  {
+    number: '1',
+    title: 'Book a Free Call',
+    description: "Schedule a complimentary 15-minute discovery call. We'll chat about what's going on and see if we're a good fit — no pressure, no commitment.",
+  },
+  {
+    number: '2',
+    title: 'Your First Session',
+    description: "We'll explore what's brought you here, understand your history, and start building a plan together. You set the pace.",
+  },
+  {
+    number: '3',
+    title: 'Start Your Path',
+    description: "We move forward one step at a time, building skills and strategies that work for your life. This is your time to work on what matters to you.",
+  },
+];
+---
+
+<section class="py-16 md:py-20 bg-[var(--color-bg-alt)]">
+  <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+    <h2 class="text-center mb-12">How It Works</h2>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {steps.map((step) => (
+        <div class="text-center">
+          <div class="w-14 h-14 rounded-full bg-[var(--color-primary)] text-white flex items-center justify-center mx-auto mb-5 text-xl font-bold">
+            {step.number}
+          </div>
+          <h3 class="text-xl font-bold mb-3">{step.title}</h3>
+          <p class="text-[var(--color-text-light)] leading-relaxed">{step.description}</p>
+        </div>
+      ))}
+    </div>
+
+    <div class="text-center mt-12">
+      <a
+        href="/book"
+        class="inline-flex items-center px-6 py-3.5 bg-[var(--color-primary)] text-white font-semibold rounded-[var(--radius)] no-underline hover:bg-[var(--color-primary-hover)] transition-colors min-h-[44px]"
+      >
+        Book Your Free Discovery Call
+      </a>
+    </div>
+  </div>
+</section>

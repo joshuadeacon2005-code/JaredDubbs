@@ -1,0 +1,32 @@
+---
+interface Props {
+  title: string;
+  description: string;
+  icon: string;
+  link: string;
+  featured?: boolean;
+}
+
+const { title, description, icon, link, featured = false } = Astro.props;
+---
+
+<a
+  href={link}
+  class={`group block bg-white rounded-[var(--radius-lg)] p-8 shadow-sm hover:shadow-md hover:-translate-y-1 transition-all duration-200 no-underline ${
+    featured ? 'border-2 border-[var(--color-primary)]' : 'border border-[var(--color-bg-alt)]'
+  }`}
+>
+  <div class="w-12 h-12 rounded-[var(--radius)] bg-[var(--color-bg-alt)] flex items-center justify-center mb-5 group-hover:bg-[var(--color-primary)] group-hover:text-white transition-colors text-[var(--color-primary)]">
+    <Fragment set:html={icon} />
+  </div>
+  {featured && (
+    <span class="inline-block px-3 py-1 bg-[var(--color-bg-alt)] text-[var(--color-primary)] text-xs font-semibold rounded-[var(--radius-full)] mb-3">
+      Specialist
+    </span>
+  )}
+  <h3 class="text-xl font-bold text-[var(--color-secondary)] mb-3 group-hover:text-[var(--color-primary)] transition-colors">{title}</h3>
+  <p class="text-[var(--color-text-light)] text-[var(--text-sm)] leading-relaxed mb-4">{description}</p>
+  <span class="text-[var(--color-primary)] font-semibold text-[var(--text-sm)] group-hover:underline">
+    Learn more &rarr;
+  </span>
+</a>

@@ -1,0 +1,182 @@
+---
+const currentPath = Astro.url.pathname;
+
+const services = [
+  { name: 'DBT Therapy', href: '/services/dbt' },
+  { name: 'ADHD & Neurodivergence', href: '/services/adhd' },
+  { name: 'Individual Counselling', href: '/services/individual' },
+  { name: 'Couples & Parent-Teen', href: '/services/couples' },
+  { name: 'Group Therapy', href: '/services/group' },
+];
+
+const navLinks = [
+  { name: 'Home', href: '/' },
+  { name: 'Services', href: '/services', children: services },
+  { name: 'About', href: '/about' },
+  { name: 'Blog', href: '/blog' },
+  { name: 'Prices & FAQ', href: '/prices' },
+];
+
+function isActive(href: string): boolean {
+  if (href === '/') return currentPath === '/';
+  return currentPath.startsWith(href);
+}
+---
+
+<header class="sticky top-0 z-50 bg-[var(--color-bg)]/95 backdrop-blur-sm border-b border-[var(--color-bg-alt)]">
+  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Main navigation">
+    <div class="flex items-center justify-between h-22">
+      <!-- Logo -->
+      <a href="/" class="flex items-center gap-3 no-underline" aria-label="Jared Dubbs Counselling — Home">
+        <img src="/images/logo-icon.png" alt="" width="80" height="62" class="w-20 h-auto" />
+        <div class="hidden sm:flex flex-col leading-tight">
+          <span class="font-semibold text-[var(--color-secondary)] text-xl tracking-tight" style="font-family: var(--font-serif)">Jared Dubbs</span>
+          <span class="text-[var(--color-text-light)] text-xs tracking-[0.15em] uppercase">Counselling</span>
+        </div>
+      </a>
+
+      <!-- Desktop Nav -->
+      <ul class="hidden lg:flex items-center gap-1" role="list">
+        {navLinks.map((link) => (
+          <li class="relative group">
+            <a
+              href={link.href}
+              class={`px-4 py-2 rounded-[var(--radius-sm)] text-[var(--text-sm)] font-medium no-underline transition-colors ${
+                isActive(link.href)
+                  ? 'text-[var(--color-primary)] bg-[var(--color-bg-alt)]'
+                  : 'text-[var(--color-text)] hover:text-[var(--color-primary)] hover:bg-[var(--color-bg-alt)]'
+              }`}
+              aria-current={isActive(link.href) ? 'page' : undefined}
+            >
+              {link.name}
+              {link.children && (
+                <svg class="inline-block ml-1 w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+                </svg>
+              )}
+            </a>
+            {link.children && (
+              <ul class="absolute left-0 top-full mt-1 w-64 bg-white rounded-[var(--radius)] shadow-lg border border-[var(--color-bg-alt)] py-2 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all duration-200" role="list">
+                {link.children.map((child) => (
+                  <li>
+                    <a
+                      href={child.href}
+                      class={`block px-4 py-2.5 text-[var(--text-sm)] no-underline transition-colors ${
+                        isActive(child.href)
+                          ? 'text-[var(--color-primary)] bg-[var(--color-bg-alt)]'
+                          : 'text-[var(--color-text)] hover:text-[var(--color-primary)] hover:bg-[var(--color-bg-alt)]'
+                      }`}
+                    >
+                      {child.name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))}
+      </ul>
+
+      <!-- Desktop CTA -->
+      <a
+        href="/book"
+        class="hidden lg:inline-flex items-center px-5 py-2.5 bg-[var(--color-primary)] text-white font-semibold text-[var(--text-sm)] rounded-[var(--radius)] no-underline hover:bg-[var(--color-primary-hover)] transition-colors"
+      >
+        Book a Free Discovery Call
+      </a>
+
+      <!-- Mobile: CTA + Hamburger -->
+      <div class="flex items-center gap-3 lg:hidden">
+        <a
+          href="/book"
+          class="inline-flex items-center px-4 py-2 bg-[var(--color-primary)] text-white font-semibold text-[var(--text-sm)] rounded-[var(--radius)] no-underline hover:bg-[var(--color-primary-hover)] transition-colors"
+        >
+          Book Now
+        </a>
+        <button
+          type="button"
+          id="mobile-menu-btn"
+          class="p-2 rounded-[var(--radius-sm)] text-[var(--color-text)] hover:bg-[var(--color-bg-alt)] min-w-[44px] min-h-[44px] flex items-center justify-center"
+          aria-expanded="false"
+          aria-controls="mobile-menu"
+          aria-label="Open menu"
+        >
+          <svg class="w-6 h-6" id="menu-icon-open" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16" />
+          </svg>
+          <svg class="w-6 h-6 hidden" id="menu-icon-close" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
+          </svg>
+        </button>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Mobile Menu Overlay -->
+  <div id="mobile-menu" class="fixed inset-0 top-[72px] bg-white z-40 hidden overflow-y-auto" role="dialog" aria-label="Mobile navigation">
+    <nav class="px-6 py-8" aria-label="Mobile navigation">
+      <ul class="space-y-2" role="list">
+        {navLinks.map((link) => (
+          <li>
+            <a
+              href={link.href}
+              class={`block px-4 py-3 rounded-[var(--radius-sm)] font-medium no-underline text-lg min-h-[44px] ${
+                isActive(link.href)
+                  ? 'text-[var(--color-primary)] bg-[var(--color-bg-alt)]'
+                  : 'text-[var(--color-text)] hover:bg-[var(--color-bg-alt)]'
+              }`}
+            >
+              {link.name}
+            </a>
+            {link.children && (
+              <ul class="ml-4 mt-1 space-y-1" role="list">
+                {link.children.map((child) => (
+                  <li>
+                    <a
+                      href={child.href}
+                      class={`block px-4 py-2.5 rounded-[var(--radius-sm)] no-underline min-h-[44px] flex items-center ${
+                        isActive(child.href)
+                          ? 'text-[var(--color-primary)] bg-[var(--color-bg-alt)]'
+                          : 'text-[var(--color-text-light)] hover:text-[var(--color-primary)] hover:bg-[var(--color-bg-alt)]'
+                      }`}
+                    >
+                      {child.name}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            )}
+          </li>
+        ))}
+      </ul>
+    </nav>
+  </div>
+</header>
+
+<script>
+  const btn = document.getElementById('mobile-menu-btn');
+  const menu = document.getElementById('mobile-menu');
+  const iconOpen = document.getElementById('menu-icon-open');
+  const iconClose = document.getElementById('menu-icon-close');
+
+  btn?.addEventListener('click', () => {
+    const isOpen = menu?.classList.contains('hidden');
+    menu?.classList.toggle('hidden');
+    iconOpen?.classList.toggle('hidden');
+    iconClose?.classList.toggle('hidden');
+    btn.setAttribute('aria-expanded', String(isOpen));
+    btn.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
+    document.body.style.overflow = isOpen ? 'hidden' : '';
+  });
+
+  // Close on link click
+  menu?.querySelectorAll('a').forEach((link) => {
+    link.addEventListener('click', () => {
+      menu.classList.add('hidden');
+      iconOpen?.classList.remove('hidden');
+      iconClose?.classList.add('hidden');
+      btn?.setAttribute('aria-expanded', 'false');
+      document.body.style.overflow = '';
+    });
+  });
+</script>

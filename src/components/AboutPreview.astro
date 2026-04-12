@@ -1,0 +1,41 @@
+---
+
+---
+
+<section class="py-16 md:py-20">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+      <div>
+        <img
+          src="/images/jared-headshot-sm.jpg"
+          alt="Jared Dubbs, counsellor in Central Hong Kong"
+          width="500"
+          height="600"
+          class="rounded-[var(--radius-lg)] shadow-lg w-full max-w-md mx-auto"
+          loading="lazy"
+        />
+      </div>
+      <div>
+        <h2 class="mb-6">Meet Jared</h2>
+        <p class="text-[var(--color-text-light)] leading-relaxed mb-4">
+          As a dedicated counsellor based in Central Hong Kong, I hold a Master's in Counselling from Monash University and have a strong background in education. I work with adults, teens, and couples facing ADHD, anxiety, depression, neurodiversity, BPD, and LGBTQ+ challenges.
+        </p>
+        <p class="text-[var(--color-text-light)] leading-relaxed mb-6">
+          I'm trained in DBT, ACT, CBT, CBT-i, Schema Therapy, and SPACE from Yale University. My approach is inclusive, safe, and friendly — ensuring a supportive environment for everyone.
+        </p>
+
+        <div class="flex flex-wrap gap-2 mb-8">
+          {['Monash University (MoC)', 'SPACE (Yale)', 'DBT Specialist', 'ADHD Lived Experience', 'LGBTQ+ Affirming'].map((cred) => (
+            <span class="inline-block px-3 py-1.5 bg-[var(--color-bg-alt)] text-[var(--color-secondary)] text-[var(--text-sm)] font-medium rounded-[var(--radius-full)]">
+              {cred}
+            </span>
+          ))}
+        </div>
+
+        <a href="/about" class="inline-flex items-center text-[var(--color-primary)] font-semibold no-underline hover:underline">
+          Get to Know Me &rarr;
+        </a>
+      </div>
+    </div>
+  </div>
+</section>

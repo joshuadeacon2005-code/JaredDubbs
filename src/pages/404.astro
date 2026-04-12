@@ -1,0 +1,25 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="Page Not Found"
+  description="The page you're looking for doesn't exist or has been moved. Return to the Jared Dubbs Counselling homepage."
+  noindex={true}
+>
+  <section class="py-24 md:py-32">
+    <div class="max-w-2xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+      <p class="text-6xl font-bold text-[var(--color-primary)] mb-4">404</p>
+      <h1 class="text-3xl font-bold mb-4">Page not found</h1>
+      <p class="text-[var(--color-text-light)] text-lg mb-8">
+        The page you're looking for doesn't exist or has been moved.
+      </p>
+      <a
+        href="/"
+        class="inline-flex items-center px-6 py-3.5 bg-[var(--color-primary)] text-white font-semibold rounded-[var(--radius)] no-underline hover:bg-[var(--color-primary-hover)] transition-colors"
+      >
+        Back to Homepage
+      </a>
+    </div>
+  </section>
+</BaseLayout>

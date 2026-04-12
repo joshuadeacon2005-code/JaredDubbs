@@ -1,0 +1,188 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/Hero.astro';
+import FAQAccordion from '../../components/FAQAccordion.astro';
+import Testimonials from '../../components/Testimonials.astro';
+import FinalCTA from '../../components/FinalCTA.astro';
+
+const testimonials = [
+  {
+    quote: "DBT has been transformative. The mindfulness and distress tolerance skills have given me tools I use every single day. I finally feel like I have a safe space to process things.",
+    attribution: "L.B.",
+  },
+  {
+    quote: "I never thought there would be a day where I didn't have panic attacks. I thought being depressed and having panic attacks were a part of life. You helped me to get to know myself more.",
+  },
+];
+
+const faqItems = [
+  {
+    question: 'Is DBT forever?',
+    answer: "No. Most clients complete the programme within a defined timeframe. Commitments are usually in six-month intervals, with graduates typically transitioning to independent functioning. DBT gives you skills you keep for life — the therapy itself doesn't need to last forever.",
+  },
+  {
+    question: 'Is DBT only for Borderline Personality Disorder?',
+    answer: "While originally developed for BPD, DBT has proven effective for a wide range of emotional and behavioural challenges. It helps anyone experiencing chronic emotional dysregulation, including those with ADHD, autism spectrum conditions, anxiety, depression, and relationship difficulties.",
+  },
+  {
+    question: 'Can DBT work when other therapies haven\'t?',
+    answer: "Yes. DBT targets specific skill deficits and emotional dysregulation patterns that other therapeutic approaches may have overlooked. If you've tried talk therapy or CBT and still struggle with intense emotions, impulsive behaviours, or relationship patterns, DBT's skills-based approach may be what's been missing.",
+  },
+  {
+    question: 'What does a DBT programme involve?',
+    answer: "A standard DBT programme involves weekly individual therapy sessions, weekly skills group sessions, coordinated homework assignments, and between-session coaching access. The programme typically runs for 6-12 months.",
+  },
+];
+
+const schema = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'MedicalWebPage',
+  name: 'DBT Therapy in Hong Kong',
+  description: 'Evidence-based DBT therapy in Central HK. Learn how DBT\'s four core skills can help with emotional regulation, distress tolerance, and relationships.',
+  url: 'https://jareddubbs.com/services/dbt',
+  mainEntity: {
+    '@type': 'MedicalTherapy',
+    name: 'Dialectical Behavior Therapy (DBT)',
+    medicalSpecialty: 'Psychiatric',
+  },
+  breadcrumb: {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://jareddubbs.com' },
+      { '@type': 'ListItem', position: 2, name: 'Services', item: 'https://jareddubbs.com/services' },
+      { '@type': 'ListItem', position: 3, name: 'DBT Therapy' },
+    ],
+  },
+});
+---
+
+<BaseLayout
+  title="DBT Therapy in Hong Kong — Dialectical Behavior Therapy | Jared Dubbs"
+  description="Evidence-based DBT therapy in Central HK. Learn how DBT's four core skills can help with emotional regulation, distress tolerance, and relationships."
+  schema={schema}
+>
+  <!-- Breadcrumbs -->
+  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 text-[var(--text-sm)]" aria-label="Breadcrumb">
+    <ol class="flex items-center gap-2" role="list">
+      <li><a href="/" class="text-[var(--color-text-light)] hover:text-[var(--color-primary)] no-underline">Home</a></li>
+      <li class="text-[var(--color-text-light)]">/</li>
+      <li><a href="/services/dbt" class="text-[var(--color-text-light)] hover:text-[var(--color-primary)] no-underline">Services</a></li>
+      <li class="text-[var(--color-text-light)]">/</li>
+      <li class="text-[var(--color-primary)] font-medium" aria-current="page">DBT Therapy</li>
+    </ol>
+  </nav>
+
+  <Hero
+    title="When emotions feel like they're running your life, DBT can help you take back the wheel"
+    subtitle="Dialectical Behaviour Therapy gives you practical, evidence-based skills to manage intense emotions, tolerate distress, and build the relationships you want."
+    ctaText="Book a Free Discovery Call"
+    ctaLink="/book"
+    compact={true}
+  />
+
+  <!-- What is DBT -->
+  <section class="py-16 md:py-20">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="mb-8">What is DBT?</h2>
+      <p class="text-[var(--color-text-light)] leading-relaxed mb-6">
+        Dialectical Behaviour Therapy is an evidence-based treatment developed by Dr Marsha M. Linehan. It's founded on the principle that seemingly contradictory concepts — acceptance of your current self and the drive for personal improvement — can coexist as valid truths.
+      </p>
+      <p class="text-[var(--color-text-light)] leading-relaxed mb-10">
+        DBT provides a skill-based toolkit with four primary components, each designed to help you build a life worth living:
+      </p>
+
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-[var(--color-bg-alt)] rounded-[var(--radius-lg)] p-6">
+          <h3 class="text-lg font-bold mb-2">Core Mindfulness</h3>
+          <p class="text-[var(--color-text-light)]">Internal observation and emotional awareness to quiet mental noise and find your centre. Learning to be present without judgement.</p>
+        </div>
+        <div class="bg-[var(--color-bg-alt)] rounded-[var(--radius-lg)] p-6">
+          <h3 class="text-lg font-bold mb-2">Distress Tolerance</h3>
+          <p class="text-[var(--color-text-light)]">Building resilience during challenging moments without reactive responses. Surviving crises without making things worse.</p>
+        </div>
+        <div class="bg-[var(--color-bg-alt)] rounded-[var(--radius-lg)] p-6">
+          <h3 class="text-lg font-bold mb-2">Emotion Regulation</h3>
+          <p class="text-[var(--color-text-light)]">Understanding emotions as natural phenomena and learning to navigate their intensity. Reducing vulnerability to painful emotions.</p>
+        </div>
+        <div class="bg-[var(--color-bg-alt)] rounded-[var(--radius-lg)] p-6">
+          <h3 class="text-lg font-bold mb-2">Interpersonal Effectiveness</h3>
+          <p class="text-[var(--color-text-light)]">Developing conflict resolution abilities while maintaining healthy relationships and self-respect. Asking for what you need while keeping relationships intact.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Who is DBT for -->
+  <section class="py-16 md:py-20 bg-[var(--color-bg-alt)]">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="mb-8">Who is DBT for?</h2>
+      <p class="text-[var(--color-text-light)] leading-relaxed mb-6">
+        While DBT was originally developed for Borderline Personality Disorder, it has proven effective for anyone experiencing:
+      </p>
+      <ul class="grid grid-cols-1 sm:grid-cols-2 gap-3">
+        {[
+          'Chronic emotional dysregulation',
+          'Borderline Personality Disorder (BPD)',
+          'Self-harming behaviours',
+          'Suicidal thoughts',
+          'PTSD and trauma',
+          'The emotional component of ADHD',
+          'Extreme anger, shame, or guilt',
+          'Substance use and maladaptive coping',
+          'Relationship difficulties',
+          'Over-control or under-control of emotions',
+        ].map((item) => (
+          <li class="flex items-start gap-3 text-[var(--color-text)]">
+            <svg class="w-5 h-5 text-[var(--color-primary)] shrink-0 mt-0.5" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+            </svg>
+            {item}
+          </li>
+        ))}
+      </ul>
+    </div>
+  </section>
+
+  <!-- Jared's Approach -->
+  <section class="py-16 md:py-20">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="mb-8">My Approach to DBT</h2>
+      <p class="text-[var(--color-text-light)] leading-relaxed mb-6">
+        I deliver comprehensive DBT across all four modules — not just techniques borrowed from DBT, but the full evidence-based programme. My approach combines the structured skill-building of DBT with the warmth and understanding that makes therapy feel safe.
+      </p>
+      <p class="text-[var(--color-text-light)] leading-relaxed">
+        In my practice, I often see clients who have tried other forms of therapy without the results they were hoping for. DBT offers something different: concrete, learnable skills that you practise between sessions and carry with you for life.
+      </p>
+    </div>
+  </section>
+
+  <!-- What to Expect -->
+  <section class="py-16 md:py-20 bg-[var(--color-bg-alt)]">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="mb-8">What to Expect</h2>
+      <div class="space-y-6">
+        <div class="bg-white rounded-[var(--radius-lg)] p-6">
+          <h3 class="text-lg font-bold mb-2">Programme Structure</h3>
+          <p class="text-[var(--color-text-light)]">A standard DBT programme includes weekly individual therapy sessions, weekly skills group sessions, coordinated homework assignments, and between-session coaching access.</p>
+        </div>
+        <div class="bg-white rounded-[var(--radius-lg)] p-6">
+          <h3 class="text-lg font-bold mb-2">Duration</h3>
+          <p class="text-[var(--color-text-light)]">Commitments are usually in six-month intervals. Most clients complete the programme within a defined timeframe and transition to independent functioning with the skills they've built.</p>
+        </div>
+        <div class="bg-white rounded-[var(--radius-lg)] p-6">
+          <h3 class="text-lg font-bold mb-2">Between Sessions</h3>
+          <p class="text-[var(--color-text-light)]">DBT is skills-based, which means you'll practise what you learn between sessions. Homework and skill practice are a core part of the programme — this is where the real change happens.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <Testimonials items={testimonials} heading="What DBT Clients Say" />
+
+  <FAQAccordion items={faqItems} />
+
+  <FinalCTA
+    heading="Ready to learn skills that last a lifetime?"
+    subtext="Book a free discovery call and we'll talk about whether DBT is right for you."
+  />
+</BaseLayout>

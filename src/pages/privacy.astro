@@ -1,0 +1,100 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const schema = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'WebPage',
+  name: 'Privacy Policy',
+  url: 'https://jareddubbs.com/privacy',
+  description: 'Privacy policy for Jared Dubbs Counselling under Hong Kong PDPO.',
+});
+---
+
+<BaseLayout
+  title="Privacy Policy — Jared Dubbs Counselling"
+  description="Privacy policy for Jared Dubbs Counselling. How we collect, use, and protect your personal data under Hong Kong's Personal Data (Privacy) Ordinance."
+  schema={schema}
+>
+  <section class="py-16 md:py-20">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 prose prose-lg">
+      <h1>Privacy Policy</h1>
+      <p class="text-[var(--color-text-light)]"><strong>Last updated:</strong> April 2026</p>
+
+      <p class="text-[var(--color-text-light)] leading-relaxed">
+        Jared Dubbs Counselling LTD ("we", "us", "our") is committed to protecting the privacy of your personal data in accordance with Hong Kong's Personal Data (Privacy) Ordinance (Cap. 486).
+      </p>
+
+      <h2>Information We Collect</h2>
+
+      <h3>Intake Form</h3>
+      <p class="text-[var(--color-text-light)] leading-relaxed">
+        When you submit our intake form, we collect: your name, email address, phone number (optional), session type preference, reason for seeking therapy, and preferred appointment times. This information is used solely to arrange your consultation and provide counselling services.
+      </p>
+
+      <h3>During Therapy</h3>
+      <p class="text-[var(--color-text-light)] leading-relaxed">
+        Clinical notes and records are maintained in Cliniko, our practice management system. These records are kept confidential and are only accessible to Jared Dubbs and any authorised clinical staff. Records are retained in accordance with professional standards and Hong Kong law.
+      </p>
+
+      <h3>Website Analytics</h3>
+      <p class="text-[var(--color-text-light)] leading-relaxed">
+        We use Google Analytics (GA4) to understand how visitors use our website. This collects anonymised data including pages visited, time spent, and general location. No personally identifiable information is collected through analytics.
+      </p>
+
+      <h2>How We Use Your Information</h2>
+      <ul class="text-[var(--color-text-light)]">
+        <li>To arrange and provide counselling services</li>
+        <li>To manage your appointments via Cliniko</li>
+        <li>To communicate with you about your care</li>
+        <li>To improve our website and services</li>
+      </ul>
+
+      <h2>Data Sharing</h2>
+      <p class="text-[var(--color-text-light)] leading-relaxed">
+        We do not sell or share your personal data with third parties except where:
+      </p>
+      <ul class="text-[var(--color-text-light)]">
+        <li>Required by law (e.g. court order)</li>
+        <li>There is a risk of harm to yourself or others</li>
+        <li>There is suspected abuse of a minor or vulnerable person</li>
+        <li>You provide explicit consent</li>
+      </ul>
+
+      <h2>Cliniko (Practice Management)</h2>
+      <p class="text-[var(--color-text-light)] leading-relaxed">
+        Client records are stored in Cliniko, a healthcare practice management system. Cliniko complies with international data protection standards and stores data on secure, encrypted servers. For Cliniko's privacy policy, visit <a href="https://www.cliniko.com/policies/privacy" target="_blank" rel="noopener noreferrer">cliniko.com/policies/privacy</a>.
+      </p>
+
+      <h2>Minor Clients</h2>
+      <p class="text-[var(--color-text-light)] leading-relaxed">
+        For clients under 18, a parent or legal guardian must provide consent for therapy and data collection. We collect the same types of information for minor clients, with additional care taken to protect the young person's privacy. Information shared in therapy by minor clients is kept confidential, with exceptions as required by law or where there is a risk of harm.
+      </p>
+
+      <h2>Cookies</h2>
+      <p class="text-[var(--color-text-light)] leading-relaxed">
+        Our website uses essential cookies for functionality and analytics cookies (Google Analytics) for understanding website usage. You can disable cookies in your browser settings.
+      </p>
+
+      <h2>Your Rights</h2>
+      <p class="text-[var(--color-text-light)] leading-relaxed">
+        Under Hong Kong's Personal Data (Privacy) Ordinance, you have the right to:
+      </p>
+      <ul class="text-[var(--color-text-light)]">
+        <li>Access your personal data held by us</li>
+        <li>Request correction of inaccurate data</li>
+        <li>Withdraw consent for data processing</li>
+      </ul>
+
+      <h2>Contact</h2>
+      <p class="text-[var(--color-text-light)] leading-relaxed">
+        For privacy-related enquiries, contact us at:
+      </p>
+      <p class="text-[var(--color-text-light)]">
+        <strong>Jared Dubbs Counselling LTD</strong><br />
+        10/F C Wisdom Centre, 37 Hollywood Road, Central, Hong Kong<br />
+        Email: <a href="mailto:jared@jareddubbs.com">jared@jareddubbs.com</a><br />
+        Phone: <a href="tel:+85257753743">+852 5775 3743</a>
+      </p>
+    </div>
+  </section>
+</BaseLayout>

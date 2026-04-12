@@ -1,0 +1,115 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/Hero.astro';
+import FinalCTA from '../../components/FinalCTA.astro';
+
+const schema = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'MedicalWebPage',
+  name: 'Individual Counselling in Central Hong Kong',
+  url: 'https://jareddubbs.com/services/individual',
+  breadcrumb: {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://jareddubbs.com' },
+      { '@type': 'ListItem', position: 2, name: 'Services', item: 'https://jareddubbs.com/services' },
+      { '@type': 'ListItem', position: 3, name: 'Individual Counselling' },
+    ],
+  },
+});
+
+const approaches = [
+  { name: 'Dialectical Behaviour Therapy (DBT)', desc: 'Skills-based approach for emotional regulation, distress tolerance, and interpersonal effectiveness.' },
+  { name: 'Acceptance and Commitment Therapy (ACT)', desc: 'Building psychological flexibility and living in alignment with your values.' },
+  { name: 'Cognitive Behavioural Therapy (CBT)', desc: 'Identifying and changing unhelpful thought patterns and behaviours.' },
+  { name: 'CBT for Insomnia (CBT-i)', desc: 'Evidence-based treatment for sleep difficulties without medication.' },
+  { name: 'Schema Therapy', desc: 'Understanding and changing deep-rooted patterns that developed in childhood.' },
+  { name: 'SPACE (Yale)', desc: 'Supporting Parents of Anxious Childhood Emotions — a parent-focused programme.' },
+];
+---
+
+<BaseLayout
+  title="Individual Counselling in Central Hong Kong | Jared Dubbs"
+  description="One-on-one therapy for anxiety, depression, ADHD, LGBTQ+ identity, and life transitions. Tailored to your needs in Central Hong Kong."
+  schema={schema}
+>
+  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 text-[var(--text-sm)]" aria-label="Breadcrumb">
+    <ol class="flex items-center gap-2" role="list">
+      <li><a href="/" class="text-[var(--color-text-light)] hover:text-[var(--color-primary)] no-underline">Home</a></li>
+      <li class="text-[var(--color-text-light)]">/</li>
+      <li><a href="/services/individual" class="text-[var(--color-text-light)] hover:text-[var(--color-primary)] no-underline">Services</a></li>
+      <li class="text-[var(--color-text-light)]">/</li>
+      <li class="text-[var(--color-primary)] font-medium" aria-current="page">Individual Counselling</li>
+    </ol>
+  </nav>
+
+  <Hero
+    title="A space that's entirely yours — to explore, process, and grow"
+    subtitle="Individual counselling tailored to your needs, whether you're dealing with anxiety, depression, ADHD, identity questions, or simply feeling stuck. Sessions available in person or online."
+    ctaText="Book a Free Discovery Call"
+    ctaLink="/book"
+    compact={true}
+  />
+
+  <!-- What We Address -->
+  <section class="py-16 md:py-20">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="mb-8">What We Can Work On Together</h2>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {['Anxiety and stress', 'Depression and low mood', 'ADHD and neurodivergence', 'Borderline Personality Disorder', 'LGBTQ+ identity and challenges', 'Burnout and work stress', 'Life transitions', 'Self-esteem and confidence', 'Sleep difficulties'].map((issue) => (
+          <div class="flex items-center gap-3 bg-[var(--color-bg-alt)] rounded-[var(--radius)] p-4">
+            <svg class="w-5 h-5 text-[var(--color-primary)] shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+            </svg>
+            <span class="text-[var(--color-text)]">{issue}</span>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Therapeutic Approaches -->
+  <section class="py-16 md:py-20 bg-[var(--color-bg-alt)]">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="mb-8">Therapeutic Approaches</h2>
+      <p class="text-[var(--color-text-light)] leading-relaxed mb-8">
+        I draw from multiple evidence-based modalities and tailor my approach to what works best for you. There is no one-size-fits-all in therapy.
+      </p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {approaches.map((approach) => (
+          <div class="bg-white rounded-[var(--radius-lg)] p-6">
+            <h3 class="text-lg font-bold mb-2">{approach.name}</h3>
+            <p class="text-[var(--color-text-light)] text-[var(--text-sm)]">{approach.desc}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Session Details -->
+  <section class="py-16 md:py-20">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="mb-8">Session Details</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        <div class="bg-[var(--color-bg-alt)] rounded-[var(--radius-lg)] p-6">
+          <h3 class="text-lg font-bold mb-2">Standard Session</h3>
+          <p class="text-3xl font-bold text-[var(--color-primary)] mb-2">50 minutes</p>
+          <p class="text-[var(--color-text-light)]">HKD $2,000 — in person or online via Zoom</p>
+        </div>
+        <div class="bg-[var(--color-bg-alt)] rounded-[var(--radius-lg)] p-6">
+          <h3 class="text-lg font-bold mb-2">Extended Session</h3>
+          <p class="text-3xl font-bold text-[var(--color-primary)] mb-2">75 minutes</p>
+          <p class="text-[var(--color-text-light)]">HKD $3,000 — for deeper work or intake sessions</p>
+        </div>
+      </div>
+      <p class="mt-6 text-[var(--color-text-light)]">
+        <a href="/prices" class="text-[var(--color-primary)] font-semibold no-underline hover:underline">View all pricing and packages &rarr;</a>
+      </p>
+    </div>
+  </section>
+
+  <FinalCTA
+    heading="Your journey starts with a conversation"
+    subtext="Book a free discovery call. No referral, no commitment — just a chat about what you need."
+  />
+</BaseLayout>

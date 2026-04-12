@@ -1,0 +1,64 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import FinalCTA from '../components/FinalCTA.astro';
+
+const talks = [
+  { date: 'October 2025', org: 'National Counselling & Psychotherapy Conference (NCPC 2025)', topic: 'Practical Approaches to ADHD' },
+  { date: 'April 2025', org: 'The Harbour School', topic: 'Neurodiversity, Your Questions Answered' },
+  { date: 'April 2025', org: 'FOCUS', topic: 'Defiant, Distracted or Disorganized: Strategies to Nurture Focus, Confidence, and Resilience in Exam Season' },
+  { date: 'March 2025', org: 'HSBC', topic: 'Supporting Parents of Neurodivergent Youth' },
+  { date: 'November 2024', org: 'Withers x FOCUS', topic: 'Empowering Families in Hong Kong: Building Thriving Relationships' },
+  { date: 'October 2024', org: 'HSBC', topic: 'What Does ADHD Look Like? Perspectives for Parents and Children' },
+  { date: 'October 2024', org: "Let's Talk ADHD — ADHD Awareness Week", topic: 'Breaking Myths: Understanding ADHD Beyond the Stereotypes' },
+];
+---
+
+<BaseLayout
+  title="Talks & Events — Jared Dubbs Counselling"
+  description="Jared Dubbs is an experienced speaker on ADHD, DBT, neurodiversity, and mental health. Available for corporate, school, and community events in Hong Kong."
+  schema={JSON.stringify({
+    '@context': 'https://schema.org',
+    '@type': 'WebPage',
+    name: 'Talks & Events',
+    url: 'https://jareddubbs.com/talks',
+    description: 'Speaking engagements by Jared Dubbs on ADHD, DBT, and mental health in Hong Kong.',
+  })}
+>
+  <Hero
+    title="Talks & Events"
+    subtitle="I'm passionate about sharing information and connecting with people. I conduct speaking engagements on DBT, ADHD, neurodiversity, anxiety, parenting, and more."
+    ctaText="Enquire About Speaking"
+    ctaLink="/book"
+    compact={true}
+  />
+
+  <section class="py-16 md:py-20">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <p class="text-[var(--color-text-light)] leading-relaxed mb-10">
+        As a former educator and psychotherapist, I bring expertise, authenticity, and interaction to every speaking engagement. I've presented at the National Counselling and Psychotherapy Conference, HSBC, FOCUS, multiple schools, and events both in Hong Kong and internationally.
+      </p>
+
+      <h2 class="mb-8">Speaking Engagements</h2>
+      <div class="space-y-4">
+        {talks.map((talk) => (
+          <div class="bg-[var(--color-bg-alt)] rounded-[var(--radius)] p-6 flex flex-col sm:flex-row gap-4">
+            <div class="sm:w-36 shrink-0">
+              <p class="text-[var(--color-primary)] font-semibold text-[var(--text-sm)]">{talk.date}</p>
+            </div>
+            <div>
+              <p class="font-bold text-[var(--color-secondary)]">{talk.org}</p>
+              <p class="text-[var(--color-text-light)] mt-1">{talk.topic}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <FinalCTA
+    heading="Looking for a speaker?"
+    subtext="I'm available for corporate, school, and community events on ADHD, DBT, neurodiversity, and mental health."
+    ctaText="Get in Touch"
+  />
+</BaseLayout>

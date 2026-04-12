@@ -1,0 +1,28 @@
+---
+interface Props {
+  heading?: string;
+  subtext?: string;
+  ctaText?: string;
+  ctaLink?: string;
+}
+
+const {
+  heading = 'Ready to take the first step?',
+  subtext = "It takes courage to reach out. Book a free discovery call and let's talk about what you're going through.",
+  ctaText = 'Book a Free Discovery Call',
+  ctaLink = '/book',
+} = Astro.props;
+---
+
+<section class="bg-[var(--color-secondary)] py-16 md:py-20">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+    <h2 class="text-white text-3xl md:text-4xl font-bold mb-4">{heading}</h2>
+    <p class="text-white/80 text-lg mb-8 mx-auto">{subtext}</p>
+    <a
+      href={ctaLink}
+      class="inline-flex items-center px-8 py-4 bg-[var(--color-primary)] text-white font-bold text-lg rounded-[var(--radius)] no-underline hover:bg-[var(--color-primary-hover)] transition-colors min-h-[44px]"
+    >
+      {ctaText}
+    </a>
+  </div>
+</section>

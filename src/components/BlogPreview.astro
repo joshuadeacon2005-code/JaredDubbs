@@ -1,0 +1,36 @@
+---
+import BlogCard from './BlogCard.astro';
+import { getCollection } from 'astro:content';
+
+const posts = (await getCollection('blog'))
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+---
+
+<section class="py-16 md:py-20">
+  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="text-center mb-12">
+      <h2>Latest Articles</h2>
+      <p class="text-[var(--color-text-light)] mt-4 mx-auto">Practical insights on ADHD, DBT, and mental health in Hong Kong</p>
+    </div>
+
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      {posts.map((post) => (
+        <BlogCard
+          title={post.data.title}
+          slug={post.id}
+          excerpt={post.data.description}
+          category={post.data.category}
+          readTime={post.data.readTime}
+          date={post.data.date}
+        />
+      ))}
+    </div>
+
+    <div class="text-center mt-12">
+      <a href="/blog" class="inline-flex items-center text-[var(--color-primary)] font-semibold no-underline hover:underline text-lg">
+        Browse all articles &rarr;
+      </a>
+    </div>
+  </div>
+</section>

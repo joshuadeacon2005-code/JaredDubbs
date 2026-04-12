@@ -1,0 +1,226 @@
+---
+
+---
+
+<form id="intake-form" class="space-y-6" novalidate>
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+    <!-- Name -->
+    <div>
+      <label for="name" class="block text-[var(--text-sm)] font-medium text-[var(--color-text)] mb-1.5">
+        Full Name <span class="text-[var(--color-error)]" aria-hidden="true">*</span>
+      </label>
+      <input
+        type="text"
+        id="name"
+        name="name"
+        required
+        autocomplete="name"
+        class="w-full px-4 py-3 border border-[var(--color-bg-alt)] rounded-[var(--radius)] text-[var(--color-text)] bg-white focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/20 outline-none transition-colors min-h-[44px]"
+        placeholder="Your name"
+      />
+      <p class="form-error hidden text-[var(--color-accent)] text-xs mt-1" role="alert"></p>
+    </div>
+
+    <!-- Email -->
+    <div>
+      <label for="email" class="block text-[var(--text-sm)] font-medium text-[var(--color-text)] mb-1.5">
+        Email Address <span class="text-[var(--color-error)]" aria-hidden="true">*</span>
+      </label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        required
+        autocomplete="email"
+        class="w-full px-4 py-3 border border-[var(--color-bg-alt)] rounded-[var(--radius)] text-[var(--color-text)] bg-white focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/20 outline-none transition-colors min-h-[44px]"
+        placeholder="you@example.com"
+      />
+      <p class="form-error hidden text-[var(--color-accent)] text-xs mt-1" role="alert"></p>
+    </div>
+  </div>
+
+  <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+    <!-- Phone -->
+    <div>
+      <label for="phone" class="block text-[var(--text-sm)] font-medium text-[var(--color-text)] mb-1.5">
+        Phone Number <span class="text-[var(--color-text-light)]">(optional)</span>
+      </label>
+      <input
+        type="tel"
+        id="phone"
+        name="phone"
+        autocomplete="tel"
+        class="w-full px-4 py-3 border border-[var(--color-bg-alt)] rounded-[var(--radius)] text-[var(--color-text)] bg-white focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/20 outline-none transition-colors min-h-[44px]"
+        placeholder="+852 XXXX XXXX"
+      />
+    </div>
+
+    <!-- Session Type -->
+    <div>
+      <label for="session-type" class="block text-[var(--text-sm)] font-medium text-[var(--color-text)] mb-1.5">
+        Session Type
+      </label>
+      <select
+        id="session-type"
+        name="session_type"
+        class="w-full px-4 py-3 border border-[var(--color-bg-alt)] rounded-[var(--radius)] text-[var(--color-text)] bg-white focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/20 outline-none transition-colors min-h-[44px] appearance-none"
+      >
+        <option value="">Not sure yet</option>
+        <option value="individual">Individual Counselling</option>
+        <option value="couples">Couples / Parent-Teen</option>
+        <option value="group">Group Therapy</option>
+      </select>
+    </div>
+  </div>
+
+  <!-- What brings you here -->
+  <div>
+    <label for="reason" class="block text-[var(--text-sm)] font-medium text-[var(--color-text)] mb-1.5">
+      What brings you here? <span class="text-[var(--color-error)]" aria-hidden="true">*</span>
+    </label>
+    <textarea
+      id="reason"
+      name="reason"
+      required
+      minlength="20"
+      rows="4"
+      class="w-full px-4 py-3 border border-[var(--color-bg-alt)] rounded-[var(--radius)] text-[var(--color-text)] bg-white focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/20 outline-none transition-colors resize-y"
+      placeholder="Tell me a little about what's going on. There are no wrong answers here."
+    ></textarea>
+    <p class="form-error hidden text-[var(--color-accent)] text-xs mt-1" role="alert"></p>
+  </div>
+
+  <!-- Preferred times -->
+  <div>
+    <label for="preferred-times" class="block text-[var(--text-sm)] font-medium text-[var(--color-text)] mb-1.5">
+      Preferred Times <span class="text-[var(--color-text-light)]">(optional)</span>
+    </label>
+    <input
+      type="text"
+      id="preferred-times"
+      name="preferred_times"
+      class="w-full px-4 py-3 border border-[var(--color-bg-alt)] rounded-[var(--radius)] text-[var(--color-text)] bg-white focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/20 outline-none transition-colors min-h-[44px]"
+      placeholder="e.g. Weekday mornings, Tuesday afternoons"
+    />
+  </div>
+
+  <!-- Submit -->
+  <button
+    type="submit"
+    id="submit-btn"
+    class="w-full sm:w-auto px-8 py-4 bg-[var(--color-primary)] text-white font-semibold rounded-[var(--radius)] hover:bg-[var(--color-primary-hover)] transition-colors min-h-[44px] flex items-center justify-center gap-2"
+  >
+    <span id="submit-text">Send My Details</span>
+    <svg id="submit-spinner" class="hidden w-5 h-5 animate-spin" fill="none" viewBox="0 0 24 24" aria-hidden="true">
+      <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4"></circle>
+      <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4zm2 5.291A7.962 7.962 0 014 12H0c0 3.042 1.135 5.824 3 7.938l3-2.647z"></path>
+    </svg>
+  </button>
+</form>
+
+<!-- Success Message -->
+<div id="form-success" class="hidden bg-[var(--color-bg-alt)] rounded-[var(--radius-lg)] p-8 text-center">
+  <svg class="w-16 h-16 text-[var(--color-primary)] mx-auto mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+  </svg>
+  <h3 class="text-2xl font-bold text-[var(--color-secondary)] mb-3">Thank you for reaching out</h3>
+  <p class="text-[var(--color-text-light)] text-lg leading-relaxed max-w-lg mx-auto">
+    It takes courage to take this step. We'll be in touch within 24 hours to arrange your free discovery call.
+  </p>
+</div>
+
+<!-- Fallback Message -->
+<div id="form-fallback" class="hidden bg-[var(--color-bg-alt)] rounded-[var(--radius-lg)] p-8 text-center">
+  <h3 class="text-xl font-bold text-[var(--color-secondary)] mb-3">Something went wrong</h3>
+  <p class="text-[var(--color-text-light)] leading-relaxed mb-4">
+    Our form is temporarily unavailable. Please reach out directly:
+  </p>
+  <p class="space-y-2">
+    <a href="tel:+85257753743" class="block text-[var(--color-primary)] font-semibold">+852 5775 3743</a>
+    <a href="mailto:jared@jareddubbs.com" class="block text-[var(--color-primary)] font-semibold">jared@jareddubbs.com</a>
+  </p>
+</div>
+
+<script>
+  const form = document.getElementById('intake-form') as HTMLFormElement;
+  const successEl = document.getElementById('form-success');
+  const fallbackEl = document.getElementById('form-fallback');
+  const submitBtn = document.getElementById('submit-btn') as HTMLButtonElement;
+  const submitText = document.getElementById('submit-text');
+  const submitSpinner = document.getElementById('submit-spinner');
+
+  function showError(field: HTMLElement, message: string) {
+    const errorEl = field.parentElement?.querySelector('.form-error');
+    if (errorEl) {
+      errorEl.textContent = message;
+      errorEl.classList.remove('hidden');
+    }
+    field.classList.add('border-[var(--color-accent)]');
+  }
+
+  function clearErrors() {
+    document.querySelectorAll('.form-error').forEach((el) => {
+      el.classList.add('hidden');
+      el.textContent = '';
+    });
+    document.querySelectorAll('input, textarea').forEach((el) => {
+      el.classList.remove('border-[var(--color-accent)]');
+    });
+  }
+
+  function validate(): boolean {
+    clearErrors();
+    let valid = true;
+    const name = document.getElementById('name') as HTMLInputElement;
+    const email = document.getElementById('email') as HTMLInputElement;
+    const reason = document.getElementById('reason') as HTMLTextAreaElement;
+
+    if (!name.value.trim()) {
+      showError(name, 'Please enter your name so we know what to call you');
+      valid = false;
+    }
+    if (!email.value.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value)) {
+      showError(email, 'Please enter a valid email address');
+      valid = false;
+    }
+    if (!reason.value.trim() || reason.value.trim().length < 20) {
+      showError(reason, 'Please share a little more — even a sentence or two helps');
+      valid = false;
+    }
+    return valid;
+  }
+
+  form?.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    if (!validate()) return;
+
+    submitBtn.disabled = true;
+    submitText!.textContent = 'Sending...';
+    submitSpinner!.classList.remove('hidden');
+
+    const data = new FormData(form);
+    const body = Object.fromEntries(data.entries());
+
+    try {
+      const res = await fetch('/api/intake', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(body),
+      });
+
+      if (res.ok) {
+        form.classList.add('hidden');
+        successEl!.classList.remove('hidden');
+      } else {
+        throw new Error('API error');
+      }
+    } catch {
+      form.classList.add('hidden');
+      fallbackEl!.classList.remove('hidden');
+    } finally {
+      submitBtn.disabled = false;
+      submitText!.textContent = 'Send My Details';
+      submitSpinner!.classList.add('hidden');
+    }
+  });
+</script>

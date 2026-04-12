@@ -1,0 +1,108 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import FAQAccordion from '../components/FAQAccordion.astro';
+import FinalCTA from '../components/FinalCTA.astro';
+
+const pricing = [
+  { type: 'Standard Consultation', duration: '50 minutes', price: '$2,000', note: 'In person or Zoom. HKD $200 discount for cash.' },
+  { type: 'Extended Consultation', duration: '75 minutes', price: '$3,000', note: 'In person or Zoom. HKD $300 discount for cash.' },
+  { type: 'Couples / Parent-Teen', duration: '75 minutes', price: '$3,000', note: 'In person or Zoom. HKD $300 discount for cash.' },
+];
+
+const packages = [
+  { name: '3-Session Starter Pack', desc: '1 Extended Intake + 2 Standard Sessions', price: '$6,000', save: 'Save up to $1,000' },
+  { name: '10+1 Pack', desc: '10 Standard Sessions + 1 Free', price: '$20,000', save: 'Save up to $2,000' },
+  { name: 'Progress Package (3-month)', desc: 'Up to 4 sessions monthly', price: '$7,200/mo', save: '$1,800 per session' },
+  { name: 'Performance Package (6-month)', desc: 'Up to 4 sessions monthly', price: '$6,800/mo', save: '$1,700 per session' },
+];
+
+const faqItems = [
+  {
+    question: 'What can I expect from therapy?',
+    answer: "Your initial consultation involves discussing your history and goals. Sessions provide confidential, non-judgmental support with personalised therapeutic techniques including DBT, ACT, CBT, and mindfulness. Regular check-ins track progress with open communication throughout.",
+  },
+  {
+    question: 'How do I know if I need therapy?',
+    answer: "Consider therapy if you're experiencing persistent distress, difficulty coping with life changes, struggling relationships, feeling stuck, or dealing with specific concerns like ADHD, anxiety, or depression. If something doesn't feel right, that's reason enough to explore it.",
+  },
+  {
+    question: 'How long will therapy take?',
+    answer: "Duration varies based on the complexity of what you're working on, the therapeutic approach, and consistency. CBT typically involves 12-20 sessions; DBT usually lasts 6 months to a year; ACT and mindfulness approaches vary widely. We'll discuss a realistic timeline in your first session.",
+  },
+  {
+    question: 'What are your qualifications?',
+    answer: "Master's degree in Counselling from Monash University (Australia), Post Graduate Diploma in Education from Hong Kong University, BA in Philosophy from Austin College (Texas), and SPACE certification from Yale University. I'm trained in DBT, ACT, CBT, CBT-i, and Schema Therapy.",
+  },
+  {
+    question: 'Do you accept insurance?',
+    answer: "Jared Dubbs Counselling does not accept insurance directly. I can help with paperwork for reimbursement claims, but coverage or reimbursement is not guaranteed and depends on your individual policy.",
+  },
+  {
+    question: 'Is everything I say confidential?',
+    answer: "Yes. Sessions remain private with limited legal exceptions: threats of harm to yourself or others, suspected abuse, or court orders. Your privacy is protected by professional ethics codes and Hong Kong law.",
+  },
+  {
+    question: 'What if I don\'t feel comfortable with my therapist?',
+    answer: "Open communication is encouraged. We can discuss your concerns and adjust the approach. If needed, I'm happy to refer you to another therapist who might be a better fit. The most important thing is that you get the support you need.",
+  },
+  {
+    question: 'What is a Brief Focused Session?',
+    answer: "Brief 25-minute sessions are available for existing clients only. They're designed for quick check-ins, focused topics, progress updates, crisis containment, and practical planning between regular appointments. HKD $1,000.",
+  },
+];
+---
+
+<BaseLayout
+  title="Prices & FAQ — Jared Dubbs Counselling"
+  description="Transparent pricing for individual, couples, and group therapy in Central Hong Kong. Session packages available. No insurance required."
+>
+  <Hero
+    title="Prices & FAQ"
+    subtitle="Transparent pricing with no hidden costs. Packages available to make ongoing therapy more accessible."
+    compact={true}
+  />
+
+  <!-- Pricing Table -->
+  <section class="py-16 md:py-20">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="mb-8">Session Pricing</h2>
+      <div class="space-y-4">
+        {pricing.map((item) => (
+          <div class="bg-white border border-[var(--color-bg-alt)] rounded-[var(--radius-lg)] p-6 flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4">
+            <div>
+              <h3 class="text-lg font-bold">{item.type}</h3>
+              <p class="text-[var(--color-text-light)] text-[var(--text-sm)]">{item.duration} — {item.note}</p>
+            </div>
+            <p class="text-2xl font-bold text-[var(--color-primary)] shrink-0">HKD {item.price}</p>
+          </div>
+        ))}
+      </div>
+
+      <!-- Packages -->
+      <h2 class="mt-16 mb-8">Packages</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {packages.map((pkg) => (
+          <div class="bg-[var(--color-bg-alt)] rounded-[var(--radius-lg)] p-6">
+            <h3 class="text-lg font-bold mb-1">{pkg.name}</h3>
+            <p class="text-[var(--color-text-light)] text-[var(--text-sm)] mb-3">{pkg.desc}</p>
+            <p class="text-2xl font-bold text-[var(--color-primary)]">HKD {pkg.price}</p>
+            <p class="text-[var(--color-primary)] text-[var(--text-sm)] font-medium mt-1">{pkg.save}</p>
+          </div>
+        ))}
+      </div>
+
+      <!-- Insurance Note -->
+      <div class="mt-10 bg-white border border-[var(--color-bg-alt)] rounded-[var(--radius-lg)] p-6">
+        <h3 class="text-lg font-bold mb-2">Insurance</h3>
+        <p class="text-[var(--color-text-light)]">
+          Jared Dubbs Counselling does not accept insurance directly. I can assist with paperwork for reimbursement claims, but coverage is not guaranteed and depends on your individual policy.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <FAQAccordion items={faqItems} />
+
+  <FinalCTA />
+</BaseLayout>

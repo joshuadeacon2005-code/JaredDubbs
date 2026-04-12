@@ -1,0 +1,171 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import FinalCTA from '../../components/FinalCTA.astro';
+import { getCollection, render } from 'astro:content';
+
+export async function getStaticPaths() {
+  const posts = await getCollection('blog');
+  return posts.map((post) => ({
+    params: { slug: post.id },
+    props: { post },
+  }));
+}
+
+const { post } = Astro.props;
+const { Content } = await render(post);
+
+const formattedDate = post.data.date.toLocaleDateString('en-GB', {
+  day: 'numeric',
+  month: 'long',
+  year: 'numeric',
+});
+
+const allPosts = await getCollection('blog');
+const related = allPosts
+  .filter((p) => p.data.category === post.data.category && p.id !== post.id)
+  .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+  .slice(0, 3);
+
+const postImages: Record<string, string> = {
+  'adhd-complete-guide': '/images/blog-adhd-complete-guide.jpg',
+  'adhd-hong-kong': '/images/blog-adhd-hong-kong.jpg',
+  'adhd-relationships': '/images/blog-adhd-relationships.jpg',
+  'adhd-vs-anxiety': '/images/blog-adhd-vs-anxiety.jpg',
+  'executive-dysfunction': '/images/blog-executive-dysfunction.jpg',
+  'what-is-dbt': '/images/blog-what-is-dbt.jpg',
+  'dbt-distress-tolerance': '/images/blog-dbt-distress-tolerance.jpg',
+  'dbt-emotional-dysregulation': '/images/blog-dbt-emotional-dysregulation.jpg',
+  'dbt-vs-cbt': '/images/blog-dbt-vs-cbt.jpg',
+  'radical-acceptance': '/images/blog-radical-acceptance.jpg',
+  'do-i-need-therapy': '/images/blog-do-i-need-therapy.jpg',
+  'first-therapy-session': '/images/blog-first-therapy-session.jpg',
+  'anxiety-hong-kong': '/images/blog-anxiety-hong-kong.jpg',
+  'lgbtq-therapy-hk': '/images/blog-lgbtq-therapy-hk.jpg',
+  'why-therapy-works': '/images/blog-why-therapy-works.jpg',
+};
+const ogImage = post.data.image || postImages[post.id] || `/images/blog-${post.id}.jpg`;
+
+const categoryColors: Record<string, string> = {
+  'ADHD': 'bg-blue-100 text-blue-800',
+  'DBT': 'bg-emerald-100 text-emerald-800',
+  'Anxiety & Depression': 'bg-amber-100 text-amber-800',
+  'Therapy & Wellbeing': 'bg-purple-100 text-purple-800',
+};
+
+const schema = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'Article',
+  headline: post.data.title,
+  description: post.data.description,
+  datePublished: post.data.date.toISOString(),
+  author: {
+    '@type': 'Person',
+    name: 'Jared Dubbs',
+    jobTitle: 'Counsellor',
+    url: 'https://jareddubbs.com/about',
+  },
+  publisher: {
+    '@type': 'Organization',
+    name: 'Jared Dubbs Counselling',
+    url: 'https://jareddubbs.com',
+  },
+  image: `https://jareddubbs.com${ogImage}`,
+  mainEntityOfPage: `https://jareddubbs.com/blog/${post.id}`,
+  breadcrumb: {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://jareddubbs.com' },
+      { '@type': 'ListItem', position: 2, name: 'Blog', item: 'https://jareddubbs.com/blog' },
+      { '@type': 'ListItem', position: 3, name: post.data.title },
+    ],
+  },
+});
+---
+
+<BaseLayout
+  title={post.data.title}
+  description={post.data.description}
+  schema={schema}
+  ogImage={ogImage}
+  shortSuffix
+>
+  <!-- Breadcrumbs -->
+  <nav class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 py-4 text-[var(--text-sm)]" aria-label="Breadcrumb">
+    <ol class="flex items-center gap-2 flex-wrap" role="list">
+      <li><a href="/" class="text-[var(--color-text-light)] hover:text-[var(--color-primary)] no-underline">Home</a></li>
+      <li class="text-[var(--color-text-light)]">/</li>
+      <li><a href="/blog" class="text-[var(--color-text-light)] hover:text-[var(--color-primary)] no-underline">Blog</a></li>
+      <li class="text-[var(--color-text-light)]">/</li>
+      <li class="text-[var(--color-primary)] font-medium truncate max-w-[200px]" aria-current="page">{post.data.title}</li>
+    </ol>
+  </nav>
+
+  <article class="py-8 md:py-12">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <!-- Header -->
+      <header class="mb-10">
+        <div class="flex items-center gap-3 mb-4">
+          <span class={`inline-block px-3 py-1 text-xs font-semibold rounded-[var(--radius-full)] ${categoryColors[post.data.category] || 'bg-gray-100 text-gray-800'}`}>
+            {post.data.category}
+          </span>
+          <span class="text-[var(--text-sm)] text-[var(--color-text-light)]">{post.data.readTime}</span>
+        </div>
+        <h1 class="mb-4">{post.data.title}</h1>
+        <div class="flex items-center gap-4 text-[var(--text-sm)] text-[var(--color-text-light)]">
+          <span>By {post.data.author}</span>
+          <time datetime={post.data.date.toISOString().split('T')[0]}>{formattedDate}</time>
+        </div>
+      </header>
+
+      <!-- Content -->
+      <div class="prose prose-lg max-w-none
+        [&_h2]:text-[var(--color-secondary)] [&_h2]:mt-10 [&_h2]:mb-4
+        [&_h3]:text-[var(--color-secondary)] [&_h3]:mt-8 [&_h3]:mb-3
+        [&_p]:text-[var(--color-text-light)] [&_p]:leading-relaxed [&_p]:mb-4
+        [&_ul]:text-[var(--color-text-light)] [&_ul]:mb-4 [&_ul]:ml-6
+        [&_ol]:text-[var(--color-text-light)] [&_ol]:mb-4 [&_ol]:ml-6
+        [&_li]:mb-2
+        [&_a]:text-[var(--color-primary)] [&_a]:font-medium
+        [&_blockquote]:border-l-4 [&_blockquote]:border-[var(--color-primary)] [&_blockquote]:pl-6 [&_blockquote]:italic [&_blockquote]:text-[var(--color-text-light)]
+        [&_strong]:text-[var(--color-text)] [&_strong]:font-semibold
+      ">
+        <Content />
+      </div>
+
+      <!-- Author Bio -->
+      <div class="mt-12 bg-[var(--color-bg-alt)] rounded-[var(--radius-lg)] p-8 text-center">
+        <img src="/images/jared-headshot-sm.jpg" alt="Jared Dubbs" width="96" height="96" class="w-24 h-24 rounded-full object-cover object-top mx-auto mb-4 ring-2 ring-[var(--color-gold)]/20" loading="lazy" />
+        <p class="font-bold text-[var(--color-secondary)] text-lg">Jared Dubbs, MoC</p>
+        <p class="text-[var(--color-text-light)] text-[var(--text-sm)] mt-2 mx-auto max-w-lg">
+          Jared is a counsellor in Central Hong Kong specialising in DBT and ADHD. He holds a Master's in Counselling from Monash University and brings personal lived experience of ADHD to his practice.
+        </p>
+        <a href="/about" class="inline-block mt-3 text-[var(--color-primary)] font-medium text-[var(--text-sm)] no-underline hover:underline">Learn more about Jared &rarr;</a>
+      </div>
+    </div>
+  </article>
+
+  <!-- Related Posts -->
+  {related.length > 0 && (
+    <section class="py-16 bg-[var(--color-bg-alt)]">
+      <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <h2 class="text-center mb-8">Related Articles</h2>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+          {related.map((r) => (
+            <a href={`/blog/${r.id}`} class="block bg-white rounded-[var(--radius-lg)] p-6 no-underline hover:shadow-md transition-shadow">
+              <span class={`inline-block px-2.5 py-0.5 text-xs font-semibold rounded-[var(--radius-full)] mb-3 ${categoryColors[r.data.category] || 'bg-gray-100 text-gray-800'}`}>
+                {r.data.category}
+              </span>
+              <h3 class="text-lg font-bold text-[var(--color-secondary)] mb-2">{r.data.title}</h3>
+              <p class="text-[var(--color-text-light)] text-[var(--text-sm)] line-clamp-2">{r.data.description}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </section>
+  )}
+
+  <FinalCTA
+    heading="If this resonated with you"
+    subtext="Book a free discovery call and let's talk about what you're going through."
+  />
+</BaseLayout>

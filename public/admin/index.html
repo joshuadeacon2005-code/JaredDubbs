@@ -1,0 +1,739 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="robots" content="noindex" />
+  <title>Admin — Jared Dubbs Counselling</title>
+  <link rel="stylesheet" href="https://unpkg.com/easymde/dist/easymde.min.css" />
+  <style>
+    :root {
+      --primary: #9B8544;
+      --primary-light: #C4A94D;
+      --secondary: #2C3E50;
+      --bg: #F9F7F3;
+      --bg-alt: #F0EDE6;
+      --text: #2C3E50;
+      --text-light: #6B7280;
+      --radius: 12px;
+      --font: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: var(--font);
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+    }
+
+    /* ── Login Screen ── */
+    #login-screen {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      padding: 1rem;
+    }
+
+    .login-card {
+      background: white;
+      border-radius: var(--radius);
+      padding: 3rem 2.5rem;
+      max-width: 400px;
+      width: 100%;
+      box-shadow: 0 4px 24px rgba(0,0,0,0.08);
+      text-align: center;
+    }
+
+    .login-card h1 {
+      font-size: 1.5rem;
+      color: var(--secondary);
+      margin-bottom: 0.5rem;
+    }
+
+    .login-card p {
+      color: var(--text-light);
+      font-size: 0.9rem;
+      margin-bottom: 2rem;
+    }
+
+    .login-card input[type="password"] {
+      width: 100%;
+      padding: 0.85rem 1rem;
+      border: 2px solid var(--bg-alt);
+      border-radius: 8px;
+      font-size: 1rem;
+      outline: none;
+      transition: border-color 0.2s;
+    }
+
+    .login-card input[type="password"]:focus {
+      border-color: var(--primary);
+    }
+
+    .login-error {
+      color: #dc2626;
+      font-size: 0.85rem;
+      margin-top: 0.75rem;
+      display: none;
+    }
+
+    /* ── Editor Screen ── */
+    #editor-screen { display: none; }
+
+    .admin-header {
+      background: white;
+      border-bottom: 1px solid var(--bg-alt);
+      padding: 1rem 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      position: sticky;
+      top: 0;
+      z-index: 50;
+    }
+
+    .admin-header h1 {
+      font-size: 1.1rem;
+      color: var(--secondary);
+    }
+
+    .admin-header .actions {
+      display: flex;
+      gap: 0.75rem;
+      align-items: center;
+    }
+
+    .admin-main {
+      max-width: 860px;
+      margin: 2rem auto;
+      padding: 0 1.5rem;
+    }
+
+    .form-section {
+      background: white;
+      border-radius: var(--radius);
+      padding: 2rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+    }
+
+    .form-section h2 {
+      font-size: 1rem;
+      color: var(--text-light);
+      text-transform: uppercase;
+      letter-spacing: 0.05em;
+      margin-bottom: 1.25rem;
+      font-weight: 600;
+    }
+
+    .field {
+      margin-bottom: 1.25rem;
+    }
+
+    .field:last-child { margin-bottom: 0; }
+
+    .field label {
+      display: block;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: var(--text);
+      margin-bottom: 0.4rem;
+    }
+
+    .field .hint {
+      font-size: 0.78rem;
+      color: var(--text-light);
+      margin-bottom: 0.4rem;
+    }
+
+    .field input[type="text"],
+    .field input[type="date"],
+    .field textarea,
+    .field select {
+      width: 100%;
+      padding: 0.7rem 0.85rem;
+      border: 2px solid var(--bg-alt);
+      border-radius: 8px;
+      font-size: 0.95rem;
+      font-family: var(--font);
+      outline: none;
+      transition: border-color 0.2s;
+      background: white;
+    }
+
+    .field input:focus,
+    .field textarea:focus,
+    .field select:focus {
+      border-color: var(--primary);
+    }
+
+    .field textarea { resize: vertical; min-height: 80px; }
+
+    .row { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+    @media (max-width: 600px) { .row { grid-template-columns: 1fr; } }
+
+    .toggle-row {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+
+    .toggle {
+      position: relative;
+      width: 48px;
+      height: 26px;
+      flex-shrink: 0;
+    }
+
+    .toggle input {
+      opacity: 0;
+      width: 0;
+      height: 0;
+    }
+
+    .toggle-slider {
+      position: absolute;
+      inset: 0;
+      background: var(--bg-alt);
+      border-radius: 26px;
+      cursor: pointer;
+      transition: 0.2s;
+    }
+
+    .toggle-slider::before {
+      content: '';
+      position: absolute;
+      width: 20px;
+      height: 20px;
+      left: 3px;
+      top: 3px;
+      background: white;
+      border-radius: 50%;
+      transition: 0.2s;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.15);
+    }
+
+    .toggle input:checked + .toggle-slider {
+      background: var(--primary);
+    }
+
+    .toggle input:checked + .toggle-slider::before {
+      transform: translateX(22px);
+    }
+
+    /* Image upload */
+    .image-upload {
+      border: 2px dashed var(--bg-alt);
+      border-radius: 8px;
+      padding: 2rem;
+      text-align: center;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      position: relative;
+    }
+
+    .image-upload:hover, .image-upload.dragover {
+      border-color: var(--primary);
+      background: rgba(155,133,68,0.03);
+    }
+
+    .image-upload input { display: none; }
+
+    .image-upload .upload-text {
+      color: var(--text-light);
+      font-size: 0.9rem;
+    }
+
+    .image-upload .upload-text strong {
+      color: var(--primary);
+    }
+
+    .image-preview {
+      margin-top: 1rem;
+      display: none;
+    }
+
+    .image-preview img {
+      max-width: 100%;
+      max-height: 200px;
+      border-radius: 8px;
+      object-fit: cover;
+    }
+
+    .image-preview .remove-image {
+      margin-top: 0.5rem;
+      font-size: 0.8rem;
+      color: #dc2626;
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: var(--font);
+    }
+
+    /* Buttons */
+    .btn {
+      padding: 0.7rem 1.5rem;
+      border-radius: 8px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      font-family: var(--font);
+      transition: all 0.2s;
+    }
+
+    .btn-primary {
+      background: var(--primary);
+      color: white;
+    }
+
+    .btn-primary:hover { background: var(--primary-light); }
+
+    .btn-primary:disabled {
+      opacity: 0.5;
+      cursor: not-allowed;
+    }
+
+    .btn-secondary {
+      background: var(--bg-alt);
+      color: var(--text);
+    }
+
+    .btn-secondary:hover { background: #e5e0d6; }
+
+    .btn-danger {
+      background: none;
+      color: #dc2626;
+      padding: 0.7rem 1rem;
+    }
+
+    /* Toast */
+    .toast {
+      position: fixed;
+      bottom: 2rem;
+      right: 2rem;
+      padding: 1rem 1.5rem;
+      border-radius: 8px;
+      color: white;
+      font-weight: 500;
+      font-size: 0.9rem;
+      z-index: 100;
+      transform: translateY(120%);
+      transition: transform 0.3s ease;
+      max-width: 400px;
+    }
+
+    .toast.show { transform: translateY(0); }
+    .toast.success { background: #059669; }
+    .toast.error { background: #dc2626; }
+
+    /* EasyMDE overrides */
+    .EasyMDEContainer { border: 2px solid var(--bg-alt) !important; border-radius: 8px !important; }
+    .EasyMDEContainer:focus-within { border-color: var(--primary) !important; }
+    .editor-toolbar { border: none !important; padding: 8px !important; }
+    .CodeMirror { border: none !important; min-height: 300px; }
+
+    /* Posts list */
+    .posts-list { list-style: none; }
+    .posts-list li {
+      padding: 1rem;
+      border-bottom: 1px solid var(--bg-alt);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .posts-list li:last-child { border-bottom: none; }
+    .post-title { font-weight: 600; color: var(--secondary); }
+    .post-meta { font-size: 0.8rem; color: var(--text-light); margin-top: 0.25rem; }
+    .post-actions { display: flex; gap: 0.5rem; }
+
+    /* Tabs */
+    .tabs {
+      display: flex;
+      gap: 0;
+      margin-bottom: 2rem;
+      border-bottom: 2px solid var(--bg-alt);
+    }
+
+    .tab {
+      padding: 0.75rem 1.5rem;
+      background: none;
+      border: none;
+      font-size: 0.95rem;
+      font-weight: 600;
+      color: var(--text-light);
+      cursor: pointer;
+      border-bottom: 2px solid transparent;
+      margin-bottom: -2px;
+      font-family: var(--font);
+      transition: color 0.2s;
+    }
+
+    .tab.active {
+      color: var(--primary);
+      border-bottom-color: var(--primary);
+    }
+
+    .tab:hover { color: var(--secondary); }
+  </style>
+</head>
+<body>
+
+<!-- ── Login ── -->
+<div id="login-screen">
+  <div class="login-card">
+    <h1>Jared Dubbs Counselling</h1>
+    <p>Sign in to manage your blog</p>
+    <form id="login-form">
+      <input type="password" id="login-password" placeholder="Enter admin password" autocomplete="current-password" required />
+      <div class="login-error" id="login-error">Incorrect password</div>
+      <button type="submit" class="btn btn-primary" style="width:100%;margin-top:1rem">Sign In</button>
+    </form>
+  </div>
+</div>
+
+<!-- ── Editor ── -->
+<div id="editor-screen">
+  <header class="admin-header">
+    <h1>Blog Manager</h1>
+    <div class="actions">
+      <button class="btn btn-secondary" id="btn-back-to-list" style="display:none">Back to posts</button>
+      <button class="btn btn-danger" id="btn-logout">Log out</button>
+    </div>
+  </header>
+
+  <main class="admin-main">
+    <!-- Tab bar -->
+    <div class="tabs">
+      <button class="tab active" data-tab="new">New Post</button>
+      <button class="tab" data-tab="existing">Existing Posts</button>
+    </div>
+
+    <!-- New Post Form -->
+    <div id="tab-new">
+      <form id="post-form">
+        <div class="form-section">
+          <h2>Post Details</h2>
+          <div class="field">
+            <label for="post-title">Title</label>
+            <input type="text" id="post-title" placeholder="e.g. Why ADHD Brains Need Different Strategies" required />
+          </div>
+          <div class="field">
+            <label for="post-description">Description</label>
+            <div class="hint">Short summary for SEO and preview cards. Aim for 120-155 characters.</div>
+            <textarea id="post-description" rows="2" placeholder="A brief summary that appears in search results and social media cards..." required></textarea>
+          </div>
+          <div class="row">
+            <div class="field">
+              <label for="post-category">Category</label>
+              <select id="post-category" required>
+                <option value="ADHD">ADHD</option>
+                <option value="DBT">DBT</option>
+                <option value="Anxiety & Depression">Anxiety & Depression</option>
+                <option value="Therapy & Wellbeing">Therapy & Wellbeing</option>
+              </select>
+            </div>
+            <div class="field">
+              <label for="post-date">Publish Date</label>
+              <input type="date" id="post-date" required />
+            </div>
+          </div>
+          <div class="row">
+            <div class="field">
+              <label for="post-readtime">Read Time</label>
+              <input type="text" id="post-readtime" value="6 min read" />
+            </div>
+            <div class="field" style="display:flex;align-items:end;padding-bottom:0.15rem">
+              <div class="toggle-row">
+                <label class="toggle">
+                  <input type="checkbox" id="post-featured" />
+                  <span class="toggle-slider"></span>
+                </label>
+                <label for="post-featured" style="font-size:0.9rem;cursor:pointer">Featured post</label>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h2>Preview Image</h2>
+          <div class="hint" style="margin-bottom:0.75rem">Optional. Recommended size: 800 x 400px, JPG format.</div>
+          <div class="image-upload" id="image-drop">
+            <input type="file" id="post-image" accept="image/jpeg,image/png,image/webp" />
+            <div class="upload-text">
+              <strong>Click to upload</strong> or drag and drop<br />
+              <span style="font-size:0.8rem">JPG, PNG or WebP</span>
+            </div>
+            <div class="image-preview" id="image-preview">
+              <img id="preview-img" alt="Preview" />
+              <br />
+              <button type="button" class="remove-image" id="remove-image">Remove image</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="form-section">
+          <h2>Content</h2>
+          <div class="hint" style="margin-bottom:0.75rem">Write your blog post below. Use the toolbar for headings, bold, links, and lists.</div>
+          <textarea id="post-body"></textarea>
+        </div>
+
+        <div style="display:flex;gap:0.75rem;justify-content:flex-end;padding:1rem 0 3rem">
+          <button type="button" class="btn btn-secondary" id="btn-clear">Clear form</button>
+          <button type="submit" class="btn btn-primary" id="btn-publish">Publish Post</button>
+        </div>
+      </form>
+    </div>
+
+    <!-- Existing Posts Tab -->
+    <div id="tab-existing" style="display:none">
+      <div class="form-section">
+        <div id="posts-loading" style="text-align:center;padding:2rem;color:var(--text-light)">Loading posts...</div>
+        <ul class="posts-list" id="posts-list"></ul>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Toast notification -->
+<div class="toast" id="toast"></div>
+
+<script src="https://unpkg.com/easymde/dist/easymde.min.js"></script>
+<script>
+(function() {
+  const API = '/api/admin';
+  let token = sessionStorage.getItem('admin_token');
+  let editor;
+
+  // ── Helpers ──
+  function show(id) { document.getElementById(id).style.display = ''; }
+  function hide(id) { document.getElementById(id).style.display = 'none'; }
+
+  function toast(msg, type = 'success') {
+    const el = document.getElementById('toast');
+    el.textContent = msg;
+    el.className = `toast ${type} show`;
+    setTimeout(() => el.classList.remove('show'), 4000);
+  }
+
+  async function api(path, body) {
+    const res = await fetch(`${API}${path}`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Authorization': `Bearer ${token}` },
+      body: JSON.stringify(body),
+    });
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.error || 'Something went wrong');
+    return data;
+  }
+
+  // ── Login ──
+  if (token) {
+    hide('login-screen');
+    show('editor-screen');
+    initEditor();
+  }
+
+  document.getElementById('login-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const pw = document.getElementById('login-password').value;
+    try {
+      const data = await fetch(`${API}/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ password: pw }),
+      }).then(r => r.json());
+
+      if (data.token) {
+        token = data.token;
+        sessionStorage.setItem('admin_token', token);
+        hide('login-screen');
+        show('editor-screen');
+        initEditor();
+      } else {
+        document.getElementById('login-error').style.display = 'block';
+      }
+    } catch {
+      document.getElementById('login-error').style.display = 'block';
+    }
+  });
+
+  document.getElementById('btn-logout').addEventListener('click', () => {
+    sessionStorage.removeItem('admin_token');
+    location.reload();
+  });
+
+  // ── Tabs ──
+  document.querySelectorAll('.tab').forEach(tab => {
+    tab.addEventListener('click', () => {
+      document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+      tab.classList.add('active');
+      const target = tab.dataset.tab;
+      document.getElementById('tab-new').style.display = target === 'new' ? '' : 'none';
+      document.getElementById('tab-existing').style.display = target === 'existing' ? '' : 'none';
+      if (target === 'existing') loadPosts();
+    });
+  });
+
+  // ── Editor init ──
+  function initEditor() {
+    if (editor) return;
+    editor = new EasyMDE({
+      element: document.getElementById('post-body'),
+      spellChecker: false,
+      placeholder: 'Start writing your blog post...\n\nUse ## for section headings.\nUse **bold** for emphasis.\nUse [link text](/url) for links.',
+      toolbar: ['bold', 'italic', '|', 'heading-2', 'heading-3', '|',
+                'unordered-list', 'ordered-list', '|', 'link', 'quote', '|',
+                'preview', 'side-by-side', '|', 'guide'],
+      status: ['lines', 'words'],
+    });
+
+    // Set today's date
+    document.getElementById('post-date').valueAsDate = new Date();
+  }
+
+  // ── Image Upload ──
+  const dropZone = document.getElementById('image-drop');
+  const fileInput = document.getElementById('post-image');
+  const previewEl = document.getElementById('image-preview');
+  const previewImg = document.getElementById('preview-img');
+  let imageFile = null;
+
+  dropZone.addEventListener('click', () => fileInput.click());
+  dropZone.addEventListener('dragover', (e) => { e.preventDefault(); dropZone.classList.add('dragover'); });
+  dropZone.addEventListener('dragleave', () => dropZone.classList.remove('dragover'));
+  dropZone.addEventListener('drop', (e) => {
+    e.preventDefault();
+    dropZone.classList.remove('dragover');
+    if (e.dataTransfer.files[0]) handleImage(e.dataTransfer.files[0]);
+  });
+  fileInput.addEventListener('change', () => { if (fileInput.files[0]) handleImage(fileInput.files[0]); });
+
+  function handleImage(file) {
+    imageFile = file;
+    const reader = new FileReader();
+    reader.onload = (e) => {
+      previewImg.src = e.target.result;
+      previewEl.style.display = 'block';
+      dropZone.querySelector('.upload-text').style.display = 'none';
+    };
+    reader.readAsDataURL(file);
+  }
+
+  document.getElementById('remove-image').addEventListener('click', (e) => {
+    e.stopPropagation();
+    imageFile = null;
+    fileInput.value = '';
+    previewEl.style.display = 'none';
+    dropZone.querySelector('.upload-text').style.display = '';
+  });
+
+  // ── Publish ──
+  document.getElementById('post-form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const btn = document.getElementById('btn-publish');
+    btn.disabled = true;
+    btn.textContent = 'Publishing...';
+
+    try {
+      const title = document.getElementById('post-title').value.trim();
+      const description = document.getElementById('post-description').value.trim();
+      const category = document.getElementById('post-category').value;
+      const date = document.getElementById('post-date').value;
+      const readTime = document.getElementById('post-readtime').value.trim();
+      const featured = document.getElementById('post-featured').checked;
+      const body = editor.value();
+
+      if (!title || !description || !body) {
+        toast('Please fill in all required fields', 'error');
+        return;
+      }
+
+      // Upload image first if present
+      let imagePath = '';
+      if (imageFile) {
+        const base64 = await fileToBase64(imageFile);
+        const slug = slugify(title);
+        const ext = imageFile.name.split('.').pop();
+        const imgRes = await api('/upload-image', {
+          filename: `blog-${slug}.${ext}`,
+          content: base64,
+        });
+        imagePath = imgRes.path;
+      }
+
+      await api('/publish', {
+        title, description, category, date, readTime, featured, body, image: imagePath,
+      });
+
+      toast('Post published! Site will rebuild in ~1 minute.');
+      clearForm();
+    } catch (err) {
+      toast(err.message, 'error');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Publish Post';
+    }
+  });
+
+  function fileToBase64(file) {
+    return new Promise((resolve) => {
+      const reader = new FileReader();
+      reader.onload = () => resolve(reader.result.split(',')[1]);
+      reader.readAsDataURL(file);
+    });
+  }
+
+  function slugify(text) {
+    return text.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+  }
+
+  // ── Clear form ──
+  document.getElementById('btn-clear').addEventListener('click', clearForm);
+
+  function clearForm() {
+    document.getElementById('post-form').reset();
+    editor.value('');
+    imageFile = null;
+    document.getElementById('image-preview').style.display = 'none';
+    document.getElementById('image-drop').querySelector('.upload-text').style.display = '';
+    document.getElementById('post-date').valueAsDate = new Date();
+  }
+
+  // ── Load existing posts ──
+  async function loadPosts() {
+    const listEl = document.getElementById('posts-list');
+    const loadingEl = document.getElementById('posts-loading');
+    listEl.innerHTML = '';
+    loadingEl.style.display = '';
+
+    try {
+      const data = await api('/list-posts', {});
+      loadingEl.style.display = 'none';
+
+      if (!data.posts || data.posts.length === 0) {
+        listEl.innerHTML = '<li style="color:var(--text-light);text-align:center">No posts yet</li>';
+        return;
+      }
+
+      data.posts.forEach(post => {
+        const li = document.createElement('li');
+        li.innerHTML = `
+          <div>
+            <div class="post-title">${post.title}</div>
+            <div class="post-meta">${post.category} · ${post.date}</div>
+          </div>
+        `;
+        listEl.appendChild(li);
+      });
+    } catch (err) {
+      loadingEl.textContent = 'Could not load posts: ' + err.message;
+    }
+  }
+})();
+</script>
+</body>
+</html>

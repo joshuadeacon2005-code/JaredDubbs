@@ -1,0 +1,26 @@
+---
+const painPoints = [
+  "You've tried to just 'push through' but nothing changes",
+  "You feel like you're constantly masking or performing for everyone around you",
+  "Small tasks feel impossibly overwhelming and you can't explain why",
+  "You know something isn't right but you're not sure where to start",
+];
+---
+
+<section class="py-16 md:py-20 bg-[var(--color-bg-alt)]">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <h2 class="text-center mb-12">You might recognise some of this...</h2>
+
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-6">
+      {painPoints.map((point) => (
+        <div class="bg-white rounded-[var(--radius-lg)] p-6 shadow-sm">
+          <p class="text-[var(--color-text)] font-medium leading-relaxed text-lg">{point}</p>
+        </div>
+      ))}
+    </div>
+
+    <p class="text-center text-[var(--color-text-light)] mt-10 text-lg">
+      If any of that sounds familiar, you're not broken. You might just need the right support.
+    </p>
+  </div>
+</section>

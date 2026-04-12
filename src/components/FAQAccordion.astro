@@ -1,0 +1,99 @@
+---
+interface FAQItem {
+  question: string;
+  answer: string;
+}
+
+interface Props {
+  items: FAQItem[];
+  heading?: string;
+  includeSchema?: boolean;
+}
+
+const { items, heading = 'Frequently Asked Questions', includeSchema = true } = Astro.props;
+
+const faqSchema = includeSchema
+  ? JSON.stringify({
+      '@context': 'https://schema.org',
+      '@type': 'FAQPage',
+      mainEntity: items.map((item) => ({
+        '@type': 'Question',
+        name: item.question,
+        acceptedAnswer: {
+          '@type': 'Answer',
+          text: item.answer,
+        },
+      })),
+    })
+  : null;
+---
+
+<section class="py-16 md:py-20">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <h2 class="text-center mb-12">{heading}</h2>
+
+    <div class="space-y-3" role="list">
+      {items.map((item, index) => (
+        <div class="border border-[var(--color-bg-alt)] rounded-[var(--radius)] overflow-hidden" role="listitem">
+          <button
+            type="button"
+            class="faq-trigger w-full flex items-center justify-between px-6 py-4 text-left font-medium text-[var(--color-text)] hover:bg-[var(--color-bg-alt)] transition-colors min-h-[44px]"
+            aria-expanded="false"
+            aria-controls={`faq-panel-${index}`}
+          >
+            <span>{item.question}</span>
+            <svg class="faq-icon w-5 h-5 shrink-0 ml-4 text-[var(--color-text-light)] transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+            </svg>
+          </button>
+          <div
+            id={`faq-panel-${index}`}
+            class="faq-panel hidden px-6 pb-4"
+            role="region"
+            aria-labelledby={`faq-btn-${index}`}
+          >
+            <p class="text-[var(--color-text-light)] leading-relaxed" set:html={item.answer} />
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+
+  {faqSchema && <script type="application/ld+json" set:html={faqSchema} />}
+</section>
+
+<script>
+  document.querySelectorAll('.faq-trigger').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      const panelId = btn.getAttribute('aria-controls');
+      const panel = document.getElementById(panelId!);
+      const icon = btn.querySelector('.faq-icon');
+
+      btn.setAttribute('aria-expanded', String(!expanded));
+      panel?.classList.toggle('hidden');
+      icon?.classList.toggle('rotate-180');
+    });
+  });
+
+  // Keyboard navigation
+  document.querySelectorAll('.faq-trigger').forEach((btn, index, triggers) => {
+    btn.addEventListener('keydown', (e: Event) => {
+      const event = e as KeyboardEvent;
+      let target: Element | null = null;
+      if (event.key === 'ArrowDown') {
+        target = triggers[index + 1] || triggers[0];
+      } else if (event.key === 'ArrowUp') {
+        target = triggers[index - 1] || triggers[triggers.length - 1];
+      } else if (event.key === 'Home') {
+        target = triggers[0];
+      } else if (event.key === 'End') {
+        target = triggers[triggers.length - 1];
+      }
+      if (target) {
+        event.preventDefault();
+        (target as HTMLElement).focus();
+      }
+    });
+  });
+</script>

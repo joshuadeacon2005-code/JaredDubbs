@@ -1,0 +1,106 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Hero from '../components/Hero.astro';
+import EmpathyBridge from '../components/EmpathyBridge.astro';
+import ServicesGrid from '../components/ServicesGrid.astro';
+import WhyChooseMe from '../components/WhyChooseMe.astro';
+import StatsBar from '../components/StatsBar.astro';
+import AboutPreview from '../components/AboutPreview.astro';
+import HowItWorks from '../components/HowItWorks.astro';
+import Testimonials from '../components/Testimonials.astro';
+import BlogPreview from '../components/BlogPreview.astro';
+import FinalCTA from '../components/FinalCTA.astro';
+
+const testimonials = [
+  {
+    quote: "Thank you for starting me out on this journey and supporting me. You have made a profound difference in my life.",
+  },
+  {
+    quote: "You have made a huge difference in my son's life. I want to sing your praises. The teachers have also noticed how much he has improved thanks to his time with you.",
+  },
+  {
+    quote: "I never thought there would be a day where I didn't have panic attacks. You helped me to get to know myself more. I have grown mentally and I got to experience real happiness in life.",
+  },
+];
+
+const schema = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@graph': [
+    {
+      '@type': 'LocalBusiness',
+      '@id': 'https://jareddubbs.com/#business',
+      name: 'Jared Dubbs Counselling',
+      description: 'DBT and ADHD specialist counsellor in Central, Hong Kong.',
+      url: 'https://jareddubbs.com',
+      telephone: '+852 5775 3743',
+      email: 'jared@jareddubbs.com',
+      address: {
+        '@type': 'PostalAddress',
+        streetAddress: '10/F C Wisdom Centre, 37 Hollywood Road',
+        addressLocality: 'Central',
+        addressRegion: 'Hong Kong',
+        addressCountry: 'HK',
+      },
+      priceRange: 'HKD 2000-3000',
+    },
+    {
+      '@type': 'Person',
+      '@id': 'https://jareddubbs.com/#person',
+      name: 'Jared Dubbs',
+      jobTitle: 'Counsellor',
+      worksFor: { '@id': 'https://jareddubbs.com/#business' },
+      alumniOf: [
+        { '@type': 'CollegeOrUniversity', name: 'Monash University' },
+        { '@type': 'CollegeOrUniversity', name: 'University of Hong Kong' },
+        { '@type': 'CollegeOrUniversity', name: 'Austin College' },
+      ],
+    },
+  ],
+});
+---
+
+<BaseLayout
+  title="Jared Dubbs Counselling — DBT & ADHD Therapy in Central, Hong Kong"
+  description="Specialising in DBT and ADHD therapy for adults, teens, and couples in Central HK. Book a free consultation with a therapist who truly understands."
+  schema={schema}
+>
+  <Hero
+    title="Feeling stuck, overwhelmed, or misunderstood? <br class='hidden md:block' />You don't have to figure it out alone."
+    subtitle="I'm Jared Dubbs — a counsellor in Central Hong Kong specialising in DBT and ADHD. I help adults, teens, and couples build the skills to feel better, not just cope."
+    ctaText="Book a Free Discovery Call"
+    ctaLink="/book"
+    secondaryCta="Learn More ↓"
+    secondaryCtaLink="#empathy"
+    showTrustBar={true}
+    trustItems={[
+      "Master's in Counselling (Monash)",
+      'DBT Specialist',
+      'ADHD Lived Experience',
+      'LGBTQ+ Affirming',
+      'SPACE Trained (Yale)',
+    ]}
+    showPhoto={true}
+    photoSrc="/images/jared-headshot-sm.jpg"
+    photoAlt="Jared Dubbs, DBT and ADHD counsellor in Central Hong Kong"
+  />
+
+  <div id="empathy">
+    <EmpathyBridge />
+  </div>
+
+  <ServicesGrid />
+
+  <WhyChooseMe />
+
+  <StatsBar />
+
+  <AboutPreview />
+
+  <HowItWorks />
+
+  <Testimonials items={testimonials} />
+
+  <BlogPreview />
+
+  <FinalCTA />
+</BaseLayout>
