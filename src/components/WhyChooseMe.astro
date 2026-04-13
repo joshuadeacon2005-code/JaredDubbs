@@ -20,14 +20,14 @@ const differentiators = [
 
 <section class="py-16 md:py-20">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center mb-12">
+    <div class="text-center mb-12 reveal">
       <h2>Why Work With Me</h2>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 reveal-stagger">
       {differentiators.map((item) => (
-        <div class="text-center">
-          <div class="w-14 h-14 rounded-full bg-[var(--color-bg-alt)] flex items-center justify-center mx-auto mb-5 text-[var(--color-primary)]">
+        <div class="text-center reveal-item">
+          <div class="w-14 h-14 rounded-full bg-[var(--color-accent)]/10 flex items-center justify-center mx-auto mb-5 text-[var(--color-accent)]">
             <Fragment set:html={item.icon} />
           </div>
           <h3 class="text-xl font-bold mb-3">{item.title}</h3>

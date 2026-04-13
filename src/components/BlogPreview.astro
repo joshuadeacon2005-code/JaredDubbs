@@ -9,21 +9,23 @@ const posts = (await getCollection('blog'))
 
 <section class="py-16 md:py-20">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center mb-12">
+    <div class="text-center mb-12 reveal">
       <h2>From the Blog</h2>
       <p class="text-[var(--color-text-light)] mt-4 mx-auto">Things I write about that my clients often find helpful</p>
     </div>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8 reveal-stagger">
       {posts.map((post) => (
-        <BlogCard
-          title={post.data.title}
-          slug={post.id}
-          excerpt={post.data.description}
-          category={post.data.category}
-          readTime={post.data.readTime}
-          date={post.data.date}
-        />
+        <div class="reveal-item">
+          <BlogCard
+            title={post.data.title}
+            slug={post.id}
+            excerpt={post.data.description}
+            category={post.data.category}
+            readTime={post.data.readTime}
+            date={post.data.date}
+          />
+        </div>
       ))}
     </div>
 

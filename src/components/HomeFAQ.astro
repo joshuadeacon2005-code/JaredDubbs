@@ -1,0 +1,177 @@
+---
+const categories = [
+  {
+    label: 'General',
+    items: [
+      { q: 'How do I know if therapy is right for me?', a: 'If you\'re asking the question, it probably is. Therapy isn\'t just for crises — it\'s for anyone who wants to understand themselves better, build skills, or work through something that feels stuck. <a href="/blog/do-i-need-therapy" class="text-[var(--color-primary)] font-semibold no-underline hover:underline">Read more: Do I need therapy? &rarr;</a>' },
+      { q: 'What does a first session look like?', a: 'We\'ll talk about what brought you in, what you\'re hoping for, and whether we\'re a good fit. It\'s relaxed, no pressure — think of it as a conversation, not an assessment. <a href="/blog/first-therapy-session" class="text-[var(--color-primary)] font-semibold no-underline hover:underline">Read more: What to expect &rarr;</a>' },
+      { q: 'Do you offer online sessions?', a: 'Yes. I offer both in-person sessions at my Central HK office and online sessions via Zoom. Many clients do a mix of both.' },
+    ],
+  },
+  {
+    label: 'ADHD',
+    items: [
+      { q: 'Do I need a formal diagnosis to work with you?', a: 'No. Many of my clients come in suspecting they have ADHD but haven\'t been formally diagnosed. We can work together regardless, and I can help you navigate the assessment process if you want one. <a href="/blog/adhd-complete-guide" class="text-[var(--color-primary)] font-semibold no-underline hover:underline">Read: The complete guide to ADHD &rarr;</a>' },
+      { q: 'How is ADHD therapy different from regular therapy?', a: 'I adapt session structure, pacing, and strategies specifically for ADHD brains. We focus on executive functioning, emotional regulation, and building systems that actually work for you — not generic advice. <a href="/blog/executive-dysfunction" class="text-[var(--color-primary)] font-semibold no-underline hover:underline">Read: Understanding executive dysfunction &rarr;</a>' },
+      { q: 'Is it ADHD or anxiety? They feel the same.', a: 'They overlap a lot — racing thoughts, restlessness, difficulty concentrating. But the underlying causes and treatment are different. I can help you untangle which is which. <a href="/blog/adhd-vs-anxiety" class="text-[var(--color-primary)] font-semibold no-underline hover:underline">Read: ADHD vs anxiety &rarr;</a>' },
+    ],
+  },
+  {
+    label: 'Anxiety',
+    items: [
+      { q: 'I feel anxious all the time — is that normal in Hong Kong?', a: 'Hong Kong\'s pace, pressure, and competitiveness can amplify anxiety significantly. You\'re not alone, and it\'s not something you just have to live with. <a href="/blog/anxiety-hong-kong" class="text-[var(--color-primary)] font-semibold no-underline hover:underline">Read: Anxiety in Hong Kong &rarr;</a>' },
+      { q: 'What actually makes therapy work?', a: 'It\'s not magic — it\'s the combination of a strong therapeutic relationship, evidence-based techniques, and consistent practice between sessions. The research is clear on this. <a href="/blog/why-therapy-works" class="text-[var(--color-primary)] font-semibold no-underline hover:underline">Read: Why therapy works &rarr;</a>' },
+      { q: 'My child is refusing to go to school — can you help?', a: 'Yes. School refusal is often driven by anxiety, not defiance. I use the SPACE programme (Yale) to work with parents directly, helping reduce accommodation patterns that maintain the anxiety cycle. <a href="/services/couples" class="text-[var(--color-primary)] font-semibold no-underline hover:underline">Learn about SPACE &rarr;</a>' },
+    ],
+  },
+  {
+    label: 'DBT',
+    items: [
+      { q: 'What is DBT and who is it for?', a: 'Dialectical Behaviour Therapy is an evidence-based treatment that helps with intense emotions, impulsive behaviour, and relationship difficulties. It was developed for BPD but is effective for anyone struggling with emotional regulation. <a href="/blog/what-is-dbt" class="text-[var(--color-primary)] font-semibold no-underline hover:underline">Read: What is DBT? &rarr;</a>' },
+      { q: 'What\'s the difference between DBT and CBT?', a: 'CBT focuses on changing unhelpful thoughts. DBT adds skills for tolerating distress and regulating emotions — especially useful when emotions are so intense that thinking clearly isn\'t an option yet. <a href="/blog/dbt-vs-cbt" class="text-[var(--color-primary)] font-semibold no-underline hover:underline">Read: DBT vs CBT &rarr;</a>' },
+      { q: 'What is radical acceptance?', a: 'It\'s a core DBT skill — learning to accept reality as it is, without approving of it. It\'s not giving up; it\'s stopping the fight against what you can\'t change so you can focus energy on what you can. <a href="/blog/radical-acceptance" class="text-[var(--color-primary)] font-semibold no-underline hover:underline">Read: Radical acceptance explained &rarr;</a>' },
+    ],
+  },
+  {
+    label: 'LGBTQ+',
+    items: [
+      { q: 'Is your practice LGBTQ+ affirming?', a: 'Absolutely. I don\'t just tolerate — I affirm. Being queer in Hong Kong comes with specific pressures around family expectations, legal recognition, and social visibility. I understand that context. <a href="/blog/lgbtq-therapy-hk" class="text-[var(--color-primary)] font-semibold no-underline hover:underline">Read: LGBTQ+ therapy in HK &rarr;</a>' },
+      { q: 'Do you work with gender identity and transition?', a: 'Yes. I provide a safe space to explore gender identity at whatever stage you\'re at — questioning, coming out, transitioning, or navigating life post-transition.' },
+      { q: 'Is there an LGBTQ+ support group?', a: 'Yes — I run an ongoing LGBTQ+ support group with rolling admission. It\'s a safe, affirming space to share experiences and build community. <a href="/services/group" class="text-[var(--color-primary)] font-semibold no-underline hover:underline">View group details &rarr;</a>' },
+    ],
+  },
+  {
+    label: 'Couples',
+    items: [
+      { q: 'Do both partners need to want therapy?', a: 'Ideally yes, but it\'s common for one person to be more hesitant. Often a free discovery call where both partners can ask questions helps. Therapy works best when both people are willing to try.' },
+      { q: 'Can ADHD affect my relationship?', a: 'Hugely. Forgetfulness, emotional reactivity, and difficulty with follow-through can create real friction. I help couples understand the ADHD dynamic and build strategies together. <a href="/blog/adhd-relationships" class="text-[var(--color-primary)] font-semibold no-underline hover:underline">Read: ADHD and relationships &rarr;</a>' },
+      { q: 'How long are couples sessions?', a: '75 minutes — longer than individual sessions to give both people enough space to be heard. Most couples start weekly and move to fortnightly as things improve.' },
+    ],
+  },
+  {
+    label: 'Pricing',
+    items: [
+      { q: 'How much do sessions cost?', a: 'Individual sessions are HKD 2,000 for 50 minutes. Couples/parent-teen sessions are HKD 2,500 for 75 minutes. Group rates vary. <a href="/prices" class="text-[var(--color-primary)] font-semibold no-underline hover:underline">View all pricing &rarr;</a>' },
+      { q: 'Do you accept insurance?', a: 'I provide receipts that many insurance providers will reimburse. Check with your provider about out-of-network mental health coverage — most international plans in HK cover counselling.' },
+      { q: 'Is the discovery call really free?', a: 'Yes, completely. It\'s a 15-minute call where we talk about what you\'re dealing with and whether I\'m the right fit. No obligation, no sales pitch.' },
+    ],
+  },
+];
+
+const faqSchema = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'FAQPage',
+  mainEntity: categories.flatMap((cat) =>
+    cat.items.map((item) => ({
+      '@type': 'Question',
+      name: item.q,
+      acceptedAnswer: { '@type': 'Answer', text: item.a.replace(/<[^>]*>/g, '') },
+    }))
+  ),
+});
+---
+
+<section class="py-16 md:py-20 bg-[var(--color-bg)]">
+  <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+    <h2 class="text-center mb-10 reveal" style="font-family: var(--font-serif)">Frequently Asked Questions</h2>
+
+    <!-- Topic pills -->
+    <div class="flex flex-wrap justify-center gap-2 mb-10 reveal" role="tablist" aria-label="FAQ categories">
+      {categories.map((cat, i) => (
+        <button
+          type="button"
+          role="tab"
+          class={`faq-tab px-5 py-2.5 rounded-[var(--radius-full)] text-sm font-medium transition-all duration-200 border min-h-[44px] ${
+            i === 0
+              ? 'bg-[var(--color-accent)] text-white border-[var(--color-accent)]'
+              : 'bg-white text-[var(--color-text)] border-[var(--color-bg-alt)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]'
+          }`}
+          aria-selected={i === 0 ? 'true' : 'false'}
+          data-tab={i}
+        >
+          {cat.label}
+        </button>
+      ))}
+    </div>
+
+    <!-- FAQ panels -->
+    {categories.map((cat, catIndex) => (
+      <div
+        class={`faq-panel-group space-y-3 ${catIndex === 0 ? '' : 'hidden'}`}
+        data-panel={catIndex}
+        role="tabpanel"
+      >
+        {cat.items.map((item, itemIndex) => (
+          <div class="border border-[var(--color-bg-alt)] rounded-[var(--radius)] overflow-hidden bg-white">
+            <button
+              type="button"
+              class="home-faq-trigger w-full flex items-center justify-between px-6 py-4 text-left font-medium text-[var(--color-text)] hover:bg-[var(--color-bg-alt)] transition-colors min-h-[44px]"
+              aria-expanded="false"
+              aria-controls={`home-faq-${catIndex}-${itemIndex}`}
+            >
+              <span>{item.q}</span>
+              <svg class="home-faq-icon w-5 h-5 shrink-0 ml-4 text-[var(--color-text-light)] transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+              </svg>
+            </button>
+            <div
+              id={`home-faq-${catIndex}-${itemIndex}`}
+              class="hidden px-6 pb-4"
+              role="region"
+            >
+              <p class="text-[var(--color-text-light)] leading-relaxed" set:html={item.a} />
+            </div>
+          </div>
+        ))}
+      </div>
+    ))}
+  </div>
+
+  <script type="application/ld+json" set:html={faqSchema} />
+</section>
+
+<script>
+  // Tab switching
+  const tabs = document.querySelectorAll('.faq-tab');
+  const panels = document.querySelectorAll('.faq-panel-group');
+
+  tabs.forEach((tab) => {
+    tab.addEventListener('click', () => {
+      const index = (tab as HTMLElement).dataset.tab;
+
+      // Update tab styles
+      tabs.forEach((t) => {
+        t.classList.remove('bg-[var(--color-accent)]', 'text-white', 'border-[var(--color-accent)]');
+        t.classList.add('bg-white', 'text-[var(--color-text)]', 'border-[var(--color-bg-alt)]');
+        t.setAttribute('aria-selected', 'false');
+      });
+      tab.classList.remove('bg-white', 'text-[var(--color-text)]', 'border-[var(--color-bg-alt)]');
+      tab.classList.add('bg-[var(--color-accent)]', 'text-white', 'border-[var(--color-accent)]');
+      tab.setAttribute('aria-selected', 'true');
+
+      // Show correct panel
+      panels.forEach((panel) => {
+        const panelEl = panel as HTMLElement;
+        if (panelEl.dataset.panel === index) {
+          panelEl.classList.remove('hidden');
+        } else {
+          panelEl.classList.add('hidden');
+        }
+      });
+    });
+  });
+
+  // Accordion toggles
+  document.querySelectorAll('.home-faq-trigger').forEach((btn) => {
+    btn.addEventListener('click', () => {
+      const expanded = btn.getAttribute('aria-expanded') === 'true';
+      const panelId = btn.getAttribute('aria-controls');
+      const panel = document.getElementById(panelId!);
+      const icon = btn.querySelector('.home-faq-icon');
+
+      btn.setAttribute('aria-expanded', String(!expanded));
+      panel?.classList.toggle('hidden');
+      icon?.classList.toggle('rotate-180');
+    });
+  });
+</script>

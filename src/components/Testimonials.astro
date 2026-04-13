@@ -10,28 +10,194 @@ interface Props {
 }
 
 const { items, heading = 'In Their Own Words' } = Astro.props;
+
+const cardColors = [
+  { bg: 'var(--color-secondary)', accent: 'var(--color-gold)' },
+  { bg: 'var(--color-primary)', accent: 'var(--color-bg)' },
+  { bg: 'var(--color-accent)', accent: 'var(--color-gold-light)' },
+  { bg: '#5B4E3A', accent: 'var(--color-gold-light)' },
+  { bg: '#6B7F60', accent: 'var(--color-bg)' },
+];
 ---
 
-<section class="py-16 md:py-20 bg-[var(--color-bg-alt)]">
+<section class="py-16 md:py-20 bg-[var(--color-bg)] overflow-hidden">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <h2 class="text-center mb-12">{heading}</h2>
+    <h2 class="mb-12 reveal">{heading}</h2>
+  </div>
 
-    <div class="space-y-8 md:space-y-0 md:grid md:grid-cols-5 md:gap-8">
-      {items.map((item, i) => (
-        <blockquote class={`bg-white rounded-[var(--radius-lg)] shadow-sm ${
-          i === 0 ? 'md:col-span-3 p-10 border-l-4 border-[var(--color-gold)]' : 'md:col-span-1 p-6'
-        }`}>
-          <svg class={`text-[var(--color-primary)]/30 mb-4 ${i === 0 ? 'w-10 h-10' : 'w-7 h-7'}`} fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+  <!-- Horizontal scroll strip — portrait "stories" cards -->
+  <div class="testimonials-scroll flex gap-5 overflow-x-auto snap-x snap-mandatory px-4 sm:px-6 lg:px-8 pb-6 -mx-4 sm:-mx-6 lg:-mx-8 reveal">
+    <div class="shrink-0 w-4 sm:w-6 lg:w-[calc((100vw-80rem)/2+2rem)]"></div>
+    {items.map((item, i) => {
+      const colors = cardColors[i % cardColors.length];
+      return (
+        <blockquote
+          class="testimonial-card shrink-0 w-[80vw] sm:w-[55vw] md:w-[42vw] lg:w-[32vw] snap-start rounded-[var(--radius-lg)] p-6 sm:p-8"
+          style={`background: ${colors.bg};`}
+        >
+          {/* Decorative quote mark */}
+          <svg class="w-8 h-8 mb-4 opacity-25" fill="white" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10H14.017zM0 21v-7.391c0-5.704 3.731-9.57 8.983-10.609L9.978 5.151c-2.432.917-3.995 3.638-3.995 5.849h4v10H0z" />
           </svg>
-          <p class={`text-[var(--color-text)] leading-relaxed mb-4 italic ${i === 0 ? 'text-xl' : 'text-[var(--text-sm)]'}`}>"{item.quote}"</p>
+
+          <div class="w-8 h-0.5 rounded-full mb-4" style={`background: ${colors.accent}`}></div>
+          <p class="text-white text-base sm:text-lg leading-relaxed italic mb-4" style="font-family: var(--font-serif)">
+            "{item.quote}"
+          </p>
           {item.attribution && (
-            <footer class="text-[var(--text-sm)] text-[var(--color-text-light)] font-medium">
+            <footer class="text-white/60 text-sm font-medium">
               — {item.attribution}
             </footer>
           )}
         </blockquote>
-      ))}
-    </div>
+      );
+    })}
+    <div class="shrink-0 w-4 sm:w-6 lg:w-[calc((100vw-80rem)/2+2rem)]"></div>
+  </div>
+
+  <!-- Scroll indicator dots -->
+  <div class="flex justify-center gap-2 mt-4 reveal">
+    {items.map((_, i) => (
+      <span class="testimonial-dot w-2 h-2 rounded-full bg-[var(--color-text-light)]/30 transition-colors duration-300" data-index={i}></span>
+    ))}
   </div>
 </section>
+
+<style>
+  .testimonials-scroll {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .testimonials-scroll::-webkit-scrollbar {
+    display: none;
+  }
+  .testimonial-card {
+    transition: transform 0.3s ease;
+    user-select: none;
+  }
+  .testimonial-card:hover {
+    transform: scale(1.02);
+  }
+  .testimonials-scroll.dragging {
+    cursor: grabbing;
+    scroll-snap-type: none !important;
+  }
+  .testimonials-scroll.dragging .testimonial-card {
+    transform: none;
+    pointer-events: none;
+  }
+  .testimonials-scroll.coasting {
+    scroll-snap-type: none !important;
+  }
+  .testimonials-scroll {
+    cursor: grab;
+  }
+  .testimonial-dot.active {
+    background: var(--color-gold);
+    transform: scale(1.3);
+  }
+</style>
+
+<script>
+  const scrollContainer = document.querySelector('.testimonials-scroll');
+  const dots = document.querySelectorAll('.testimonial-dot');
+  const cards = document.querySelectorAll('.testimonial-card');
+
+  function updateDots() {
+    if (!scrollContainer || cards.length === 0) return;
+    const scrollLeft = scrollContainer.scrollLeft;
+    const containerWidth = scrollContainer.clientWidth;
+
+    let closestIndex = 0;
+    let closestDistance = Infinity;
+
+    cards.forEach((card, i) => {
+      const cardEl = card as HTMLElement;
+      const cardCenter = cardEl.offsetLeft + cardEl.offsetWidth / 2 - scrollContainer.scrollLeft;
+      const distance = Math.abs(cardCenter - containerWidth / 2);
+      if (distance < closestDistance) {
+        closestDistance = distance;
+        closestIndex = i;
+      }
+    });
+
+    dots.forEach((dot, i) => {
+      dot.classList.toggle('active', i === closestIndex);
+    });
+  }
+
+  scrollContainer?.addEventListener('scroll', updateDots, { passive: true });
+  updateDots();
+
+  // Drag-to-scroll with momentum
+  if (scrollContainer) {
+    const el = scrollContainer as HTMLElement;
+    let isDown = false;
+    let startX = 0;
+    let scrollStart = 0;
+    let velX = 0;
+    let prevX = 0;
+    let prevTime = 0;
+    let rafId = 0;
+
+    function coast() {
+      if (Math.abs(velX) < 0.3) {
+        el.classList.remove('coasting');
+        return;
+      }
+      el.scrollLeft += velX;
+      velX *= 0.95;
+      rafId = requestAnimationFrame(coast);
+    }
+
+    function stopCoast() {
+      cancelAnimationFrame(rafId);
+      el.classList.remove('coasting');
+    }
+
+    el.addEventListener('mousedown', (e: MouseEvent) => {
+      stopCoast();
+      isDown = true;
+      el.classList.add('dragging');
+      startX = e.pageX;
+      prevX = e.pageX;
+      prevTime = performance.now();
+      scrollStart = el.scrollLeft;
+      velX = 0;
+    });
+
+    el.addEventListener('mousemove', (e: MouseEvent) => {
+      if (!isDown) return;
+      e.preventDefault();
+
+      const now = performance.now();
+      const dt = now - prevTime;
+      const dx = e.pageX - prevX;
+
+      // Weighted velocity — blend recent movement for smoother feel
+      if (dt > 0) {
+        const instantVel = (-dx / dt) * 16;
+        velX = velX * 0.4 + instantVel * 0.6;
+      }
+
+      el.scrollLeft = scrollStart - (e.pageX - startX);
+      prevX = e.pageX;
+      prevTime = now;
+    });
+
+    function release() {
+      if (!isDown) return;
+      isDown = false;
+      el.classList.remove('dragging');
+
+      // Only coast if there's meaningful velocity
+      if (Math.abs(velX) > 2) {
+        el.classList.add('coasting');
+        rafId = requestAnimationFrame(coast);
+      }
+    }
+
+    el.addEventListener('mouseup', release);
+    el.addEventListener('mouseleave', release);
+  }
+</script>

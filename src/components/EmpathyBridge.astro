@@ -9,12 +9,12 @@ const painPoints = [
 
 <section class="py-16 md:py-20 bg-[var(--color-bg-alt)]">
   <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-    <h2 class="mb-4">Sound familiar?</h2>
-    <p class="text-[var(--color-text-light)] text-lg mb-10">I hear these from clients all the time. You're not alone in feeling this way.</p>
+    <h2 class="reveal mb-4">Sound familiar?</h2>
+    <p class="reveal text-[var(--color-text-light)] text-lg mb-10">I hear these from clients all the time. You're not alone in feeling this way.</p>
 
-    <div class="space-y-4">
+    <div class="space-y-4 reveal-stagger">
       {painPoints.map((point) => (
-        <div class="border-l-4 border-[var(--color-gold)] pl-6 py-3">
+        <div class="reveal-item border-l-4 border-[var(--color-accent)] pl-6 py-3">
           <p class="text-[var(--color-text)] leading-relaxed text-lg">{point}</p>
         </div>
       ))}

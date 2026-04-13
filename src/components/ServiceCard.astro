@@ -16,7 +16,7 @@ const { title, description, icon, link, featured = false } = Astro.props;
     featured ? 'border-2 border-[var(--color-primary)]' : 'border border-[var(--color-bg-alt)]'
   }`}
 >
-  <div class="w-12 h-12 rounded-[var(--radius)] bg-[var(--color-bg-alt)] flex items-center justify-center mb-5 group-hover:bg-[var(--color-primary)] group-hover:text-white transition-colors text-[var(--color-primary)]">
+  <div class="w-12 h-12 rounded-[var(--radius)] bg-[var(--color-accent)]/10 flex items-center justify-center mb-5 group-hover:bg-[var(--color-accent)] group-hover:text-white transition-colors text-[var(--color-accent)]">
     <Fragment set:html={icon} />
   </div>
   {featured && (

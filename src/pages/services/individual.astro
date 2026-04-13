@@ -1,6 +1,8 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Hero from '../../components/Hero.astro';
+import FAQAccordion from '../../components/FAQAccordion.astro';
+import Testimonials from '../../components/Testimonials.astro';
 import FinalCTA from '../../components/FinalCTA.astro';
 
 const schema = JSON.stringify({
@@ -18,13 +20,69 @@ const schema = JSON.stringify({
   },
 });
 
+const issues = [
+  { name: 'Anxiety & Stress', desc: 'Constant worry, panic attacks, social anxiety, or a feeling of dread that won\'t let up.' },
+  { name: 'Depression & Low Mood', desc: 'Loss of motivation, persistent sadness, numbness, or feeling like nothing matters.' },
+  { name: 'ADHD & Neurodivergence', desc: 'Executive dysfunction, emotional dysregulation, masking, overwhelm, and building strategies that work for your brain.' },
+  { name: 'Borderline Personality Disorder', desc: 'Intense emotions, unstable relationships, fear of abandonment, and identity difficulties.' },
+  { name: 'LGBTQ+ Identity', desc: 'Coming out, identity exploration, minority stress, relationship challenges, and finding community in Hong Kong.' },
+  { name: 'Burnout & Work Stress', desc: 'Exhaustion, cynicism, feeling trapped in a career, and reclaiming boundaries between work and life.' },
+  { name: 'Life Transitions', desc: 'Relocation, divorce, career change, new parenthood, grief — navigating the upheaval when life shifts beneath you.' },
+  { name: 'Self-Esteem & Identity', desc: 'Chronic self-doubt, people-pleasing, imposter syndrome, and building a relationship with yourself that actually feels solid.' },
+  { name: 'Sleep Difficulties', desc: 'Insomnia, racing thoughts at night, and broken sleep patterns — treated with evidence-based CBT-i.' },
+];
+
 const approaches = [
-  { name: 'Dialectical Behaviour Therapy (DBT)', desc: 'Skills-based approach for emotional regulation, distress tolerance, and interpersonal effectiveness.' },
-  { name: 'Acceptance and Commitment Therapy (ACT)', desc: 'Building psychological flexibility and living in alignment with your values.' },
-  { name: 'Cognitive Behavioural Therapy (CBT)', desc: 'Identifying and changing unhelpful thought patterns and behaviours.' },
-  { name: 'CBT for Insomnia (CBT-i)', desc: 'Evidence-based treatment for sleep difficulties without medication.' },
-  { name: 'Schema Therapy', desc: 'Understanding and changing deep-rooted patterns that developed in childhood.' },
-  { name: 'SPACE (Yale)', desc: 'Supporting Parents of Anxious Childhood Emotions — a parent-focused programme.' },
+  { name: 'DBT', full: 'Dialectical Behaviour Therapy', desc: 'Skills-based approach for emotional regulation, distress tolerance, and interpersonal effectiveness. Especially effective for intense emotions.' },
+  { name: 'ACT', full: 'Acceptance & Commitment Therapy', desc: 'Building psychological flexibility — learning to be present, make room for difficult feelings, and act in line with what matters to you.' },
+  { name: 'CBT', full: 'Cognitive Behavioural Therapy', desc: 'Identifying and changing the thought patterns and behaviours that keep you stuck. Practical, structured, and well-researched.' },
+  { name: 'CBT-i', full: 'CBT for Insomnia', desc: 'The gold-standard treatment for sleep difficulties. No medication — just evidence-based strategies that retrain your sleep patterns.' },
+  { name: 'Schema Therapy', full: 'Schema Therapy', desc: 'Understanding the deep-rooted patterns from childhood that shape how you see yourself, others, and the world — and learning to change them.' },
+  { name: 'SPACE', full: 'Supporting Parents of Anxious Childhood Emotions (Yale)', desc: 'A parent-focused programme that helps you support your child\'s anxiety without accommodating it. Developed at the Yale Child Study Center.' },
+];
+
+const testimonials = [
+  {
+    quote: "Thank you for starting me out on this journey and supporting me. You have made a profound difference in my life.",
+  },
+  {
+    quote: "I never thought there would be a day where I didn't have panic attacks. You helped me to get to know myself more. I have grown mentally and I got to experience real happiness in life.",
+  },
+  {
+    quote: "I came in feeling completely stuck and exhausted. Jared helped me untangle everything without ever making me feel rushed or judged.",
+  },
+  {
+    quote: "Therapy with Jared doesn't feel clinical — it feels like talking to someone who genuinely cares and knows exactly the right questions to ask.",
+  },
+  {
+    quote: "I was nervous about starting therapy for the first time. Jared made it so easy. Within minutes I felt comfortable enough to actually talk.",
+  },
+  {
+    quote: "After years of putting everyone else first, I finally have a space that's just for me. I wish I'd started sooner.",
+  },
+];
+
+const faqItems = [
+  {
+    question: 'How often should I come?',
+    answer: 'Most clients start with weekly sessions. As you build skills and momentum, we can move to fortnightly. The pace is always guided by what works for you — there\'s no rigid schedule.',
+  },
+  {
+    question: 'How long does therapy take?',
+    answer: 'It depends on what you\'re working on. Some clients come for 8-12 sessions around a specific issue. Others stay longer for deeper work. We\'ll check in regularly so you always know where you are and where you\'re heading.',
+  },
+  {
+    question: 'Do I need a referral or diagnosis?',
+    answer: 'No. You don\'t need a GP referral, a diagnosis, or insurance approval to start. Just book a free discovery call and we\'ll go from there.',
+  },
+  {
+    question: 'Can I do sessions online?',
+    answer: 'Yes. I offer sessions via Zoom for anyone who prefers online, is based outside Central HK, or is travelling. Online sessions follow the same structure and are just as effective.',
+  },
+  {
+    question: 'What if I\'ve tried therapy before and it didn\'t work?',
+    answer: 'That\'s more common than you think — and it doesn\'t mean therapy isn\'t for you. It usually means the approach or the fit wasn\'t right. I use multiple evidence-based modalities and tailor my approach to how you actually think and feel, not a one-size-fits-all framework.',
+  },
 ];
 ---
 
@@ -46,42 +104,83 @@ const approaches = [
   <Hero
     title="A space that's entirely yours — to explore, process, and grow"
     subtitle="Individual counselling tailored to your needs, whether you're dealing with anxiety, depression, ADHD, identity questions, or simply feeling stuck. Sessions available in person or online."
-    ctaText="Book a Free Discovery Call"
-    ctaLink="/book"
     compact={true}
   />
 
   <!-- What We Address -->
   <section class="py-16 md:py-20">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h2 class="mb-8">What We Can Work On Together</h2>
-      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
-        {['Anxiety and stress', 'Depression and low mood', 'ADHD and neurodivergence', 'Borderline Personality Disorder', 'LGBTQ+ identity and challenges', 'Burnout and work stress', 'Life transitions', 'Self-esteem and confidence', 'Sleep difficulties'].map((issue) => (
-          <div class="flex items-center gap-3 bg-[var(--color-bg-alt)] rounded-[var(--radius)] p-4">
-            <svg class="w-5 h-5 text-[var(--color-primary)] shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-              <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-            </svg>
-            <span class="text-[var(--color-text)]">{issue}</span>
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="mb-4 reveal">What We Can Work On Together</h2>
+      <p class="text-[var(--color-text-light)] leading-relaxed mb-10 reveal">Every person walks in with something different. Here's a sense of what I help with — but if you don't see your situation listed, reach out anyway.</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5 reveal-stagger">
+        {issues.map((issue) => (
+          <div class="reveal-item bg-[var(--color-bg-alt)] rounded-[var(--radius-lg)] p-6 border-l-4 border-[var(--color-gold)]">
+            <h3 class="text-lg font-bold mb-2">{issue.name}</h3>
+            <p class="text-[var(--color-text-light)] text-[var(--text-sm)] leading-relaxed">{issue.desc}</p>
           </div>
         ))}
       </div>
     </div>
   </section>
 
-  <!-- Therapeutic Approaches -->
+  <!-- How I Work -->
   <section class="py-16 md:py-20 bg-[var(--color-bg-alt)]">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h2 class="mb-8">Therapeutic Approaches</h2>
-      <p class="text-[var(--color-text-light)] leading-relaxed mb-8">
-        I draw from multiple evidence-based modalities and tailor my approach to what works best for you. There is no one-size-fits-all in therapy.
+      <h2 class="mb-4 reveal">How I Work</h2>
+      <p class="text-[var(--color-text-light)] leading-relaxed mb-6 reveal">
+        I don't follow a script. Every session is shaped by what you bring in that day and what we're building towards together. That said, my work is grounded in evidence — I draw from multiple therapeutic modalities and match the approach to what actually works for you.
       </p>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        {approaches.map((approach) => (
-          <div class="bg-white rounded-[var(--radius-lg)] p-6">
-            <h3 class="text-lg font-bold mb-2">{approach.name}</h3>
-            <p class="text-[var(--color-text-light)] text-[var(--text-sm)]">{approach.desc}</p>
+      <p class="text-[var(--color-text-light)] leading-relaxed mb-6 reveal">
+        Some clients need structure and skill-building. Others need space to process and be heard. Most need a mix of both, and that mix shifts over time. I pay attention to that.
+      </p>
+      <p class="text-[var(--color-text-light)] leading-relaxed reveal">
+        You won't be pathologised or reduced to a label. You'll be met as a whole person — with strengths, not just struggles.
+      </p>
+    </div>
+  </section>
+
+  <!-- Therapeutic Approaches -->
+  <section class="py-16 md:py-20">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="mb-4 reveal">Therapeutic Approaches I Use</h2>
+      <p class="text-[var(--color-text-light)] leading-relaxed mb-10 reveal">I'm trained across six evidence-based modalities. Rather than picking one and sticking to it, I match the approach to you.</p>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 reveal-stagger">
+        {approaches.map((a) => (
+          <div class="reveal-item bg-white rounded-[var(--radius-lg)] p-6 shadow-sm">
+            <div class="flex items-baseline gap-3 mb-2">
+              <span class="text-[var(--color-primary)] font-bold text-lg">{a.name}</span>
+              <span class="text-[var(--color-text-light)] text-[var(--text-sm)]">{a.full}</span>
+            </div>
+            <p class="text-[var(--color-text-light)] text-[var(--text-sm)] leading-relaxed">{a.desc}</p>
           </div>
         ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- What a Session Looks Like -->
+  <section class="py-16 md:py-20 bg-[var(--color-bg-alt)]">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="mb-8 reveal">What a Session Looks Like</h2>
+      <div class="space-y-8 reveal">
+        <div>
+          <h3 class="text-xl font-bold mb-3">First session</h3>
+          <p class="text-[var(--color-text-light)] leading-relaxed">
+            We'll spend time getting to know each other. I'll ask about what brought you here, your history, and what you're hoping to get out of therapy. There's no pressure to share everything at once — we go at your pace. By the end, we'll have a shared sense of direction.
+          </p>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold mb-3">Ongoing sessions</h3>
+          <p class="text-[var(--color-text-light)] leading-relaxed">
+            Each session starts with a check-in. From there, we might work on skills, process something that happened during the week, or dig into a deeper pattern. I'll often suggest things to try between sessions — not busywork, but practical strategies you can actually use.
+          </p>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold mb-3">Wrapping up</h3>
+          <p class="text-[var(--color-text-light)] leading-relaxed">
+            Therapy doesn't have to last forever. We'll regularly check in on your goals and when you feel ready, we'll plan a thoughtful ending — not an abrupt stop. Many clients come back later for a tune-up when life throws something new at them.
+          </p>
+        </div>
       </div>
     </div>
   </section>
@@ -89,24 +188,30 @@ const approaches = [
   <!-- Session Details -->
   <section class="py-16 md:py-20">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h2 class="mb-8">Session Details</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="bg-[var(--color-bg-alt)] rounded-[var(--radius-lg)] p-6">
+      <h2 class="mb-8 reveal">Session Details</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 reveal-stagger">
+        <div class="reveal-item bg-[var(--color-bg-alt)] rounded-[var(--radius-lg)] p-8">
           <h3 class="text-lg font-bold mb-2">Standard Session</h3>
-          <p class="text-3xl font-bold text-[var(--color-primary)] mb-2">50 minutes</p>
-          <p class="text-[var(--color-text-light)]">HKD $2,000 — in person or online via Zoom</p>
+          <p class="text-3xl font-bold text-[var(--color-primary)] mb-2" style="font-family: var(--font-serif)">50 minutes</p>
+          <p class="text-[var(--color-text-light)]">HKD $2,000</p>
+          <p class="text-[var(--color-text-light)] text-[var(--text-sm)] mt-2">In person (Central) or online via Zoom</p>
         </div>
-        <div class="bg-[var(--color-bg-alt)] rounded-[var(--radius-lg)] p-6">
+        <div class="reveal-item bg-[var(--color-bg-alt)] rounded-[var(--radius-lg)] p-8">
           <h3 class="text-lg font-bold mb-2">Extended Session</h3>
-          <p class="text-3xl font-bold text-[var(--color-primary)] mb-2">75 minutes</p>
-          <p class="text-[var(--color-text-light)]">HKD $3,000 — for deeper work or intake sessions</p>
+          <p class="text-3xl font-bold text-[var(--color-primary)] mb-2" style="font-family: var(--font-serif)">75 minutes</p>
+          <p class="text-[var(--color-text-light)]">HKD $3,000</p>
+          <p class="text-[var(--color-text-light)] text-[var(--text-sm)] mt-2">For deeper work, intake sessions, or when 50 minutes isn't enough</p>
         </div>
       </div>
-      <p class="mt-6 text-[var(--color-text-light)]">
+      <p class="mt-6 text-[var(--color-text-light)] reveal">
         <a href="/prices" class="text-[var(--color-primary)] font-semibold no-underline hover:underline">View all pricing and packages &rarr;</a>
       </p>
     </div>
   </section>
+
+  <Testimonials items={testimonials} heading="What Clients Say" />
+
+  <FAQAccordion items={faqItems} />
 
   <FinalCTA
     heading="Your journey starts with a conversation"

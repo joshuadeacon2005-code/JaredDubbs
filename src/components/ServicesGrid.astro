@@ -35,14 +35,16 @@ const services = [
 
 <section class="py-16 md:py-20">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="text-center mb-12">
+    <div class="text-center mb-12 reveal">
       <h2>How I Can Help</h2>
       <p class="text-[var(--color-text-light)] mt-4 mx-auto">Every person's different — here's what I specialise in</p>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 reveal-stagger">
       {services.map((service) => (
-        <ServiceCard {...service} />
+        <div class="reveal-item">
+          <ServiceCard {...service} />
+        </div>
       ))}
     </div>
   </div>

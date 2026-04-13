@@ -129,4 +129,39 @@
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
+
+}
+
+/* Floating CTA — expands on hover */
+.floating-cta:hover .floating-cta-extra {
+  max-width: 280px;
+  opacity: 1;
+  margin-left: 4px;
+}
+
+.floating-cta:hover {
+  background-color: var(--color-primary-hover);
+}
+
+/* Scroll animations */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition: opacity 0.7s ease, transform 0.7s ease;
+}
+
+.reveal.visible {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.reveal-stagger > .reveal-item {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s ease, transform 0.5s ease;
+}
+
+.reveal-stagger.visible > .reveal-item {
+  opacity: 1;
+  transform: translateY(0);
 }

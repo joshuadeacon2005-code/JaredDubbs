@@ -1,14 +1,14 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
 import Hero from '../components/Hero.astro';
+import AboutPreview from '../components/AboutPreview.astro';
 import EmpathyBridge from '../components/EmpathyBridge.astro';
 import ServicesGrid from '../components/ServicesGrid.astro';
 import WhyChooseMe from '../components/WhyChooseMe.astro';
-import StatsBar from '../components/StatsBar.astro';
-import AboutPreview from '../components/AboutPreview.astro';
-import HowItWorks from '../components/HowItWorks.astro';
 import Testimonials from '../components/Testimonials.astro';
+import HowItWorks from '../components/HowItWorks.astro';
 import BlogPreview from '../components/BlogPreview.astro';
+import HomeFAQ from '../components/HomeFAQ.astro';
 import FinalCTA from '../components/FinalCTA.astro';
 
 const testimonials = [
@@ -20,6 +20,21 @@ const testimonials = [
   },
   {
     quote: "I never thought there would be a day where I didn't have panic attacks. You helped me to get to know myself more. I have grown mentally and I got to experience real happiness in life.",
+  },
+  {
+    quote: "For the first time in my life I feel like someone actually understands how my brain works. Jared doesn't just talk about ADHD — he lives it, and that makes all the difference.",
+  },
+  {
+    quote: "I was sceptical about group therapy, but the DBT skills group changed everything. Learning alongside other people going through the same thing made me feel so much less alone.",
+  },
+  {
+    quote: "My teenager and I were barely speaking. After a few sessions with Jared, we're actually communicating again. He has a way of making both sides feel heard.",
+  },
+  {
+    quote: "I came in for anxiety and ended up discovering so much more about myself. Jared creates this space where you feel safe enough to be honest — even about the hard stuff.",
+  },
+  {
+    quote: "As an expat in Hong Kong, finding a therapist who gets the unique pressures we face was everything. Jared understood immediately without me having to over-explain.",
   },
 ];
 
@@ -64,13 +79,15 @@ const schema = JSON.stringify({
   description="Specialising in DBT and ADHD therapy for adults, teens, and couples in Central HK. Book a free consultation with a therapist who truly understands."
   schema={schema}
 >
+  <!-- 1. Full-bleed cinematic hero -->
   <Hero
-    title="Feeling stuck, overwhelmed, or misunderstood? <br class='hidden md:block' />You don't have to figure it out alone."
-    subtitle="I'm Jared Dubbs — a counsellor in Central Hong Kong specialising in DBT and ADHD. I help adults, teens, and couples build the skills to feel better, not just cope."
+    title="You don't have to figure<br class='hidden md:block' /> it out alone."
+    subtitle="I'm Jared — a counsellor in Central Hong Kong specialising in DBT and ADHD. I help adults, teens, and couples build the skills to feel better, not just cope."
     ctaText="Book a Free Discovery Call"
     ctaLink="/book"
-    secondaryCta="Learn More ↓"
-    secondaryCtaLink="#empathy"
+    secondaryCta="How I Can Help"
+    secondaryCtaLink="#services"
+    bgImage="/images/jared-hero.png"
     showTrustBar={true}
     trustItems={[
       "Master's in Counselling (Monash)",
@@ -79,39 +96,47 @@ const schema = JSON.stringify({
       'LGBTQ+ Affirming',
       'SPACE Trained (Yale)',
     ]}
-    showPhoto={true}
-    photoSrc="/images/jared-headshot-sm.jpg"
-    photoAlt="Jared Dubbs, DBT and ADHD counsellor in Central Hong Kong"
   />
 
+  <!-- 2. Meet Jared early — personal connection first -->
+  <AboutPreview />
+
+  <!-- 3. Empathy bridge — "sound familiar?" -->
   <div id="empathy">
     <EmpathyBridge />
   </div>
 
-  <ServicesGrid />
+  <!-- 4. Philosophy / approach statement -->
+  <section class="bg-[var(--color-secondary)] py-20 md:py-28">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center reveal">
+      <div class="w-12 h-1 bg-[var(--color-accent-light)] rounded-full mx-auto mb-8"></div>
+      <blockquote class="text-white text-2xl md:text-3xl font-light leading-relaxed italic" style="font-family: var(--font-serif)">
+        "I don't believe in one-size-fits-all therapy. I believe in meeting you exactly where you are — and building from there."
+      </blockquote>
+      <p class="text-[var(--color-accent-light)] mt-8 font-medium tracking-wide text-[var(--text-sm)] uppercase">— Jared Dubbs</p>
+    </div>
+  </section>
 
-  <WhyChooseMe />
-
-  <StatsBar />
-
-  <!-- Hong Kong atmospheric break -->
-  <div class="relative h-64 md:h-80 overflow-hidden">
-    <img
-      src="/images/hk-harbour.jpg"
-      alt="Victoria Harbour, Hong Kong at golden hour"
-      class="w-full h-full object-cover object-center"
-      loading="lazy"
-    />
-    <div class="absolute inset-0 bg-[var(--color-secondary)]/25"></div>
+  <!-- 5. Services -->
+  <div id="services">
+    <ServicesGrid />
   </div>
 
-  <AboutPreview />
-
-  <HowItWorks />
-
+  <!-- 6. Testimonials -->
   <Testimonials items={testimonials} />
 
+  <!-- 7. Why Choose Me -->
+  <WhyChooseMe />
+
+  <!-- 8. How It Works -->
+  <HowItWorks />
+
+  <!-- 9. FAQ with topic pills -->
+  <HomeFAQ />
+
+  <!-- 10. Blog -->
   <BlogPreview />
 
-  <FinalCTA bgImage="/images/hk-central.jpg" />
+  <!-- 11. Final CTA -->
+  <FinalCTA />
 </BaseLayout>

@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Hero from '../../components/Hero.astro';
+import FAQAccordion from '../../components/FAQAccordion.astro';
 import FinalCTA from '../../components/FinalCTA.astro';
 
 const schema = JSON.stringify({
@@ -17,6 +18,29 @@ const schema = JSON.stringify({
     ],
   },
 });
+
+const faqItems = [
+  {
+    question: 'Do both people need to want therapy for it to work?',
+    answer: 'Ideally, yes — but it\'s normal for one person to be more hesitant than the other. Often the reluctant partner warms up once they see that therapy isn\'t about blame. I create a space where both people feel heard, not judged.',
+  },
+  {
+    question: 'Will you take sides?',
+    answer: 'No. My role is to understand both perspectives and help you communicate more effectively. I\'m not a referee — I\'m someone who helps you both get unstuck.',
+  },
+  {
+    question: 'Can we do sessions online?',
+    answer: 'Yes. Couples and parent-teen sessions work well via Zoom, especially if schedules are tight or you\'re not both in the same location.',
+  },
+  {
+    question: 'How many sessions will we need?',
+    answer: 'It varies. Some couples come for 6-8 sessions around a specific issue. Others do longer-term work on deeper patterns. We\'ll set goals together and check in regularly so you\'re never wondering where things stand.',
+  },
+  {
+    question: 'What about same-sex couples?',
+    answer: 'Absolutely. I\'m LGBTQ+ affirming and have experience working with same-sex couples, including the specific challenges of being in a queer relationship in Hong Kong.',
+  },
+];
 ---
 
 <BaseLayout
@@ -37,62 +61,154 @@ const schema = JSON.stringify({
   <Hero
     title="Relationships take work — having the right support makes all the difference"
     subtitle="Whether you're a couple navigating conflict or a parent struggling to connect with your teen, therapy provides a safe space to rebuild communication and understanding."
-    ctaText="Book a Free Discovery Call"
-    ctaLink="/book"
     compact={true}
   />
 
   <!-- Who This Is For -->
   <section class="py-16 md:py-20">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h2 class="mb-8">Who This Is For</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
-        <div class="bg-[var(--color-bg-alt)] rounded-[var(--radius-lg)] p-8">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="mb-8 reveal">Who This Is For</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 reveal-stagger">
+        <div class="reveal-item bg-[var(--color-bg-alt)] rounded-[var(--radius-lg)] p-8 border-t-4 border-[var(--color-gold)]">
           <h3 class="text-xl font-bold mb-4">Couples</h3>
           <ul class="space-y-3 text-[var(--color-text-light)]">
-            <li>Communication has broken down or become hostile</li>
-            <li>You feel disconnected or misunderstood</li>
-            <li>Conflict keeps repeating the same patterns</li>
-            <li>Trust has been damaged</li>
-            <li>Navigating a major life transition together</li>
-            <li>One or both partners are neurodivergent</li>
+            <li class="flex items-start gap-3">
+              <span class="text-[var(--color-gold)] mt-1.5 shrink-0">&#9679;</span>
+              Communication has broken down or become hostile
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-[var(--color-gold)] mt-1.5 shrink-0">&#9679;</span>
+              You feel disconnected, unheard, or misunderstood
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-[var(--color-gold)] mt-1.5 shrink-0">&#9679;</span>
+              The same arguments keep happening on repeat
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-[var(--color-gold)] mt-1.5 shrink-0">&#9679;</span>
+              Trust has been damaged and needs rebuilding
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-[var(--color-gold)] mt-1.5 shrink-0">&#9679;</span>
+              You're navigating a major life transition together
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-[var(--color-gold)] mt-1.5 shrink-0">&#9679;</span>
+              One or both partners are neurodivergent
+            </li>
           </ul>
         </div>
-        <div class="bg-[var(--color-bg-alt)] rounded-[var(--radius-lg)] p-8">
-          <h3 class="text-xl font-bold mb-4">Parent and Teen</h3>
+        <div class="reveal-item bg-[var(--color-bg-alt)] rounded-[var(--radius-lg)] p-8 border-t-4 border-[var(--color-accent)]">
+          <h3 class="text-xl font-bold mb-4">Parent & Teen</h3>
           <ul class="space-y-3 text-[var(--color-text-light)]">
-            <li>Your teen is withdrawn, anxious, or acting out</li>
-            <li>Communication feels impossible</li>
-            <li>Navigating an ADHD or neurodivergence diagnosis</li>
-            <li>School or behaviour challenges</li>
-            <li>You want to support your teen but don't know how</li>
-            <li>Blended family dynamics</li>
+            <li class="flex items-start gap-3">
+              <span class="text-[var(--color-accent)] mt-1.5 shrink-0">&#9679;</span>
+              Your teen is withdrawn, anxious, or acting out
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-[var(--color-accent)] mt-1.5 shrink-0">&#9679;</span>
+              Communication feels impossible or explosive
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-[var(--color-accent)] mt-1.5 shrink-0">&#9679;</span>
+              Navigating an ADHD or neurodivergence diagnosis
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-[var(--color-accent)] mt-1.5 shrink-0">&#9679;</span>
+              School refusal or behaviour challenges
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-[var(--color-accent)] mt-1.5 shrink-0">&#9679;</span>
+              You want to support your teen but don't know how
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-[var(--color-accent)] mt-1.5 shrink-0">&#9679;</span>
+              Blended family dynamics
+            </li>
           </ul>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- Approach -->
+  <!-- How I Work With Couples -->
   <section class="py-16 md:py-20 bg-[var(--color-bg-alt)]">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h2 class="mb-8">How We Work</h2>
-      <p class="text-[var(--color-text-light)] leading-relaxed mb-6">
-        Couples and parent-teen sessions are 75 minutes, giving enough time for both parties to be heard and for meaningful work to happen. Sessions are structured but flexible — I'm not there to take sides, but to help you both communicate more effectively.
-      </p>
-      <p class="text-[var(--color-text-light)] leading-relaxed mb-6">
-        I draw from DBT interpersonal effectiveness skills, helping you learn to express needs, set boundaries, and navigate disagreements without damaging the relationship. For parent-teen work, I also incorporate SPACE (Supporting Parents of Anxious Childhood Emotions), a Yale-developed programme that empowers parents to support their child's mental health.
-      </p>
-      <div class="bg-white rounded-[var(--radius-lg)] p-6 mt-8">
+      <h2 class="mb-8 reveal">How We Work Together</h2>
+      <div class="space-y-6 reveal">
+        <p class="text-[var(--color-text-light)] leading-relaxed">
+          Couples and parent-teen sessions are <strong class="text-[var(--color-text)]">75 minutes</strong> — longer than individual sessions because both parties need time to be heard, and meaningful work takes space.
+        </p>
+        <p class="text-[var(--color-text-light)] leading-relaxed">
+          I'm not there to take sides or declare a winner. I help you both see each other's perspective, break repetitive cycles, and learn to communicate in ways that actually land. It's not about being right — it's about being understood.
+        </p>
+        <p class="text-[var(--color-text-light)] leading-relaxed">
+          I draw from <strong class="text-[var(--color-text)]">DBT interpersonal effectiveness skills</strong> — practical tools for expressing needs, setting boundaries, and navigating disagreements without damaging the relationship.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- SPACE Programme -->
+  <section class="py-16 md:py-20">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="bg-[var(--color-bg-alt)] rounded-[var(--radius-lg)] p-8 md:p-10 border-l-4 border-[var(--color-gold)] reveal">
+        <h2 class="mb-4">SPACE Programme (Yale)</h2>
+        <p class="text-[var(--color-text-light)] leading-relaxed mb-4">
+          For parents struggling with a child's anxiety, I offer SPACE — <strong class="text-[var(--color-text)]">Supporting Parents of Anxious Childhood Emotions</strong>, developed at the Yale Child Study Center.
+        </p>
+        <p class="text-[var(--color-text-light)] leading-relaxed mb-4">
+          SPACE is different from most approaches because it works with the parent, not the child. It helps you identify accommodation patterns — the ways you've been adjusting your own behaviour to manage your child's anxiety — and gradually replace them with supportive responses that build your child's confidence and resilience.
+        </p>
+        <p class="text-[var(--color-text-light)] leading-relaxed">
+          This is especially powerful when a child or teen is resistant to therapy themselves. You don't have to wait for them to be ready — you can start making changes now.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- What to Expect -->
+  <section class="py-16 md:py-20 bg-[var(--color-bg-alt)]">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="mb-8 reveal">What to Expect</h2>
+      <div class="space-y-8 reveal">
+        <div>
+          <h3 class="text-xl font-bold mb-3">First session</h3>
+          <p class="text-[var(--color-text-light)] leading-relaxed">
+            I'll meet with both of you together. We'll talk about what's brought you in, what each person is experiencing, and what you're hoping to change. I'll listen to both sides without judgement and we'll set some initial goals.
+          </p>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold mb-3">Ongoing work</h3>
+          <p class="text-[var(--color-text-light)] leading-relaxed">
+            Sessions are a mix of structured skill-building and in-the-moment work with whatever you bring in that week. I'll sometimes suggest exercises to try between sessions — small shifts in how you communicate that compound over time.
+          </p>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold mb-3">Individual check-ins</h3>
+          <p class="text-[var(--color-text-light)] leading-relaxed">
+            Occasionally I'll offer individual sessions alongside the couple work if one person needs space to process something privately. This is always transparent and agreed upon together.
+          </p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Session Details -->
+  <section class="py-16 md:py-20">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="bg-white rounded-[var(--radius-lg)] p-8 shadow-sm reveal">
         <h3 class="text-lg font-bold mb-2">Session Details</h3>
-        <p class="text-3xl font-bold text-[var(--color-primary)] mb-2">75 minutes</p>
-        <p class="text-[var(--color-text-light)]">HKD $3,000 — in person or online via Zoom</p>
+        <p class="text-3xl font-bold text-[var(--color-primary)] mb-2" style="font-family: var(--font-serif)">75 minutes</p>
+        <p class="text-[var(--color-text-light)]">HKD $3,000 — in person (Central) or online via Zoom</p>
         <p class="text-[var(--color-text-light)] text-[var(--text-sm)] mt-2">
           <a href="/prices" class="text-[var(--color-primary)] no-underline hover:underline">View all pricing &rarr;</a>
         </p>
       </div>
     </div>
   </section>
+
+  <FAQAccordion items={faqItems} />
 
   <FinalCTA
     heading="Ready to start rebuilding?"

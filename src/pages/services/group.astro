@@ -1,6 +1,7 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Hero from '../../components/Hero.astro';
+import FAQAccordion from '../../components/FAQAccordion.astro';
 import FinalCTA from '../../components/FinalCTA.astro';
 
 const schema = JSON.stringify({
@@ -17,11 +18,69 @@ const schema = JSON.stringify({
     ],
   },
 });
+
+const groups = [
+  {
+    name: 'DBT Skills Group',
+    desc: 'A structured programme covering all four DBT modules: Mindfulness, Distress Tolerance, Emotion Regulation, and Interpersonal Effectiveness. You\'ll learn and practise skills alongside others who are working on the same challenges.',
+    who: 'Adults experiencing emotional dysregulation, BPD, or intense emotions',
+    format: 'Typically runs alongside individual DBT sessions',
+    color: 'var(--color-gold)',
+  },
+  {
+    name: 'ADHD Support Group',
+    desc: 'A space to connect with other adults navigating life with ADHD. Share strategies, troubleshoot challenges, and feel understood by people who actually get it — because they live it too.',
+    who: 'Adults with diagnosed or self-identified ADHD',
+    format: 'Ongoing group with rolling admission',
+    color: 'var(--color-primary)',
+  },
+  {
+    name: 'PEERS Social Skills',
+    desc: 'An evidence-based social skills programme developed at UCLA. PEERS teaches practical skills for making and keeping friends, handling conflict, and navigating social situations — skills that don\'t always come naturally for neurodivergent teens.',
+    who: 'Teens and young adults, particularly those with ADHD or autism',
+    format: 'Structured programme with concurrent parent group',
+    color: 'var(--color-accent)',
+  },
+  {
+    name: 'LGBTQ+ Support',
+    desc: 'A safe, affirming space for LGBTQ+ individuals in Hong Kong to explore identity, process minority stress, share experiences, and build community. Being queer in HK comes with unique pressures — this group is a place where you don\'t have to explain that.',
+    who: 'All LGBTQ+ individuals',
+    format: 'Ongoing group with rolling admission',
+    color: 'var(--color-gold)',
+  },
+];
+
+const faqItems = [
+  {
+    question: 'Do I need to be in individual therapy to join a group?',
+    answer: 'For the DBT Skills Group, yes — it runs alongside individual DBT sessions as part of a comprehensive programme. For other groups, individual therapy is recommended but not required.',
+  },
+  {
+    question: 'How many people are in each group?',
+    answer: 'Groups are typically 4-8 people. Small enough for everyone to participate meaningfully, large enough to benefit from diverse perspectives.',
+  },
+  {
+    question: 'Is everything confidential?',
+    answer: 'Yes. All group members agree to confidentiality as a condition of participation. What\'s shared in group stays in group.',
+  },
+  {
+    question: 'What if I\'m too anxious to speak in a group?',
+    answer: 'That\'s completely normal and more common than you think. There\'s no pressure to share before you\'re ready. Many people spend the first few sessions just listening — and that\'s perfectly fine. The group moves at everyone\'s pace.',
+  },
+  {
+    question: 'Can I do groups online?',
+    answer: 'Some groups are available via Zoom. Contact me for current availability and format details.',
+  },
+  {
+    question: 'How do I know which group is right for me?',
+    answer: 'Book a free discovery call and we\'ll talk through your situation. I\'ll help you figure out which group — or combination of group and individual work — makes the most sense for you.',
+  },
+];
 ---
 
 <BaseLayout
   title="Group Therapy & DBT Skills Groups in Hong Kong | Jared Dubbs"
-  description="Group therapy and DBT skills groups in Central Hong Kong. ADHD support groups, DBT skills training, and PEERS social skills groups."
+  description="Group therapy and DBT skills groups in Central Hong Kong. ADHD support groups, DBT skills training, PEERS social skills, and LGBTQ+ support."
   schema={schema}
 >
   <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 text-[var(--text-sm)]" aria-label="Breadcrumb">
@@ -37,67 +96,99 @@ const schema = JSON.stringify({
   <Hero
     title="There's something powerful about realising you're not the only one"
     subtitle="Group therapy offers a unique opportunity to learn alongside others, share experiences, and practise new skills in a supportive environment."
-    ctaText="Enquire About Groups"
-    ctaLink="/book"
     compact={true}
   />
 
-  <!-- What Is Group Therapy -->
+  <!-- Why Group Therapy -->
   <section class="py-16 md:py-20">
     <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h2 class="mb-8">What Is Group Therapy?</h2>
-      <p class="text-[var(--color-text-light)] leading-relaxed mb-6">
-        Group therapy brings together a small number of people who share similar challenges. Led by a trained therapist, the group provides a safe, confidential space to share experiences, learn from others, and practise new skills together.
-      </p>
-      <p class="text-[var(--color-text-light)] leading-relaxed mb-6">
-        Research consistently shows that group therapy can be as effective as individual therapy for many issues — and it offers something individual therapy can't: the experience of connecting with others who understand what you're going through.
-      </p>
-      <p class="text-[var(--color-text-light)] leading-relaxed">
-        Group therapy works well alongside individual sessions, giving you additional practice and support between your one-on-one work.
-      </p>
+      <h2 class="mb-8 reveal">Why Group Therapy?</h2>
+      <div class="space-y-6 reveal">
+        <p class="text-[var(--color-text-light)] leading-relaxed">
+          Group therapy offers something individual therapy can't: the experience of being understood by people who are going through the same thing. There's a particular kind of relief in hearing someone else describe exactly what you've been feeling — and realising you're not broken or alone.
+        </p>
+        <p class="text-[var(--color-text-light)] leading-relaxed">
+          Research consistently shows that group therapy can be as effective as individual therapy for many issues. It also provides a natural environment to practise new skills — like communication, boundary-setting, and emotional regulation — with real-time feedback and support.
+        </p>
+        <p class="text-[var(--color-text-light)] leading-relaxed">
+          Group works well as a standalone or alongside individual sessions, giving you additional structure and community between one-on-one work.
+        </p>
+      </div>
     </div>
   </section>
 
   <!-- Available Groups -->
   <section class="py-16 md:py-20 bg-[var(--color-bg-alt)]">
-    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h2 class="mb-8">Available Groups</h2>
-      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div class="bg-white rounded-[var(--radius-lg)] p-8">
-          <h3 class="text-xl font-bold mb-3">DBT Skills Group</h3>
-          <p class="text-[var(--color-text-light)] leading-relaxed mb-4">
-            A structured programme covering all four DBT modules: Mindfulness, Distress Tolerance, Emotion Regulation, and Interpersonal Effectiveness. Learn and practise skills in a group setting.
-          </p>
-          <p class="text-[var(--text-sm)] text-[var(--color-text-light)]">Typically runs alongside individual DBT sessions.</p>
-        </div>
-        <div class="bg-white rounded-[var(--radius-lg)] p-8">
-          <h3 class="text-xl font-bold mb-3">ADHD Support Group</h3>
-          <p class="text-[var(--color-text-light)] leading-relaxed mb-4">
-            Connect with other adults navigating life with ADHD. Share strategies, challenges, and victories in a space where everyone gets it.
-          </p>
-          <p class="text-[var(--text-sm)] text-[var(--color-text-light)]">Open to diagnosed and self-identified individuals.</p>
-        </div>
-        <div class="bg-white rounded-[var(--radius-lg)] p-8">
-          <h3 class="text-xl font-bold mb-3">PEERS Social Skills</h3>
-          <p class="text-[var(--color-text-light)] leading-relaxed mb-4">
-            An evidence-based social skills programme for teens and young adults, particularly helpful for those with ADHD or autism spectrum conditions.
-          </p>
-          <p class="text-[var(--text-sm)] text-[var(--color-text-light)]">For teens and young adults.</p>
-        </div>
-        <div class="bg-white rounded-[var(--radius-lg)] p-8">
-          <h3 class="text-xl font-bold mb-3">LGBTQ+ Support</h3>
-          <p class="text-[var(--color-text-light)] leading-relaxed mb-4">
-            A safe, affirming space for LGBTQ+ individuals in Hong Kong to explore identity, share experiences, and build community.
-          </p>
-          <p class="text-[var(--text-sm)] text-[var(--color-text-light)]">Open to all LGBTQ+ individuals.</p>
-        </div>
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="mb-10 reveal">Available Groups</h2>
+      <div class="space-y-6 reveal-stagger">
+        {groups.map((group) => (
+          <div class="reveal-item bg-white rounded-[var(--radius-lg)] p-8 shadow-sm border-l-4" style={`border-color: ${group.color}`}>
+            <h3 class="text-xl font-bold mb-3">{group.name}</h3>
+            <p class="text-[var(--color-text-light)] leading-relaxed mb-5">{group.desc}</p>
+            <div class="flex flex-wrap gap-x-8 gap-y-2 text-[var(--text-sm)]">
+              <div>
+                <span class="text-[var(--color-text-light)]">Who: </span>
+                <span class="text-[var(--color-text)] font-medium">{group.who}</span>
+              </div>
+              <div>
+                <span class="text-[var(--color-text-light)]">Format: </span>
+                <span class="text-[var(--color-text)] font-medium">{group.format}</span>
+              </div>
+            </div>
+          </div>
+        ))}
       </div>
     </div>
   </section>
 
+  <!-- What a Group Session Looks Like -->
+  <section class="py-16 md:py-20">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="mb-8 reveal">What a Group Session Looks Like</h2>
+      <div class="space-y-6 reveal">
+        <p class="text-[var(--color-text-light)] leading-relaxed">
+          Each group has its own structure, but the general shape is similar: we start with a check-in, move into the session's focus (a skill, a topic, a guided discussion), and close with reflection and takeaways.
+        </p>
+        <p class="text-[var(--color-text-light)] leading-relaxed">
+          Groups are led by me — not peer-led — which means there's clinical structure, safety guardrails, and someone guiding the conversation so it stays productive and inclusive.
+        </p>
+        <p class="text-[var(--color-text-light)] leading-relaxed">
+          You'll never be put on the spot. Participation is encouraged but never forced. Many people spend their first few sessions just listening, and that's completely welcome.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Practical Details -->
+  <section class="py-16 md:py-20 bg-[var(--color-bg-alt)]">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="mb-8 reveal">Practical Details</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-6 reveal-stagger">
+        <div class="reveal-item bg-white rounded-[var(--radius-lg)] p-6">
+          <h3 class="text-lg font-bold mb-2">Size</h3>
+          <p class="text-[var(--color-text-light)]">4-8 participants per group. Intimate enough for everyone to be heard.</p>
+        </div>
+        <div class="reveal-item bg-white rounded-[var(--radius-lg)] p-6">
+          <h3 class="text-lg font-bold mb-2">Location</h3>
+          <p class="text-[var(--color-text-light)]">In person at my Central HK office, or online via Zoom depending on the group.</p>
+        </div>
+        <div class="reveal-item bg-white rounded-[var(--radius-lg)] p-6">
+          <h3 class="text-lg font-bold mb-2">Confidentiality</h3>
+          <p class="text-[var(--color-text-light)]">All members agree to strict confidentiality. What's shared in group stays in group.</p>
+        </div>
+      </div>
+      <p class="mt-8 text-[var(--color-text-light)] reveal">
+        Pricing varies by group type and duration. <a href="/prices" class="text-[var(--color-primary)] font-semibold no-underline hover:underline">View pricing &rarr;</a>
+      </p>
+    </div>
+  </section>
+
+  <FAQAccordion items={faqItems} />
+
   <FinalCTA
     heading="Interested in joining a group?"
-    subtext="Get in touch to learn about upcoming groups and availability."
+    subtext="Book a free discovery call and we'll figure out which group is right for you."
     ctaText="Enquire Now"
   />
 </BaseLayout>
