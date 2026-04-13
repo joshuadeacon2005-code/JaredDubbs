@@ -94,6 +94,17 @@ const schema = JSON.stringify({
 
   <StatsBar />
 
+  <!-- Hong Kong atmospheric break -->
+  <div class="relative h-64 md:h-80 overflow-hidden">
+    <img
+      src="/images/hk-harbour.jpg"
+      alt="Victoria Harbour, Hong Kong at golden hour"
+      class="w-full h-full object-cover object-center"
+      loading="lazy"
+    />
+    <div class="absolute inset-0 bg-[var(--color-secondary)]/25"></div>
+  </div>
+
   <AboutPreview />
 
   <HowItWorks />
@@ -102,5 +113,5 @@ const schema = JSON.stringify({
 
   <BlogPreview />
 
-  <FinalCTA />
+  <FinalCTA bgImage="/images/hk-central.jpg" />
 </BaseLayout>

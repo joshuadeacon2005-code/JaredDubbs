@@ -1,19 +1,18 @@
 ---
 const stats = [
-  { value: '10+', label: 'Years Experience' },
+  { value: '10+', label: 'Years in Practice' },
   { value: '500+', label: 'Clients Supported' },
-  { value: '6+', label: 'Therapeutic Modalities' },
-  { value: '100%', label: 'Commitment to You' },
+  { value: '6+', label: 'Evidence-Based Modalities' },
 ];
 ---
 
-<section class="bg-[var(--color-secondary)] py-12">
-  <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-    <div class="grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-      {stats.map((stat) => (
-        <div>
-          <p class="text-white text-3xl md:text-4xl font-bold mb-1">{stat.value}</p>
-          <p class="text-white/70 text-[var(--text-sm)]">{stat.label}</p>
+<section class="bg-[var(--color-secondary)] py-14">
+  <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+    <div class="grid grid-cols-3 gap-12 text-center">
+      {stats.map((stat, i) => (
+        <div class={i < stats.length - 1 ? 'md:border-r md:border-white/15' : ''}>
+          <p class="text-white text-4xl md:text-5xl font-bold mb-2" style="font-family: var(--font-serif)">{stat.value}</p>
+          <p class="text-white/60 text-[var(--text-sm)] tracking-wide">{stat.label}</p>
         </div>
       ))}
     </div>

@@ -9,20 +9,22 @@ interface Props {
   heading?: string;
 }
 
-const { items, heading = 'What Clients Say' } = Astro.props;
+const { items, heading = 'In Their Own Words' } = Astro.props;
 ---
 
 <section class="py-16 md:py-20 bg-[var(--color-bg-alt)]">
   <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
     <h2 class="text-center mb-12">{heading}</h2>
 
-    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-      {items.map((item) => (
-        <blockquote class="bg-white rounded-[var(--radius-lg)] p-8 shadow-sm">
-          <svg class="w-8 h-8 text-[var(--color-primary)]/30 mb-4" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+    <div class="space-y-8 md:space-y-0 md:grid md:grid-cols-5 md:gap-8">
+      {items.map((item, i) => (
+        <blockquote class={`bg-white rounded-[var(--radius-lg)] shadow-sm ${
+          i === 0 ? 'md:col-span-3 p-10 border-l-4 border-[var(--color-gold)]' : 'md:col-span-1 p-6'
+        }`}>
+          <svg class={`text-[var(--color-primary)]/30 mb-4 ${i === 0 ? 'w-10 h-10' : 'w-7 h-7'}`} fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path d="M14.017 21v-7.391c0-5.704 3.731-9.57 8.983-10.609l.995 2.151c-2.432.917-3.995 3.638-3.995 5.849h4v10H14.017zM0 21v-7.391c0-5.704 3.731-9.57 8.983-10.609L9.978 5.151c-2.432.917-3.995 3.638-3.995 5.849h4v10H0z" />
           </svg>
-          <p class="text-[var(--color-text)] leading-relaxed mb-4 italic">"{item.quote}"</p>
+          <p class={`text-[var(--color-text)] leading-relaxed mb-4 italic ${i === 0 ? 'text-xl' : 'text-[var(--text-sm)]'}`}>"{item.quote}"</p>
           {item.attribution && (
             <footer class="text-[var(--text-sm)] text-[var(--color-text-light)] font-medium">
               — {item.attribution}
