@@ -1,0 +1,207 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/Hero.astro';
+import FAQAccordion from '../../components/FAQAccordion.astro';
+import FinalCTA from '../../components/FinalCTA.astro';
+
+const schema = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'MedicalWebPage',
+  name: 'LGBTQ+ Counselling Hong Kong',
+  description: 'Affirming LGBTQ+ therapy for individuals and couples in Central Hong Kong.',
+  url: 'https://jareddubbs.com/services/lgbtq',
+  breadcrumb: {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://jareddubbs.com' },
+      { '@type': 'ListItem', position: 2, name: 'Services', item: 'https://jareddubbs.com/services' },
+      { '@type': 'ListItem', position: 3, name: 'LGBTQ+ Counselling' },
+    ],
+  },
+});
+
+const faqItems = [
+  {
+    question: 'What does "LGBTQ+ affirming" actually mean?',
+    answer: "It means I don't just tolerate — I affirm. Your identity isn't the problem to be solved. My role is to support you in a space where you don't have to explain or justify who you are before we can get to the actual work.",
+  },
+  {
+    question: 'Do you work with same-sex couples?',
+    answer: "Yes. I work with couples of all configurations. Same-sex couples face specific dynamics — from defining your relationship without a traditional template to navigating family expectations and legal realities in Hong Kong. I understand that context.",
+  },
+  {
+    question: 'Do you work with gender identity and transition?',
+    answer: "Yes. I provide a safe space to explore gender identity at whatever stage you're at — questioning, coming out, transitioning, or navigating life post-transition. We go at your pace.",
+  },
+  {
+    question: 'Is there an LGBTQ+ support group?',
+    answer: 'Yes — I run an ongoing LGBTQ+ support group with rolling admission. It\'s a safe, affirming space to share experiences and build community. <a href="/services/group" class="text-[var(--color-primary)] font-semibold no-underline hover:underline">View group details &rarr;</a>',
+  },
+  {
+    question: 'I\'m not out yet — is that okay?',
+    answer: "Completely. Many of my clients are exploring their identity privately. Therapy is a confidential space where you can be honest without pressure to come out or take any step before you're ready.",
+  },
+  {
+    question: 'Why is LGBTQ+ specific therapy important in Hong Kong?',
+    answer: "Hong Kong's legal and social landscape creates unique pressures for LGBTQ+ individuals — from the absence of same-sex marriage to cultural expectations around family and conformity. A therapist who understands these realities can help without you having to spend sessions educating them first.",
+  },
+];
+---
+
+<BaseLayout
+  title="LGBTQ+ Counselling Hong Kong — Affirming Therapy for Individuals & Couples | Jared Dubbs"
+  description="LGBTQ+ affirming counselling for individuals and couples in Central Hong Kong. Empowerment, identity, relationships, and community in a safe, judgement-free space."
+  schema={schema}
+>
+  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 text-[var(--text-sm)]" aria-label="Breadcrumb">
+    <ol class="flex items-center gap-2" role="list">
+      <li><a href="/" class="text-[var(--color-text-light)] hover:text-[var(--color-primary)] no-underline">Home</a></li>
+      <li class="text-[var(--color-text-light)]">/</li>
+      <li><a href="/services" class="text-[var(--color-text-light)] hover:text-[var(--color-primary)] no-underline">Services</a></li>
+      <li class="text-[var(--color-text-light)]">/</li>
+      <li class="text-[var(--color-primary)] font-medium" aria-current="page">LGBTQ+ Counselling</li>
+    </ol>
+  </nav>
+
+  <Hero
+    title="You've already been brave — let's build on that"
+    subtitle="Coming out, being yourself, loving who you love — that takes courage. LGBTQ+ affirming therapy isn't about fixing you. It's about supporting you as you forge your own path."
+    ctaText="Book a Free Discovery Call"
+    ctaLink="/book"
+    compact={true}
+  />
+
+  <!-- Why LGBTQ+ Specific -->
+  <section class="py-16 md:py-20 bg-[var(--color-bg-alt)]">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="mb-8 reveal">Why LGBTQ+ Specific Therapy Matters in Hong Kong</h2>
+      <p class="text-[var(--color-text-light)] leading-relaxed mb-6 reveal">
+        Finding a therapist in Hong Kong who truly understands the LGBTQ+ experience — not just tolerates it — can be difficult. Many queer individuals end up spending their sessions educating their therapist before they can do any real work.
+      </p>
+      <p class="text-[var(--color-text-light)] leading-relaxed mb-6 reveal">
+        I don't need that education. I understand the specific pressures of being LGBTQ+ in Hong Kong — the legal gaps, the family expectations, the social dynamics of the expat and local communities, and the particular challenges of building an authentic life in a place that doesn't always make it easy.
+      </p>
+      <p class="text-[var(--color-text)] font-medium text-lg reveal">
+        You shouldn't have to justify who you are before you can start healing.
+      </p>
+    </div>
+  </section>
+
+  <!-- Two-column: Individual + Couples -->
+  <section class="py-16 md:py-20">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="mb-10 reveal">How I Can Help</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-8 reveal-stagger">
+        <!-- Individual -->
+        <div class="reveal-item bg-[var(--color-bg-alt)] rounded-[var(--radius-lg)] p-8 border-t-4 border-[var(--color-accent)]">
+          <h3 class="text-xl font-bold mb-4">Individual Counselling</h3>
+          <p class="text-[var(--color-text-light)] leading-relaxed mb-4">
+            Your journey is yours. Therapy is about drawing strength from the bravery you've already shown — coming out, being unapologetically yourself, choosing your own path even when it's hard.
+          </p>
+          <ul class="space-y-3 text-[var(--color-text-light)]">
+            <li class="flex items-start gap-3">
+              <span class="text-[var(--color-accent)] mt-1.5 shrink-0">&#9679;</span>
+              Identity exploration and self-acceptance
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-[var(--color-accent)] mt-1.5 shrink-0">&#9679;</span>
+              Coming out — at your pace, on your terms
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-[var(--color-accent)] mt-1.5 shrink-0">&#9679;</span>
+              Minority stress, discrimination, and resilience
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-[var(--color-accent)] mt-1.5 shrink-0">&#9679;</span>
+              Family dynamics and cultural expectations
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-[var(--color-accent)] mt-1.5 shrink-0">&#9679;</span>
+              Gender identity exploration and transition support
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-[var(--color-accent)] mt-1.5 shrink-0">&#9679;</span>
+              Building community and belonging in Hong Kong
+            </li>
+          </ul>
+        </div>
+
+        <!-- Couples -->
+        <div class="reveal-item bg-[var(--color-bg-alt)] rounded-[var(--radius-lg)] p-8 border-t-4 border-[var(--color-gold)]">
+          <h3 class="text-xl font-bold mb-4">Couples Counselling</h3>
+          <p class="text-[var(--color-text-light)] leading-relaxed mb-4">
+            LGBTQ+ relationships have a freedom that traditional couples often don't — you get to define what partnership looks like without a guidebook. That freedom is powerful, but it also means there's no default template to fall back on.
+          </p>
+          <ul class="space-y-3 text-[var(--color-text-light)]">
+            <li class="flex items-start gap-3">
+              <span class="text-[var(--color-gold)] mt-1.5 shrink-0">&#9679;</span>
+              Defining your own relationship on your own terms
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-[var(--color-gold)] mt-1.5 shrink-0">&#9679;</span>
+              Communication and conflict resolution
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-[var(--color-gold)] mt-1.5 shrink-0">&#9679;</span>
+              Navigating different stages of outness
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-[var(--color-gold)] mt-1.5 shrink-0">&#9679;</span>
+              Family pressures and social visibility
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-[var(--color-gold)] mt-1.5 shrink-0">&#9679;</span>
+              Intimacy without traditional role expectations
+            </li>
+            <li class="flex items-start gap-3">
+              <span class="text-[var(--color-gold)] mt-1.5 shrink-0">&#9679;</span>
+              Crafting what partnership means for you
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Empowerment Framing -->
+  <section class="bg-[var(--color-secondary)] py-20 md:py-28">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center reveal">
+      <div class="w-12 h-1 bg-[var(--color-accent-light)] rounded-full mx-auto mb-8"></div>
+      <blockquote class="text-white text-2xl md:text-3xl font-light leading-relaxed italic" style="font-family: var(--font-serif)">
+        "The courage it took to be yourself is the same strength we build on in therapy."
+      </blockquote>
+      <p class="text-[var(--color-accent-light)] mt-8 font-medium tracking-wide text-[var(--text-sm)] uppercase">— Jared Dubbs</p>
+    </div>
+  </section>
+
+  <!-- Session Details -->
+  <section class="py-16 md:py-20">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="mb-8 reveal">Session Details</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 reveal-stagger">
+        <div class="reveal-item bg-[var(--color-bg-alt)] rounded-[var(--radius-lg)] p-8">
+          <h3 class="text-lg font-bold mb-2">Individual Session</h3>
+          <p class="text-3xl font-bold text-[var(--color-primary)] mb-2" style="font-family: var(--font-serif)">50 minutes</p>
+          <p class="text-[var(--color-text-light)]">HKD $2,000</p>
+          <p class="text-[var(--color-text-light)] text-[var(--text-sm)] mt-2">In person (Central) or online via Zoom</p>
+        </div>
+        <div class="reveal-item bg-[var(--color-bg-alt)] rounded-[var(--radius-lg)] p-8">
+          <h3 class="text-lg font-bold mb-2">Couples Session</h3>
+          <p class="text-3xl font-bold text-[var(--color-primary)] mb-2" style="font-family: var(--font-serif)">75 minutes</p>
+          <p class="text-[var(--color-text-light)]">HKD $3,000</p>
+          <p class="text-[var(--color-text-light)] text-[var(--text-sm)] mt-2">Longer sessions to give both partners space to be heard</p>
+        </div>
+      </div>
+      <p class="mt-6 text-[var(--color-text-light)] reveal">
+        <a href="/prices" class="text-[var(--color-primary)] font-semibold no-underline hover:underline">View all pricing and packages &rarr;</a>
+      </p>
+    </div>
+  </section>
+
+  <FAQAccordion items={faqItems} />
+
+  <FinalCTA
+    heading="You deserve a therapist who gets it"
+    subtext="Book a free discovery call. No judgement, no justification — just a conversation about what you need."
+  />
+</BaseLayout>

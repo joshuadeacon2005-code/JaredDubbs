@@ -42,6 +42,11 @@ const postImages: Record<string, string> = {
   'anxiety-hong-kong': '/images/blog-anxiety-hong-kong.jpg',
   'lgbtq-therapy-hk': '/images/blog-lgbtq-therapy-hk.jpg',
   'why-therapy-works': '/images/blog-why-therapy-works.jpg',
+  'asd-user-guide-not-a-fix': '/images/blog-asd-user-guide-not-a-fix.jpg',
+  'asd-teens-beyond-university': '/images/blog-asd-teens-beyond-university.jpg',
+  'asd-careers-neurodivergent-strengths': '/images/blog-asd-careers-neurodivergent-strengths.jpg',
+  'lgbtq-empowerment-your-path': '/images/blog-lgbtq-empowerment-your-path.jpg',
+  'lgbtq-couples-defining-relationship': '/images/blog-lgbtq-couples-defining-relationship.jpg',
 };
 const ogImage = post.data.image || postImages[post.id] || `/images/blog-${post.id}.jpg`;
 
@@ -50,6 +55,8 @@ const categoryColors: Record<string, string> = {
   'DBT': 'bg-emerald-100 text-emerald-800',
   'Anxiety & Depression': 'bg-amber-100 text-amber-800',
   'Therapy & Wellbeing': 'bg-purple-100 text-purple-800',
+  'LGBTQ+': 'bg-pink-100 text-pink-800',
+  'ASD & Autism': 'bg-sky-100 text-sky-800',
 };
 
 const schema = JSON.stringify({
@@ -137,7 +144,7 @@ const schema = JSON.stringify({
         <img src="/images/jared-headshot-sm.jpg" alt="Jared Dubbs" width="96" height="96" class="w-24 h-24 rounded-full object-cover object-top mx-auto mb-4 ring-2 ring-[var(--color-gold)]/20" loading="lazy" />
         <p class="font-bold text-[var(--color-secondary)] text-lg">Jared Dubbs, MoC</p>
         <p class="text-[var(--color-text-light)] text-[var(--text-sm)] mt-2 mx-auto max-w-lg">
-          Jared is a counsellor in Central Hong Kong specialising in DBT and ADHD. He holds a Master's in Counselling from Monash University and brings personal lived experience of ADHD to his practice.
+          Jared is a counsellor in Central Hong Kong specialising in ADHD, autism, and LGBTQ+ affirming therapy. He holds a Master's in Counselling from Monash University and brings personal lived experience of ADHD to his practice.
         </p>
         <a href="/about" class="inline-block mt-3 text-[var(--color-primary)] font-medium text-[var(--text-sm)] no-underline hover:underline">Learn more about Jared &rarr;</a>
       </div>

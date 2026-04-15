@@ -6,7 +6,7 @@ export async function GET(context: APIContext) {
   const posts = await getCollection('blog');
   return rss({
     title: 'Jared Dubbs Counselling — Blog',
-    description: 'Articles on ADHD, DBT, anxiety, depression, and mental health from a counsellor in Central Hong Kong.',
+    description: 'Articles on ADHD, autism, LGBTQ+ identity, emotional regulation, and mental health from a counsellor in Central Hong Kong.',
     site: context.site!,
     items: posts
       .sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())

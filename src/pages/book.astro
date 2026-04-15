@@ -1,5 +1,6 @@
 ---
 import BaseLayout from '../layouts/BaseLayout.astro';
+import BookingCalendar from '../components/BookingCalendar.astro';
 import ContactForm from '../components/ContactForm.astro';
 import HowItWorks from '../components/HowItWorks.astro';
 
@@ -14,17 +15,30 @@ const schema = JSON.stringify({
 
 <BaseLayout
   title="Book a Consultation — Jared Dubbs Counselling, Hong Kong"
-  description="Book a free discovery call with Jared Dubbs. Counselling for ADHD, DBT, anxiety, and more in Central Hong Kong. No referral needed."
+  description="Book a free 15-minute discovery call with Jared Dubbs. Counselling for ADHD, autism, LGBTQ+, and more in Central Hong Kong. No referral needed."
   schema={schema}
 >
+  <!-- Book a Discovery Call -->
   <section class="py-16 md:py-20">
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
-      <h1 class="mb-4">Book a Consultation</h1>
+      <h1 class="mb-4">Book a Free Discovery Call</h1>
       <p class="text-[var(--color-text-light)] text-lg leading-relaxed mb-2">
-        It takes courage to reach out. This form takes about 2 minutes.
+        A 15-minute phone call to talk about what you're going through and whether we're a good fit. No commitment, no pressure.
       </p>
       <p class="text-[var(--color-text-light)] leading-relaxed mb-10">
-        Your information is kept strictly confidential. I'll get back to you within 24 hours to arrange a free discovery call.
+        Choose a time that works for you, or use the form below if you'd prefer us to get in touch.
+      </p>
+
+      <BookingCalendar />
+    </div>
+  </section>
+
+  <!-- Or Send a Message -->
+  <section class="py-16 md:py-20 bg-[var(--color-bg-alt)]">
+    <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="mb-4">Or Send a Message</h2>
+      <p class="text-[var(--color-text-light)] leading-relaxed mb-10">
+        Not ready to book? No problem. Fill in this form and I'll get back to you within 24 hours. Your information is kept strictly confidential.
       </p>
 
       <ContactForm />
@@ -45,12 +59,12 @@ const schema = JSON.stringify({
           <p class="font-semibold text-[var(--color-secondary)]">Call</p>
           <p class="text-[var(--color-primary)] mt-1">+852 5775 3743</p>
         </a>
-        <a href="mailto:jared@jareddubbs.com" class="block bg-[var(--color-bg-alt)] rounded-[var(--radius-lg)] p-6 text-center no-underline hover:shadow-md transition-shadow">
+        <a href="mailto:hello@jareddubbs.com" class="block bg-[var(--color-bg-alt)] rounded-[var(--radius-lg)] p-6 text-center no-underline hover:shadow-md transition-shadow">
           <svg class="w-8 h-8 text-[var(--color-primary)] mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" />
           </svg>
           <p class="font-semibold text-[var(--color-secondary)]">Email</p>
-          <p class="text-[var(--color-primary)] mt-1">jared@jareddubbs.com</p>
+          <p class="text-[var(--color-primary)] mt-1">hello@jareddubbs.com</p>
         </a>
         <a href="https://maps.google.com/?q=10/F+C+Wisdom+Centre+37+Hollywood+Road+Central+Hong+Kong" target="_blank" rel="noopener noreferrer" class="block bg-[var(--color-bg-alt)] rounded-[var(--radius-lg)] p-6 text-center no-underline hover:shadow-md transition-shadow">
           <svg class="w-8 h-8 text-[var(--color-primary)] mx-auto mb-3" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">

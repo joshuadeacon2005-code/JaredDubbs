@@ -7,7 +7,7 @@ const blog = defineCollection({
     title: z.string(),
     description: z.string(),
     date: z.coerce.date(),
-    category: z.enum(['ADHD', 'DBT', 'Anxiety & Depression', 'Therapy & Wellbeing']),
+    category: z.enum(['ADHD', 'DBT', 'Anxiety & Depression', 'Therapy & Wellbeing', 'LGBTQ+', 'ASD & Autism']),
     author: z.string().default('Jared Dubbs, MoC'),
     readTime: z.string(),
     featured: z.boolean().default(false),

@@ -5,13 +5,6 @@ import FinalCTA from '../../components/FinalCTA.astro';
 
 const services = [
   {
-    title: 'DBT Therapy',
-    description: 'The full evidence-based programme for managing intense emotions, tolerating distress, and building stronger relationships.',
-    tags: ['Emotional Regulation', 'BPD', 'Distress Tolerance'],
-    link: '/services/dbt',
-    color: 'var(--color-gold)',
-  },
-  {
     title: 'ADHD & Neurodivergence',
     description: 'From a therapist who lives it too. Executive functioning, emotional regulation, and building a life that fits your brain.',
     tags: ['Executive Function', 'Unmasking', 'Self-Compassion'],
@@ -19,17 +12,38 @@ const services = [
     color: 'var(--color-primary)',
   },
   {
+    title: 'ASD & Autism',
+    description: 'Your user guide — not a fix. Support for teens, adults, and careers, built around how autistic brains actually work.',
+    tags: ['Teens', 'Adults', 'Careers', 'Late Diagnosis'],
+    link: '/services/asd',
+    color: 'var(--color-accent)',
+  },
+  {
+    title: 'LGBTQ+ Counselling',
+    description: 'Affirming therapy for individuals and couples. Identity, relationships, and community — without having to explain who you are first.',
+    tags: ['Individual', 'Couples', 'Identity', 'Affirming'],
+    link: '/services/lgbtq',
+    color: 'var(--color-gold)',
+  },
+  {
     title: 'Individual Counselling',
     description: 'One-on-one therapy tailored to you — anxiety, depression, burnout, identity, sleep, and life transitions.',
-    tags: ['Anxiety', 'Depression', 'LGBTQ+', 'Burnout'],
+    tags: ['Anxiety', 'Depression', 'Burnout', 'Life Transitions'],
     link: '/services/individual',
-    color: 'var(--color-accent)',
+    color: 'var(--color-primary)',
   },
   {
     title: 'Couples & Parent-Teen',
     description: 'Rebuild communication and navigate conflict in 75-minute sessions designed for two.',
     tags: ['Communication', 'Conflict', 'SPACE (Yale)'],
     link: '/services/couples',
+    color: 'var(--color-accent)',
+  },
+  {
+    title: 'DBT Therapy',
+    description: 'Evidence-based skills for managing intense emotions, tolerating distress, and building stronger relationships.',
+    tags: ['Emotional Regulation', 'BPD', 'Distress Tolerance'],
+    link: '/services/dbt',
     color: 'var(--color-gold)',
   },
   {
@@ -58,7 +72,7 @@ const schema = JSON.stringify({
 
 <BaseLayout
   title="Counselling Services | Jared Dubbs — Central, Hong Kong"
-  description="DBT therapy, ADHD support, individual counselling, couples therapy, and group programmes in Central Hong Kong. Find the right fit for you."
+  description="ADHD, autism, LGBTQ+ affirming therapy, individual counselling, couples therapy, and group programmes in Central Hong Kong. Find the right fit for you."
   schema={schema}
 >
   <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 text-[var(--text-sm)]" aria-label="Breadcrumb">

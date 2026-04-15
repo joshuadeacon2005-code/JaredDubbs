@@ -1,0 +1,232 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Hero from '../../components/Hero.astro';
+import FAQAccordion from '../../components/FAQAccordion.astro';
+import FinalCTA from '../../components/FinalCTA.astro';
+
+const schema = JSON.stringify({
+  '@context': 'https://schema.org',
+  '@type': 'MedicalWebPage',
+  name: 'ASD & Autism Support Hong Kong',
+  description: 'Autism and ASD counselling for teens, adults, and career support in Central Hong Kong.',
+  url: 'https://jareddubbs.com/services/asd',
+  breadcrumb: {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'Home', item: 'https://jareddubbs.com' },
+      { '@type': 'ListItem', position: 2, name: 'Services', item: 'https://jareddubbs.com/services' },
+      { '@type': 'ListItem', position: 3, name: 'ASD & Autism' },
+    ],
+  },
+});
+
+const faqItems = [
+  {
+    question: 'Do I need a formal ASD diagnosis to work with you?',
+    answer: "No. Many people come to me suspecting they're on the spectrum but without a formal diagnosis — especially adults who were never assessed as children. We can explore what's going on together regardless of where you are in that process.",
+  },
+  {
+    question: 'How is ASD counselling different from general therapy?',
+    answer: "I adapt my approach to how autistic brains process information. That means clearer communication, structured sessions, and strategies designed around your actual experience — not neurotypical assumptions about how you should cope.",
+  },
+  {
+    question: 'Do you work with teens on the spectrum?',
+    answer: "Yes. I work with teens navigating school, social life, identity, and the pressure to conform. I also work with parents through the SPACE programme (Yale) to help you support your teen without inadvertently increasing their distress.",
+  },
+  {
+    question: 'Can you help with a late diagnosis?',
+    answer: "Absolutely. A late diagnosis can be both a relief and a challenge — suddenly your whole life story makes sense, but you may also feel grief for what could have been different. I help adults process this and build a clearer sense of self moving forward.",
+  },
+  {
+    question: 'What about ASD and ADHD together?',
+    answer: "They frequently co-occur, and the overlap can make both harder to recognise. I have personal experience with ADHD and professional experience with both — so I understand the specific challenges of navigating both at once.",
+  },
+];
+---
+
+<BaseLayout
+  title="ASD & Autism Support Hong Kong — Your User Guide, Not a Fix | Jared Dubbs"
+  description="Autism and ASD counselling for teens, adults, and careers in Central Hong Kong. Understand how you operate, where you thrive, and how to prepare for challenges."
+  schema={schema}
+>
+  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 text-[var(--text-sm)]" aria-label="Breadcrumb">
+    <ol class="flex items-center gap-2" role="list">
+      <li><a href="/" class="text-[var(--color-text-light)] hover:text-[var(--color-primary)] no-underline">Home</a></li>
+      <li class="text-[var(--color-text-light)]">/</li>
+      <li><a href="/services" class="text-[var(--color-text-light)] hover:text-[var(--color-primary)] no-underline">Services</a></li>
+      <li class="text-[var(--color-text-light)]">/</li>
+      <li class="text-[var(--color-primary)] font-medium" aria-current="page">ASD & Autism</li>
+    </ol>
+  </nav>
+
+  <Hero
+    title="Think of it as your user guide — not a fix"
+    subtitle="Autism isn't something to overcome. It's something to understand. I help teens, adults, and families learn how they operate, where they thrive, and how to prepare for the parts that are genuinely hard."
+    ctaText="Book a Free Discovery Call"
+    ctaLink="/book"
+    compact={true}
+  />
+
+  <!-- Framing -->
+  <section class="py-16 md:py-20 bg-[var(--color-bg-alt)]">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="mb-8 reveal">A Different Way to Think About It</h2>
+      <p class="text-[var(--color-text-light)] leading-relaxed mb-6 reveal">
+        Too much of the conversation around autism is framed as a problem to solve. That's not how I work. I approach ASD the way you'd approach understanding any complex system — by learning how it operates, identifying where it excels, and being honest about where it needs support.
+      </p>
+      <p class="text-[var(--color-text-light)] leading-relaxed mb-6 reveal">
+        That's why I call it a <strong class="text-[var(--color-text)]">user guide</strong>. You're not broken. You're running a different operating system — and once you understand it, you can stop fighting against yourself and start working with who you actually are.
+      </p>
+      <p class="text-[var(--color-text)] font-medium text-lg reveal">
+        The goal isn't to make you fit in. It's to help you thrive as yourself.
+      </p>
+    </div>
+  </section>
+
+  <!-- Three Angles -->
+  <section class="py-16 md:py-20">
+    <div class="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="mb-10 reveal">Who I Work With</h2>
+      <div class="grid grid-cols-1 md:grid-cols-3 gap-8 reveal-stagger">
+        <!-- Teens -->
+        <div class="reveal-item bg-[var(--color-bg-alt)] rounded-[var(--radius-lg)] p-8 border-t-4 border-[var(--color-accent)]">
+          <h3 class="text-xl font-bold mb-4">ASD & Teens</h3>
+          <p class="text-[var(--color-text-light)] leading-relaxed mb-4">
+            School, social life, and identity are hard enough — they're harder when your brain processes the world differently.
+          </p>
+          <ul class="space-y-2 text-[var(--color-text-light)] text-[var(--text-sm)]">
+            <li class="flex items-start gap-2">
+              <span class="text-[var(--color-accent)] mt-1 shrink-0">&#9679;</span>
+              Navigating friendships and social dynamics
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-[var(--color-accent)] mt-1 shrink-0">&#9679;</span>
+              Managing sensory overload and school stress
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-[var(--color-accent)] mt-1 shrink-0">&#9679;</span>
+              Exploring alternatives to university
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-[var(--color-accent)] mt-1 shrink-0">&#9679;</span>
+              Building confidence and self-advocacy
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-[var(--color-accent)] mt-1 shrink-0">&#9679;</span>
+              Career exploration that matches how they think
+            </li>
+          </ul>
+        </div>
+
+        <!-- Adults -->
+        <div class="reveal-item bg-[var(--color-bg-alt)] rounded-[var(--radius-lg)] p-8 border-t-4 border-[var(--color-gold)]">
+          <h3 class="text-xl font-bold mb-4">ASD & Adults</h3>
+          <p class="text-[var(--color-text-light)] leading-relaxed mb-4">
+            Many adults discover they're on the spectrum later in life — and suddenly their whole story makes sense.
+          </p>
+          <ul class="space-y-2 text-[var(--color-text-light)] text-[var(--text-sm)]">
+            <li class="flex items-start gap-2">
+              <span class="text-[var(--color-gold)] mt-1 shrink-0">&#9679;</span>
+              Processing a late diagnosis
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-[var(--color-gold)] mt-1 shrink-0">&#9679;</span>
+              Understanding lifelong masking and its cost
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-[var(--color-gold)] mt-1 shrink-0">&#9679;</span>
+              Building self-knowledge and self-compassion
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-[var(--color-gold)] mt-1 shrink-0">&#9679;</span>
+              Navigating relationships and communication
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-[var(--color-gold)] mt-1 shrink-0">&#9679;</span>
+              Developing strategies that fit your brain
+            </li>
+          </ul>
+        </div>
+
+        <!-- Careers -->
+        <div class="reveal-item bg-[var(--color-bg-alt)] rounded-[var(--radius-lg)] p-8 border-t-4 border-[var(--color-primary)]">
+          <h3 class="text-xl font-bold mb-4">ASD & Careers</h3>
+          <p class="text-[var(--color-text-light)] leading-relaxed mb-4">
+            Neurodivergent traits aren't just challenges — they're genuine assets in the right environment.
+          </p>
+          <ul class="space-y-2 text-[var(--color-text-light)] text-[var(--text-sm)]">
+            <li class="flex items-start gap-2">
+              <span class="text-[var(--color-primary)] mt-1 shrink-0">&#9679;</span>
+              Identifying careers that suit how you think
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-[var(--color-primary)] mt-1 shrink-0">&#9679;</span>
+              Detail-oriented roles: finance, banking, analysis
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-[var(--color-primary)] mt-1 shrink-0">&#9679;</span>
+              Navigating workplace dynamics and communication
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-[var(--color-primary)] mt-1 shrink-0">&#9679;</span>
+              Leveraging strengths rather than masking differences
+            </li>
+            <li class="flex items-start gap-2">
+              <span class="text-[var(--color-primary)] mt-1 shrink-0">&#9679;</span>
+              Especially relevant for Hong Kong's expat professionals
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- How I Work -->
+  <section class="py-16 md:py-20 bg-[var(--color-bg-alt)]">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="mb-8 reveal">How I Work</h2>
+      <div class="space-y-6 reveal">
+        <p class="text-[var(--color-text-light)] leading-relaxed">
+          I adapt my therapeutic approach to suit autistic communication styles. That means sessions are <strong class="text-[var(--color-text)]">clear, structured, and predictable</strong> — you'll always know what to expect. I won't ask you to decode ambiguous social cues or read between the lines.
+        </p>
+        <p class="text-[var(--color-text-light)] leading-relaxed">
+          I draw from <strong class="text-[var(--color-text)]">DBT, ACT, and Schema Therapy</strong> — adapting evidence-based techniques to work with how autistic brains actually process information. The focus is practical: building strategies for the real challenges you face, not training you to perform neurotypicality.
+        </p>
+        <p class="text-[var(--color-text-light)] leading-relaxed">
+          For teens, I also work with parents through the <strong class="text-[var(--color-text)]">SPACE programme (Yale)</strong> — helping you support your child effectively without inadvertently increasing distress.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Session Details -->
+  <section class="py-16 md:py-20">
+    <div class="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+      <h2 class="mb-8 reveal">Session Details</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6 reveal-stagger">
+        <div class="reveal-item bg-[var(--color-bg-alt)] rounded-[var(--radius-lg)] p-8">
+          <h3 class="text-lg font-bold mb-2">Individual Session</h3>
+          <p class="text-3xl font-bold text-[var(--color-primary)] mb-2" style="font-family: var(--font-serif)">50 minutes</p>
+          <p class="text-[var(--color-text-light)]">HKD $2,000</p>
+          <p class="text-[var(--color-text-light)] text-[var(--text-sm)] mt-2">In person (Central) or online via Zoom</p>
+        </div>
+        <div class="reveal-item bg-[var(--color-bg-alt)] rounded-[var(--radius-lg)] p-8">
+          <h3 class="text-lg font-bold mb-2">Parent & Teen Session</h3>
+          <p class="text-3xl font-bold text-[var(--color-primary)] mb-2" style="font-family: var(--font-serif)">75 minutes</p>
+          <p class="text-[var(--color-text-light)]">HKD $3,000</p>
+          <p class="text-[var(--color-text-light)] text-[var(--text-sm)] mt-2">For deeper work involving parents and teens together</p>
+        </div>
+      </div>
+      <p class="mt-6 text-[var(--color-text-light)] reveal">
+        <a href="/prices" class="text-[var(--color-primary)] font-semibold no-underline hover:underline">View all pricing and packages &rarr;</a>
+      </p>
+    </div>
+  </section>
+
+  <FAQAccordion items={faqItems} />
+
+  <FinalCTA
+    heading="Ready to start understanding your operating system?"
+    subtext="Book a free discovery call. No referral needed, no diagnosis required — just a conversation about what you need."
+  />
+</BaseLayout>

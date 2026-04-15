@@ -42,7 +42,7 @@ export async function onRequestPost(context) {
       'Authorization': authHeader,
       'Accept': 'application/json',
       'Content-Type': 'application/json',
-      'User-Agent': 'JDCoreDev (jared@jareddubbs.com)',
+      'User-Agent': 'JDCoreDev (hello@jareddubbs.com)',
     };
 
     // Step 1: Create patient
@@ -92,7 +92,7 @@ export async function onRequestPost(context) {
   } catch (err) {
     console.error('Intake error:', err);
     return Response.json(
-      { error: 'Something went wrong. Please try calling us at +852 5775 3743 or emailing jared@jareddubbs.com' },
+      { error: 'Something went wrong. Please try calling us at +852 5775 3743 or emailing hello@jareddubbs.com' },
       { status: 500, headers: corsHeaders }
     );
   }

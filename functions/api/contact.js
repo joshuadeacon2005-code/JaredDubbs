@@ -42,7 +42,7 @@ export async function onRequestPost(context) {
         },
         body: JSON.stringify({
           from: 'website@jareddubbs.com',
-          to: 'jared@jareddubbs.com',
+          to: 'hello@jareddubbs.com',
           subject: `New contact from ${name}`,
           text: `Name: ${name}\nEmail: ${email}\n\nMessage:\n${message}`,
         }),
@@ -56,7 +56,7 @@ export async function onRequestPost(context) {
   } catch (err) {
     console.error('Contact error:', err);
     return Response.json(
-      { error: 'Something went wrong. Please email jared@jareddubbs.com directly.' },
+      { error: 'Something went wrong. Please email hello@jareddubbs.com directly.' },
       { status: 500, headers: corsHeaders }
     );
   }

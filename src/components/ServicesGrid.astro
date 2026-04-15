@@ -3,13 +3,6 @@ import ServiceCard from './ServiceCard.astro';
 
 const services = [
   {
-    title: 'DBT Therapy',
-    description: 'Dialectical Behaviour Therapy helps you manage intense emotions, tolerate distress, and build stronger relationships through evidence-based skills.',
-    icon: '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" /></svg>',
-    link: '/services/dbt',
-    featured: true,
-  },
-  {
     title: 'ADHD & Neurodivergence',
     description: 'Support from a therapist with personal ADHD experience. Work on executive functioning, emotional regulation, unmasking, and building a life that fits how your brain works.',
     icon: '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z" /></svg>',
@@ -17,8 +10,22 @@ const services = [
     featured: true,
   },
   {
+    title: 'ASD & Autism',
+    description: 'Think of it as your user guide — not a fix. Support for teens, adults, and careers, built around how autistic brains actually work.',
+    icon: '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 3v2m6-2v2M9 19v2m6-2v2M5 9H3m2 6H3m18-6h-2m2 6h-2M7 19h10a2 2 0 002-2V7a2 2 0 00-2-2H7a2 2 0 00-2 2v10a2 2 0 002 2zM9 9h6v6H9V9z" /></svg>',
+    link: '/services/asd',
+    featured: true,
+  },
+  {
+    title: 'LGBTQ+ Counselling',
+    description: 'Affirming therapy for individuals and couples. Identity, relationships, and community in a space where you don\'t have to explain who you are first.',
+    icon: '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4.318 6.318a4.5 4.5 0 000 6.364L12 20.364l7.682-7.682a4.5 4.5 0 00-6.364-6.364L12 7.636l-1.318-1.318a4.5 4.5 0 00-6.364 0z" /></svg>',
+    link: '/services/lgbtq',
+    featured: false,
+  },
+  {
     title: 'Individual Counselling',
-    description: 'One-on-one therapy for anxiety, depression, burnout, LGBTQ+ identity, and life transitions. Tailored to what you need, at your pace.',
+    description: 'One-on-one therapy for anxiety, depression, burnout, identity, and life transitions. Tailored to what you need, at your pace.',
     icon: '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z" /></svg>',
     link: '/services/individual',
     featured: false,
@@ -28,6 +35,13 @@ const services = [
     description: 'Navigate conflict, rebuild communication, and strengthen your relationship in a safe, structured space. 75-minute sessions for deeper work.',
     icon: '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z" /></svg>',
     link: '/services/couples',
+    featured: false,
+  },
+  {
+    title: 'DBT Therapy',
+    description: 'Evidence-based skills for managing intense emotions, tolerating distress, and building stronger relationships.',
+    icon: '<svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 6l3 1m0 0l-3 9a5.002 5.002 0 006.001 0M6 7l3 9M6 7l6-2m6 2l3-1m-3 1l-3 9a5.002 5.002 0 006.001 0M18 7l3 9m-3-9l-6-2m0-2v2m0 16V5m0 16H9m3 0h3" /></svg>',
+    link: '/services/dbt',
     featured: false,
   },
 ];
@@ -40,7 +54,7 @@ const services = [
       <p class="text-[var(--color-text-light)] mt-4 mx-auto">Every person's different — here's what I specialise in</p>
     </div>
 
-    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 reveal-stagger">
+    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6 reveal-stagger">
       {services.map((service) => (
         <div class="reveal-item">
           <ServiceCard {...service} />

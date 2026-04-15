@@ -45,10 +45,10 @@ const schema = JSON.stringify({
       '@type': 'LocalBusiness',
       '@id': 'https://jareddubbs.com/#business',
       name: 'Jared Dubbs Counselling',
-      description: 'DBT and ADHD specialist counsellor in Central, Hong Kong.',
+      description: 'Counsellor specialising in ADHD, autism, and LGBTQ+ affirming therapy in Central, Hong Kong.',
       url: 'https://jareddubbs.com',
       telephone: '+852 5775 3743',
-      email: 'jared@jareddubbs.com',
+      email: 'hello@jareddubbs.com',
       address: {
         '@type': 'PostalAddress',
         streetAddress: '10/F C Wisdom Centre, 37 Hollywood Road',
@@ -75,14 +75,14 @@ const schema = JSON.stringify({
 ---
 
 <BaseLayout
-  title="Jared Dubbs Counselling — DBT & ADHD Therapy in Central, Hong Kong"
-  description="Specialising in DBT and ADHD therapy for adults, teens, and couples in Central HK. Book a free consultation with a therapist who truly understands."
+  title="Jared Dubbs Counselling — ADHD, Autism & LGBTQ+ Therapy in Central, Hong Kong"
+  description="Counsellor in Central Hong Kong specialising in ADHD, autism, LGBTQ+ affirming therapy, and emotional regulation for adults, teens, and couples. Book a free consultation."
   schema={schema}
 >
   <!-- 1. Full-bleed cinematic hero -->
   <Hero
     title="You don't have to figure<br class='hidden md:block' /> it out alone."
-    subtitle="I'm Jared — a counsellor in Central Hong Kong specialising in DBT and ADHD. I help adults, teens, and couples build the skills to feel better, not just cope."
+    subtitle="I'm Jared — a counsellor in Central Hong Kong. I help adults, teens, and couples navigate ADHD, autism, emotional regulation, and life's toughest moments — not just cope, but genuinely feel better."
     ctaText="Book a Free Discovery Call"
     ctaLink="/book"
     secondaryCta="How I Can Help"
@@ -91,8 +91,8 @@ const schema = JSON.stringify({
     showTrustBar={true}
     trustItems={[
       "Master's in Counselling (Monash)",
-      'DBT Specialist',
       'ADHD Lived Experience',
+      'Autism & ASD Support',
       'LGBTQ+ Affirming',
       'SPACE Trained (Yale)',
     ]}
@@ -105,6 +105,58 @@ const schema = JSON.stringify({
   <div id="empathy">
     <EmpathyBridge />
   </div>
+
+  <!-- 3.5. What can we work on together — demographic pain points -->
+  <section class="py-16 md:py-20 bg-[var(--color-bg-alt)]">
+    <div class="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+      <div class="text-center mb-12 reveal">
+        <h2>What Can We Work on Together?</h2>
+        <p class="text-[var(--color-text-light)] mt-4">People come to therapy for all kinds of reasons. Here are some of the most common.</p>
+      </div>
+      <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 reveal-stagger">
+        <div class="reveal-item bg-white rounded-[var(--radius-lg)] p-6 border-t-4 border-[var(--color-primary)]">
+          <h3 class="text-lg font-bold mb-4">Men</h3>
+          <ul class="space-y-2 text-[var(--color-text-light)] text-[var(--text-sm)]">
+            <li class="flex items-start gap-2"><span class="text-[var(--color-primary)] mt-1 shrink-0">&#9679;</span>Anxiety and stress</li>
+            <li class="flex items-start gap-2"><span class="text-[var(--color-primary)] mt-1 shrink-0">&#9679;</span>Depression and mood issues</li>
+            <li class="flex items-start gap-2"><span class="text-[var(--color-primary)] mt-1 shrink-0">&#9679;</span>Self-esteem and identity</li>
+            <li class="flex items-start gap-2"><span class="text-[var(--color-primary)] mt-1 shrink-0">&#9679;</span>Relationship and family problems</li>
+            <li class="flex items-start gap-2"><span class="text-[var(--color-primary)] mt-1 shrink-0">&#9679;</span>Burnout and work pressure</li>
+          </ul>
+        </div>
+        <div class="reveal-item bg-white rounded-[var(--radius-lg)] p-6 border-t-4 border-[var(--color-gold)]">
+          <h3 class="text-lg font-bold mb-4">Women</h3>
+          <ul class="space-y-2 text-[var(--color-text-light)] text-[var(--text-sm)]">
+            <li class="flex items-start gap-2"><span class="text-[var(--color-gold)] mt-1 shrink-0">&#9679;</span>Anxiety and chronic stress</li>
+            <li class="flex items-start gap-2"><span class="text-[var(--color-gold)] mt-1 shrink-0">&#9679;</span>Depression and low mood</li>
+            <li class="flex items-start gap-2"><span class="text-[var(--color-gold)] mt-1 shrink-0">&#9679;</span>Relationship and family problems</li>
+            <li class="flex items-start gap-2"><span class="text-[var(--color-gold)] mt-1 shrink-0">&#9679;</span>Self-esteem and identity struggles</li>
+            <li class="flex items-start gap-2"><span class="text-[var(--color-gold)] mt-1 shrink-0">&#9679;</span>Trauma, grief, and life transitions</li>
+          </ul>
+        </div>
+        <div class="reveal-item bg-white rounded-[var(--radius-lg)] p-6 border-t-4 border-[var(--color-accent)]">
+          <h3 class="text-lg font-bold mb-4">Couples</h3>
+          <ul class="space-y-2 text-[var(--color-text-light)] text-[var(--text-sm)]">
+            <li class="flex items-start gap-2"><span class="text-[var(--color-accent)] mt-1 shrink-0">&#9679;</span>Communication breakdowns</li>
+            <li class="flex items-start gap-2"><span class="text-[var(--color-accent)] mt-1 shrink-0">&#9679;</span>Frequent conflicts and arguments</li>
+            <li class="flex items-start gap-2"><span class="text-[var(--color-accent)] mt-1 shrink-0">&#9679;</span>Trust issues and betrayal</li>
+            <li class="flex items-start gap-2"><span class="text-[var(--color-accent)] mt-1 shrink-0">&#9679;</span>Intimacy and connection</li>
+            <li class="flex items-start gap-2"><span class="text-[var(--color-accent)] mt-1 shrink-0">&#9679;</span>Parenting differences</li>
+          </ul>
+        </div>
+        <div class="reveal-item bg-white rounded-[var(--radius-lg)] p-6 border-t-4 border-[var(--color-secondary)]">
+          <h3 class="text-lg font-bold mb-4">Teens</h3>
+          <ul class="space-y-2 text-[var(--color-text-light)] text-[var(--text-sm)]">
+            <li class="flex items-start gap-2"><span class="text-[var(--color-secondary)] mt-1 shrink-0">&#9679;</span>Anxiety and school stress</li>
+            <li class="flex items-start gap-2"><span class="text-[var(--color-secondary)] mt-1 shrink-0">&#9679;</span>Depression and mood issues</li>
+            <li class="flex items-start gap-2"><span class="text-[var(--color-secondary)] mt-1 shrink-0">&#9679;</span>Self-esteem and body image</li>
+            <li class="flex items-start gap-2"><span class="text-[var(--color-secondary)] mt-1 shrink-0">&#9679;</span>Family conflict</li>
+            <li class="flex items-start gap-2"><span class="text-[var(--color-secondary)] mt-1 shrink-0">&#9679;</span>Grief, loss, and social challenges</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
 
   <!-- 4. Philosophy / approach statement -->
   <section class="bg-[var(--color-secondary)] py-20 md:py-28">

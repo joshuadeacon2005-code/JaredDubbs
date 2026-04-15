@@ -11,7 +11,7 @@ const allPosts = (await getCollection('blog')).sort(
 const featuredPost = allPosts[0];
 const remainingPosts = allPosts.slice(1);
 
-const categories = ['All', 'ADHD', 'DBT', 'Anxiety & Depression', 'Therapy & Wellbeing'];
+const categories = ['All', 'ADHD', 'ASD & Autism', 'LGBTQ+', 'DBT', 'Anxiety & Depression', 'Therapy & Wellbeing'];
 
 const categoryCounts: Record<string, number> = {};
 allPosts.forEach((p) => {
@@ -28,9 +28,9 @@ const schema = JSON.stringify({
 ---
 
 <BaseLayout
-  title="Blog — ADHD, DBT & Mental Health"
+  title="Blog — ADHD, Autism, LGBTQ+ & Mental Health"
   shortSuffix
-  description="Practical insights on ADHD, DBT, anxiety, depression, and mental health from a counsellor in Central Hong Kong."
+  description="Practical insights on ADHD, autism, LGBTQ+ identity, emotional regulation, and mental health from a counsellor in Central Hong Kong."
   schema={schema}
 >
   <section class="py-16 md:py-20">
@@ -38,7 +38,7 @@ const schema = JSON.stringify({
       <div class="text-center mb-12">
         <h1 class="mb-4">Blog</h1>
         <p class="text-[var(--color-text-light)] mx-auto max-w-2xl">
-          Practical insights on ADHD, DBT, anxiety, and mental health. Written by Jared Dubbs, MoC.
+          Practical insights on ADHD, autism, LGBTQ+ identity, and mental health. Written by Jared Dubbs, MoC.
         </p>
       </div>
 
