@@ -1,0 +1,7 @@
+name = "jaredbubbsv2"
+main = "src/worker.js"
+compatibility_date = "2026-04-15"
+compatibility_flags = ["global_fetch_strictly_public"]
+
+[assets]
+directory = "./dist"
