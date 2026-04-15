@@ -74,6 +74,16 @@
       .preview-pane p { margin-bottom: 0.75rem; line-height: 1.7; color: #555; }
       .preview-pane ul, .preview-pane ol { margin: 0.5rem 0 0.75rem 1.5rem; color: #555; }
 
+      /* Image upload */
+      .upload-area { border: 2px dashed #ddd; border-radius: 8px; padding: 1.5rem; text-align: center; cursor: pointer; transition: all 0.2s; position: relative; }
+      .upload-area:hover { border-color: #3d6b5e; background: #f0fdf4; }
+      .upload-area.has-image { border-style: solid; border-color: #3d6b5e; padding: 0.5rem; }
+      .upload-area input[type="file"] { position: absolute; inset: 0; opacity: 0; cursor: pointer; }
+      .upload-area .placeholder { color: #888; font-size: 0.875rem; }
+      .upload-area .placeholder svg { display: block; margin: 0 auto 0.5rem; }
+      .upload-preview { max-height: 200px; border-radius: 6px; object-fit: cover; width: 100%; }
+      .upload-status { font-size: 0.8125rem; margin-top: 0.5rem; color: #888; }
+
       .tab-bar { display: flex; gap: 0; margin-bottom: -1px; position: relative; z-index: 1; }
       .tab { padding: 0.5rem 1rem; border: 1px solid transparent; border-radius: 8px 8px 0 0; cursor: pointer; font-weight: 500; font-size: 0.875rem; color: #888; background: transparent; }
       .tab.active { background: white; border-color: #e8e6e1; border-bottom-color: white; color: #2c2c2c; }
@@ -148,6 +158,19 @@
           <label for="post-description">Description (for SEO)</label>
           <input type="text" id="post-description" placeholder="150 characters max — shows in Google results" maxlength="160" />
           <div class="help">Keep under 160 characters.</div>
+        </div>
+        <div class="field">
+          <label>Cover Image</label>
+          <div class="upload-area" id="upload-area" onclick="document.getElementById('post-image').click()">
+            <input type="file" id="post-image" accept="image/jpeg,image/png,image/webp" onchange="handleImageSelect(event)" />
+            <div id="upload-placeholder" class="placeholder">
+              <svg width="32" height="32" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" d="m2.25 15.75 5.159-5.159a2.25 2.25 0 0 1 3.182 0l5.159 5.159m-1.5-1.5 1.409-1.409a2.25 2.25 0 0 1 3.182 0l2.909 2.909M3.75 21h16.5A2.25 2.25 0 0 0 22.5 18.75V5.25A2.25 2.25 0 0 0 20.25 3H3.75A2.25 2.25 0 0 0 1.5 5.25v13.5A2.25 2.25 0 0 0 3.75 21Z" /></svg>
+              Click to upload or drag an image<br/>JPG, PNG, or WebP — recommended 1200x630px
+            </div>
+            <img id="upload-preview" class="upload-preview" style="display:none;" />
+          </div>
+          <div id="upload-status" class="upload-status"></div>
+          <div class="help">This image appears as the blog post cover on the blog listing and when shared on social media.</div>
         </div>
         <div class="field">
           <label>Content</label>
@@ -241,6 +264,8 @@ Your paragraph text here.
         await loadPosts();
       }
 
+      let pendingImage = null; // { filename, base64 }
+
       function showEditor() {
         document.getElementById('dashboard').classList.remove('active');
         document.getElementById('editor').classList.add('active');
@@ -251,6 +276,43 @@ Your paragraph text here.
         document.getElementById('post-readtime').value = '6 min read';
         document.getElementById('post-featured').checked = false;
         document.getElementById('editor-msg').className = 'msg';
+        // Reset image
+        pendingImage = null;
+        document.getElementById('post-image').value = '';
+        document.getElementById('upload-preview').style.display = 'none';
+        document.getElementById('upload-placeholder').style.display = '';
+        document.getElementById('upload-area').classList.remove('has-image');
+        document.getElementById('upload-status').textContent = '';
+      }
+
+      function handleImageSelect(event) {
+        const file = event.target.files[0];
+        if (!file) return;
+
+        // Validate size (max 5MB)
+        if (file.size > 5 * 1024 * 1024) {
+          document.getElementById('upload-status').textContent = 'Image too large — max 5MB.';
+          document.getElementById('upload-status').style.color = '#991b1b';
+          return;
+        }
+
+        const reader = new FileReader();
+        reader.onload = function(e) {
+          // Show preview
+          const preview = document.getElementById('upload-preview');
+          preview.src = e.target.result;
+          preview.style.display = 'block';
+          document.getElementById('upload-placeholder').style.display = 'none';
+          document.getElementById('upload-area').classList.add('has-image');
+          document.getElementById('upload-status').textContent = file.name + ' — ready to upload on publish';
+          document.getElementById('upload-status').style.color = '#166534';
+
+          // Store base64 (strip the data:image/xxx;base64, prefix)
+          const base64 = e.target.result.split(',')[1];
+          const ext = file.name.split('.').pop().toLowerCase();
+          pendingImage = { base64, ext };
+        };
+        reader.readAsDataURL(file);
       }
 
       function categoryBadgeClass(cat) {
@@ -321,9 +383,48 @@ Your paragraph text here.
         if (!body) { msg.className = 'msg error'; msg.textContent = 'Post content is required.'; return; }
 
         btn.disabled = true;
-        btn.textContent = 'Publishing...';
-
         const today = new Date().toISOString().split('T')[0];
+        const slug = title.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-|-$)/g, '');
+        let imagePath = '';
+
+        // Upload image first if one was selected
+        if (pendingImage) {
+          btn.textContent = 'Uploading image...';
+          const imgFilename = `blog-${slug}.${pendingImage.ext === 'png' ? 'png' : 'jpg'}`;
+
+          try {
+            const imgRes = await fetch('/api/admin/upload-image', {
+              method: 'POST',
+              headers: {
+                'Content-Type': 'application/json',
+                'Authorization': `Bearer ${token}`,
+              },
+              body: JSON.stringify({
+                filename: imgFilename,
+                content: pendingImage.base64,
+              }),
+            });
+
+            const imgData = await imgRes.json();
+            if (!imgRes.ok) {
+              msg.className = 'msg error';
+              msg.textContent = 'Image upload failed: ' + (imgData.error || 'Unknown error');
+              btn.disabled = false;
+              btn.textContent = 'Publish';
+              return;
+            }
+
+            imagePath = imgData.path;
+          } catch {
+            msg.className = 'msg error';
+            msg.textContent = 'Image upload failed. Check your connection.';
+            btn.disabled = false;
+            btn.textContent = 'Publish';
+            return;
+          }
+        }
+
+        btn.textContent = 'Publishing post...';
 
         try {
           const res = await fetch('/api/admin/publish', {
@@ -340,6 +441,7 @@ Your paragraph text here.
               date: today,
               featured,
               body,
+              image: imagePath || undefined,
             }),
           });
 
@@ -352,7 +454,7 @@ Your paragraph text here.
           }
 
           msg.className = 'msg success';
-          msg.textContent = `Published! The site will rebuild in a minute or two. Slug: ${data.slug}`;
+          msg.textContent = `Published! The site will rebuild in a minute or two.`;
 
           btn.textContent = 'Published!';
           setTimeout(() => showDashboard(), 3000);
