@@ -56,8 +56,8 @@ function getRepo(env) {
 // succeeds, the email just doesn't go out.
 async function notifyBooking(env, { name, email, phone, displayDate, displayTime }) {
   const resendKey = env.RESEND_API_KEY;
-  const to = env.ADMIN_EMAIL || 'hello@jareddubbs.com';
-  const from = env.RESEND_FROM || 'Jared Dubbs Bookings <onboarding@resend.dev>';
+  const to = env.NOTIFY_EMAIL || 'hello@jareddubbs.com';
+  const from = env.RESEND_FROM || 'Jared Dubbs <discovery@jareddubbs.com>';
 
   if (!resendKey) {
     console.log('Booking notification (RESEND_API_KEY not set):', {
