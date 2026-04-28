@@ -64,12 +64,40 @@ async function handleClinikoAvailableTimes(env) {
       return Response.json({ error: 'Booking system not configured', slots: {} });
     }
 
-    const practitionerId = env.CLINIKO_PRACTITIONER_ID;
-    const appointmentTypeId = env.CLINIKO_APPOINTMENT_TYPE_ID;
+    let practitionerId = env.CLINIKO_PRACTITIONER_ID;
+    let appointmentTypeId = env.CLINIKO_APPOINTMENT_TYPE_ID;
+
+    if (!practitionerId) {
+      const data = await clinikoGet('/practitioners', apiKey);
+      const practitioners = data.practitioners || [];
+      const jared = practitioners.find(
+        (p) =>
+          (p.first_name && p.first_name.toLowerCase().includes('jared')) ||
+          practitioners.length === 1
+      );
+      practitionerId = jared?.id;
+    }
+
+    if (!appointmentTypeId) {
+      const data = await clinikoGet('/appointment_types', apiKey);
+      const types = data.appointment_types || [];
+      const discovery = types.find(
+        (t) =>
+          t.name &&
+          (t.name.toLowerCase().includes('discovery') ||
+            t.name.toLowerCase().includes('introductory') ||
+            t.name.toLowerCase().includes('initial') ||
+            t.name.toLowerCase().includes('free') ||
+            (t.name.toLowerCase().includes('phone') && t.duration_in_minutes <= 20))
+      );
+      appointmentTypeId = discovery?.id;
+    }
+
     if (!practitionerId || !appointmentTypeId) {
       return Response.json({
-        error: 'Booking system not configured (missing practitioner or appointment type)',
+        error: 'Could not find practitioner or discovery-call appointment type in Cliniko',
         slots: {},
+        debug: { practitionerId, appointmentTypeId },
       });
     }
 
