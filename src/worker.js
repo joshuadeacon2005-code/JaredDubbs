@@ -2,7 +2,12 @@
 
 // ─── Shared helpers ───────────────────────────────────────────────────────────
 
-const CLINIKO_BASE = 'https://api.au2.cliniko.com/v1';
+// Cliniko API keys end with a shard suffix (e.g. -au4, -uk1). The matching
+// shard MUST be used in the API URL or every request 404s.
+function clinikoBase(apiKey) {
+  const shard = apiKey.split('-').pop();
+  return `https://api.${shard}.cliniko.com/v1`;
+}
 
 function clinikoHeaders(apiKey) {
   return {
@@ -14,7 +19,7 @@ function clinikoHeaders(apiKey) {
 }
 
 async function clinikoGet(path, apiKey) {
-  const res = await fetch(`${CLINIKO_BASE}${path}`, { headers: clinikoHeaders(apiKey) });
+  const res = await fetch(`${clinikoBase(apiKey)}${path}`, { headers: clinikoHeaders(apiKey) });
   if (!res.ok) {
     const text = await res.text();
     throw new Error(`Cliniko ${path} failed: ${res.status} ${text}`);
@@ -48,84 +53,115 @@ function getRepo(env) {
 
 // ─── Route handlers ───────────────────────────────────────────────────────────
 
+// Computes free 15-min discovery-call slots by subtracting Jared's existing
+// Cliniko appointments and unavailable blocks from a daily booking window.
+// Privacy: only `starts_at` and `ends_at` are read from Cliniko. Patient
+// names, IDs, notes, and appointment types are never accessed or returned.
 async function handleClinikoAvailableTimes(env) {
   try {
     const apiKey = env.CLINIKO_API_KEY;
     if (!apiKey) {
-      return Response.json({ error: 'Booking system not configured', slots: [] });
+      return Response.json({ error: 'Booking system not configured', slots: {} });
     }
 
-    let appointmentTypeId = env.CLINIKO_APPOINTMENT_TYPE_ID;
-    let practitionerId = env.CLINIKO_PRACTITIONER_ID;
-
-    if (!appointmentTypeId) {
-      const data = await clinikoGet('/appointment_types', apiKey);
-      const types = data.appointment_types || [];
-      const discovery = types.find(
-        (t) =>
-          t.name &&
-          (t.name.toLowerCase().includes('discovery') ||
-            t.name.toLowerCase().includes('initial') ||
-            t.name.toLowerCase().includes('free') ||
-            (t.name.toLowerCase().includes('phone') && t.duration_in_minutes <= 20))
-      );
-      appointmentTypeId = discovery?.id;
-    }
-
-    if (!practitionerId) {
-      const data = await clinikoGet('/practitioners', apiKey);
-      const practitioners = data.practitioners || [];
-      const jared = practitioners.find(
-        (p) =>
-          (p.first_name && p.first_name.toLowerCase().includes('jared')) ||
-          practitioners.length === 1
-      );
-      practitionerId = jared?.id;
-    }
-
-    if (!appointmentTypeId || !practitionerId) {
+    const practitionerId = env.CLINIKO_PRACTITIONER_ID;
+    const appointmentTypeId = env.CLINIKO_APPOINTMENT_TYPE_ID;
+    if (!practitionerId || !appointmentTypeId) {
       return Response.json({
-        error: 'Discovery call appointment type not found in Cliniko',
-        slots: [],
-        debug: { appointmentTypeId, practitionerId },
+        error: 'Booking system not configured (missing practitioner or appointment type)',
+        slots: {},
       });
     }
 
-    const from = new Date();
-    from.setDate(from.getDate() + 1);
-    const to = new Date();
-    to.setDate(to.getDate() + 15);
-    const fromStr = from.toISOString().split('T')[0];
-    const toStr = to.toISOString().split('T')[0];
+    const SLOT_MIN = 15;
+    const SLOT_MS = SLOT_MIN * 60 * 1000;
+    const MIN_NOTICE_MS = 48 * 60 * 60 * 1000;
+    const MAX_ADVANCE_MS = 28 * 24 * 60 * 60 * 1000;
+    const HKT_OFFSET_MS = 8 * 60 * 60 * 1000; // Hong Kong has no DST.
+    const HOUR_START = Number(env.BOOKING_HOUR_START) || 9;
+    const HOUR_END = Number(env.BOOKING_HOUR_END) || 21; // exclusive
 
-    const businessId = env.CLINIKO_BUSINESS_ID || '';
-    const businessParam = businessId ? `&business_id=${businessId}` : '';
+    const now = Date.now();
+    const windowStart = now + MIN_NOTICE_MS;
+    const windowEnd = now + MAX_ADVANCE_MS;
 
-    const data = await clinikoGet(
-      `/available_times?appointment_type_id=${appointmentTypeId}&practitioner_id=${practitionerId}&from=${fromStr}&to=${toStr}${businessParam}`,
-      apiKey
-    );
+    const base = clinikoBase(apiKey);
+    const headers = clinikoHeaders(apiKey);
+    const fromIso = new Date(windowStart - 24 * 60 * 60 * 1000).toISOString();
+    const toIso = new Date(windowEnd + 24 * 60 * 60 * 1000).toISOString();
+
+    const apptUrl = `${base}/individual_appointments?q[]=practitioner_id:=${practitionerId}&q[]=starts_at:<=${toIso}&q[]=ends_at:>=${fromIso}&per_page=100`;
+    const blockUrl = `${base}/unavailable_blocks?q[]=practitioner_id:=${practitionerId}&q[]=starts_at:<=${toIso}&q[]=ends_at:>=${fromIso}&per_page=100`;
+
+    const [apptData, blockData] = await Promise.all([
+      fetch(apptUrl, { headers }).then((r) => (r.ok ? r.json() : { individual_appointments: [] })),
+      fetch(blockUrl, { headers }).then((r) => (r.ok ? r.json() : { unavailable_blocks: [] })),
+    ]);
+
+    const busy = [];
+    for (const a of apptData.individual_appointments || []) {
+      busy.push([new Date(a.starts_at).getTime(), new Date(a.ends_at).getTime()]);
+    }
+    for (const b of blockData.unavailable_blocks || []) {
+      busy.push([new Date(b.starts_at).getTime(), new Date(b.ends_at).getTime()]);
+    }
+    busy.sort((a, b) => a[0] - b[0]);
+
+    function overlaps(slotStart, slotEnd) {
+      for (const [bs, be] of busy) {
+        if (bs >= slotEnd) return false;
+        if (be > slotStart) return true;
+      }
+      return false;
+    }
 
     const slotsByDate = {};
-    for (const slot of data.available_times || []) {
-      const date = slot.appointment_start.split('T')[0];
-      if (!slotsByDate[date]) slotsByDate[date] = [];
-      slotsByDate[date].push({
-        start: slot.appointment_start,
-        practitionerId,
-        appointmentTypeId,
-      });
+    // Walk one HKT day at a time. Convert to UTC for slot iteration since
+    // Cliniko returns ISO/UTC timestamps.
+    const firstHktMidnight = new Date(windowStart + HKT_OFFSET_MS);
+    firstHktMidnight.setUTCHours(0, 0, 0, 0);
+    let dayStartUtc = firstHktMidnight.getTime() - HKT_OFFSET_MS;
+
+    while (dayStartUtc < windowEnd) {
+      const winOpen = dayStartUtc + HOUR_START * 60 * 60 * 1000;
+      const winClose = dayStartUtc + HOUR_END * 60 * 60 * 1000;
+
+      for (let t = winOpen; t + SLOT_MS <= winClose; t += SLOT_MS) {
+        if (t < windowStart) continue;
+        if (t + SLOT_MS > windowEnd) break;
+        if (overlaps(t, t + SLOT_MS)) continue;
+
+        const date = new Date(t + HKT_OFFSET_MS).toISOString().split('T')[0];
+        if (!slotsByDate[date]) slotsByDate[date] = [];
+        slotsByDate[date].push({
+          start: new Date(t).toISOString(),
+          practitionerId,
+          appointmentTypeId,
+        });
+      }
+
+      dayStartUtc += 24 * 60 * 60 * 1000;
     }
 
-    return Response.json({
-      slots: slotsByDate,
-      appointmentTypeId,
-      practitionerId,
-      range: { from: fromStr, to: toStr },
-    }, { headers: { 'Cache-Control': 'public, max-age=300' } });
+    return Response.json(
+      {
+        slots: slotsByDate,
+        appointmentTypeId,
+        practitionerId,
+        range: {
+          from: new Date(windowStart).toISOString(),
+          to: new Date(windowEnd).toISOString(),
+        },
+      },
+      { headers: { 'Cache-Control': 'public, max-age=120' } }
+    );
   } catch (err) {
     console.error('Available times error:', err);
-    return Response.json({ error: 'Could not load available times', slots: [], message: err.message });
+    return Response.json({
+      error: 'Could not load available times',
+      slots: {},
+      message: err.message,
+    });
   }
 }
 
@@ -148,11 +184,12 @@ async function handleClinikoBook(request, env) {
     }
 
     const headers = clinikoHeaders(apiKey);
+    const base = clinikoBase(apiKey);
 
     // Find or create patient
     let patient;
     const searchRes = await fetch(
-      `${CLINIKO_BASE}/patients?q=email:=${encodeURIComponent(email)}`,
+      `${base}/patients?q=email:=${encodeURIComponent(email)}`,
       { headers }
     );
     if (searchRes.ok) {
@@ -164,7 +201,7 @@ async function handleClinikoBook(request, env) {
 
     if (!patient) {
       const nameParts = name.trim().split(' ');
-      const patientRes = await fetch(`${CLINIKO_BASE}/patients`, {
+      const patientRes = await fetch(`${base}/patients`, {
         method: 'POST',
         headers,
         body: JSON.stringify({
@@ -186,7 +223,7 @@ async function handleClinikoBook(request, env) {
     }
 
     // Book appointment
-    const appointmentRes = await fetch(`${CLINIKO_BASE}/individual_appointments`, {
+    const appointmentRes = await fetch(`${base}/individual_appointments`, {
       method: 'POST',
       headers,
       body: JSON.stringify({
@@ -286,7 +323,7 @@ async function handleIntake(request, env) {
     }
 
     const nameParts = name.trim().split(' ');
-    const patientRes = await fetch(`${CLINIKO_BASE}/patients`, {
+    const patientRes = await fetch(`${clinikoBase(apiKey)}/patients`, {
       method: 'POST',
       headers: clinikoHeaders(apiKey),
       body: JSON.stringify({
