@@ -147,6 +147,10 @@
       const dayNum = d.getDate();
       const month = d.toLocaleDateString('en-GB', { month: 'short' });
       const slotCount = state.slots[date].length;
+      const availability =
+        slotCount >= 10 ? { label: 'High', color: '#16a34a' } :
+        slotCount >= 4  ? { label: 'Medium', color: 'var(--color-primary)' } :
+                          { label: 'Low', color: '#d97706' };
 
       const btn = document.createElement('button');
       btn.type = 'button';
@@ -156,7 +160,7 @@
         <span class="block text-xs text-[var(--color-text-light)]">${dayName}</span>
         <span class="block text-lg font-bold text-[var(--color-secondary)]">${dayNum}</span>
         <span class="block text-xs text-[var(--color-text-light)]">${month}</span>
-        <span class="block text-xs text-[var(--color-primary)] mt-1">${slotCount} slot${slotCount > 1 ? 's' : ''}</span>
+        <span class="block text-xs mt-1" style="color: ${availability.color}">${availability.label}</span>
       `;
       btn.addEventListener('click', () => selectDate(date));
       grid.appendChild(btn);

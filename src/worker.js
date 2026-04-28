@@ -51,6 +51,66 @@ function getRepo(env) {
   return env.GITHUB_REPO || 'joshuadeacon2005-code/JaredDubbs';
 }
 
+// Sends Jared an email when a discovery call is booked. Uses Resend; if
+// RESEND_API_KEY is unset, logs and returns silently — the booking still
+// succeeds, the email just doesn't go out.
+async function notifyBooking(env, { name, email, phone, displayDate, displayTime }) {
+  const resendKey = env.RESEND_API_KEY;
+  const to = env.ADMIN_EMAIL || 'hello@jareddubbs.com';
+  const from = env.RESEND_FROM || 'Jared Dubbs Bookings <onboarding@resend.dev>';
+
+  if (!resendKey) {
+    console.log('Booking notification (RESEND_API_KEY not set):', {
+      name, email, phone, displayDate, displayTime,
+    });
+    return;
+  }
+
+  const escape = (s) =>
+    String(s).replace(/[&<>"']/g, (c) => ({
+      '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+    })[c]);
+
+  const html = `
+    <h2>New discovery call booked</h2>
+    <p><strong>${escape(name)}</strong> just booked a 15-minute discovery call.</p>
+    <p><strong>When:</strong> ${escape(displayDate)} at ${escape(displayTime)} (HKT)</p>
+    <p><strong>Email:</strong> <a href="mailto:${escape(email)}">${escape(email)}</a></p>
+    ${phone ? `<p><strong>Phone:</strong> ${escape(phone)}</p>` : ''}
+    <p>The appointment has been added to your Cliniko calendar.</p>
+  `;
+  const text =
+    `New discovery call booked\n\n` +
+    `${name} just booked a 15-minute discovery call.\n\n` +
+    `When: ${displayDate} at ${displayTime} (HKT)\n` +
+    `Email: ${email}\n` +
+    (phone ? `Phone: ${phone}\n` : '') +
+    `\nThe appointment has been added to your Cliniko calendar.`;
+
+  try {
+    const res = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: {
+        Authorization: `Bearer ${resendKey}`,
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify({
+        from,
+        to: [to],
+        reply_to: email,
+        subject: `New discovery call — ${displayDate} at ${displayTime} HKT`,
+        html,
+        text,
+      }),
+    });
+    if (!res.ok) {
+      console.error('Resend send failed:', res.status, await res.text());
+    }
+  } catch (err) {
+    console.error('Resend error:', err);
+  }
+}
+
 // ─── Route handlers ───────────────────────────────────────────────────────────
 
 // Computes free 15-min discovery-call slots by subtracting Jared's existing
@@ -285,6 +345,8 @@ async function handleClinikoBook(request, env) {
     const displayTime = startDate.toLocaleTimeString('en-GB', {
       hour: '2-digit', minute: '2-digit', hour12: true, timeZone: 'Asia/Hong_Kong',
     });
+
+    await notifyBooking(env, { name, email, phone, displayDate, displayTime });
 
     return Response.json({
       success: true,
