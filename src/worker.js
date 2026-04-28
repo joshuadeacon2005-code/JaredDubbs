@@ -164,7 +164,7 @@ async function handleClinikoAvailableTimes(env) {
     const CALL_DURATION_MS = 15 * 60 * 1000; // each discovery call is 15 minutes
     const STEP_MS = 30 * 60 * 1000;          // offer slots every 30 min (9:00, 9:30, 10:00…)
     const BUFFER_MS = 30 * 60 * 1000;        // 30-min buffer either side of patient appointments
-    const MIN_NOTICE_MS = 48 * 60 * 60 * 1000;
+    const MIN_NOTICE_MS = 24 * 60 * 60 * 1000;
     const MAX_ADVANCE_MS = 28 * 24 * 60 * 60 * 1000;
     const HKT_OFFSET_MS = 8 * 60 * 60 * 1000; // Hong Kong has no DST.
     const HOUR_START = Number(env.BOOKING_HOUR_START) || 9;
@@ -280,32 +280,10 @@ async function handleClinikoBook(request, env) {
     const headers = clinikoHeaders(apiKey);
     const base = clinikoBase(apiKey);
 
-    // Reject if the requested slot overlaps a patient appointment ±30 min.
-    // The available-times endpoint already hides those slots; this re-checks
-    // server-side to defend against stale client caches and direct API hits.
-    const BUFFER_MS = 30 * 60 * 1000;
-    const CALL_DURATION_MS = 15 * 60 * 1000;
-    const slotStartMs = new Date(appointmentStart).getTime();
-    const slotEndMs = slotStartMs + CALL_DURATION_MS;
-    const checkFrom = new Date(slotStartMs - BUFFER_MS - 60 * 60 * 1000).toISOString();
-    const checkTo = new Date(slotEndMs + BUFFER_MS + 60 * 60 * 1000).toISOString();
-    const conflictUrl =
-      `${base}/individual_appointments?q[]=practitioner_id:=${practitionerId}` +
-      `&q[]=starts_at:<=${checkTo}&q[]=ends_at:>=${checkFrom}&per_page=10`;
-    const conflictRes = await fetch(conflictUrl, { headers });
-    if (conflictRes.ok) {
-      const data = await conflictRes.json();
-      for (const a of data.individual_appointments || []) {
-        const bs = new Date(a.starts_at).getTime() - BUFFER_MS;
-        const be = new Date(a.ends_at).getTime() + BUFFER_MS;
-        if (bs < slotEndMs && be > slotStartMs) {
-          return Response.json(
-            { error: 'This time is no longer available. Please choose another time.' },
-            { status: 409 }
-          );
-        }
-      }
-    }
+    // The slot-presentation logic in /available-times already enforces the
+    // 30-min buffer, and Cliniko itself rejects double-bookings with 422/409
+    // (handled below). No extra conflict check here — it caused false
+    // positives that blocked legitimate slots.
 
     // Find or create patient
     let patient;
