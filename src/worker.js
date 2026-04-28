@@ -161,8 +161,9 @@ async function handleClinikoAvailableTimes(env) {
       });
     }
 
-    const SLOT_MIN = 15;
-    const SLOT_MS = SLOT_MIN * 60 * 1000;
+    const CALL_DURATION_MS = 15 * 60 * 1000; // each discovery call is 15 minutes
+    const STEP_MS = 30 * 60 * 1000;          // offer slots every 30 min (9:00, 9:30, 10:00…)
+    const BUFFER_MS = 30 * 60 * 1000;        // 30-min buffer either side of patient appointments
     const MIN_NOTICE_MS = 48 * 60 * 60 * 1000;
     const MAX_ADVANCE_MS = 28 * 24 * 60 * 60 * 1000;
     const HKT_OFFSET_MS = 8 * 60 * 60 * 1000; // Hong Kong has no DST.
@@ -186,26 +187,24 @@ async function handleClinikoAvailableTimes(env) {
       fetch(blockUrl, { headers }).then((r) => (r.ok ? r.json() : { unavailable_blocks: [] })),
     ]);
 
-    const busy = [];
-    // Days (HKT) on which Jared already has a patient appointment — no
-    // discovery calls offered on those days.
-    const blockedDates = new Set();
+    // Patient appointments get a 30-min buffer on each side so Jared doesn't
+    // end one session and walk straight into a discovery call. Unavailable
+    // blocks (lunch, supervision, holidays) only block the time they cover.
+    const busyAppts = [];
+    const busyBlocks = [];
     for (const a of apptData.individual_appointments || []) {
-      const start = new Date(a.starts_at).getTime();
-      const end = new Date(a.ends_at).getTime();
-      busy.push([start, end]);
-      blockedDates.add(new Date(start + HKT_OFFSET_MS).toISOString().split('T')[0]);
-      blockedDates.add(new Date(end + HKT_OFFSET_MS).toISOString().split('T')[0]);
+      busyAppts.push([new Date(a.starts_at).getTime(), new Date(a.ends_at).getTime()]);
     }
     for (const b of blockData.unavailable_blocks || []) {
-      busy.push([new Date(b.starts_at).getTime(), new Date(b.ends_at).getTime()]);
+      busyBlocks.push([new Date(b.starts_at).getTime(), new Date(b.ends_at).getTime()]);
     }
-    busy.sort((a, b) => a[0] - b[0]);
 
     function overlaps(slotStart, slotEnd) {
-      for (const [bs, be] of busy) {
-        if (bs >= slotEnd) return false;
-        if (be > slotStart) return true;
+      for (const [bs, be] of busyAppts) {
+        if (bs - BUFFER_MS < slotEnd && be + BUFFER_MS > slotStart) return true;
+      }
+      for (const [bs, be] of busyBlocks) {
+        if (bs < slotEnd && be > slotStart) return true;
       }
       return false;
     }
@@ -219,20 +218,13 @@ async function handleClinikoAvailableTimes(env) {
 
     while (dayStartUtc < windowEnd) {
       const dateStr = new Date(dayStartUtc + HKT_OFFSET_MS).toISOString().split('T')[0];
-
-      // Skip the entire day if Jared already has a patient appointment on it.
-      if (blockedDates.has(dateStr)) {
-        dayStartUtc += 24 * 60 * 60 * 1000;
-        continue;
-      }
-
       const winOpen = dayStartUtc + HOUR_START * 60 * 60 * 1000;
       const winClose = dayStartUtc + HOUR_END * 60 * 60 * 1000;
 
-      for (let t = winOpen; t + SLOT_MS <= winClose; t += SLOT_MS) {
+      for (let t = winOpen; t + CALL_DURATION_MS <= winClose; t += STEP_MS) {
         if (t < windowStart) continue;
-        if (t + SLOT_MS > windowEnd) break;
-        if (overlaps(t, t + SLOT_MS)) continue;
+        if (t + CALL_DURATION_MS > windowEnd) break;
+        if (overlaps(t, t + CALL_DURATION_MS)) continue;
 
         if (!slotsByDate[dateStr]) slotsByDate[dateStr] = [];
         slotsByDate[dateStr].push({
@@ -288,26 +280,30 @@ async function handleClinikoBook(request, env) {
     const headers = clinikoHeaders(apiKey);
     const base = clinikoBase(apiKey);
 
-    // Reject if Jared already has a patient appointment on this HKT day.
-    // The available-times endpoint already hides those days, but we re-check
-    // here to defend against stale client caches and direct-API attempts.
-    const HKT_OFFSET_MS = 8 * 60 * 60 * 1000;
-    const slotMs = new Date(appointmentStart).getTime();
-    const dayStartHkt = new Date(slotMs + HKT_OFFSET_MS);
-    dayStartHkt.setUTCHours(0, 0, 0, 0);
-    const dayStartUtc = new Date(dayStartHkt.getTime() - HKT_OFFSET_MS).toISOString();
-    const dayEndUtc = new Date(dayStartHkt.getTime() - HKT_OFFSET_MS + 24 * 60 * 60 * 1000).toISOString();
-    const dayCheckUrl =
+    // Reject if the requested slot overlaps a patient appointment ±30 min.
+    // The available-times endpoint already hides those slots; this re-checks
+    // server-side to defend against stale client caches and direct API hits.
+    const BUFFER_MS = 30 * 60 * 1000;
+    const CALL_DURATION_MS = 15 * 60 * 1000;
+    const slotStartMs = new Date(appointmentStart).getTime();
+    const slotEndMs = slotStartMs + CALL_DURATION_MS;
+    const checkFrom = new Date(slotStartMs - BUFFER_MS - 60 * 60 * 1000).toISOString();
+    const checkTo = new Date(slotEndMs + BUFFER_MS + 60 * 60 * 1000).toISOString();
+    const conflictUrl =
       `${base}/individual_appointments?q[]=practitioner_id:=${practitionerId}` +
-      `&q[]=starts_at:<=${dayEndUtc}&q[]=ends_at:>=${dayStartUtc}&per_page=1`;
-    const dayCheckRes = await fetch(dayCheckUrl, { headers });
-    if (dayCheckRes.ok) {
-      const dayCheck = await dayCheckRes.json();
-      if ((dayCheck.individual_appointments || []).length > 0) {
-        return Response.json(
-          { error: 'This day is no longer available. Please choose another time.' },
-          { status: 409 }
-        );
+      `&q[]=starts_at:<=${checkTo}&q[]=ends_at:>=${checkFrom}&per_page=10`;
+    const conflictRes = await fetch(conflictUrl, { headers });
+    if (conflictRes.ok) {
+      const data = await conflictRes.json();
+      for (const a of data.individual_appointments || []) {
+        const bs = new Date(a.starts_at).getTime() - BUFFER_MS;
+        const be = new Date(a.ends_at).getTime() + BUFFER_MS;
+        if (bs < slotEndMs && be > slotStartMs) {
+          return Response.json(
+            { error: 'This time is no longer available. Please choose another time.' },
+            { status: 409 }
+          );
+        }
       }
     }
 

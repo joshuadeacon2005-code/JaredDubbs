@@ -148,8 +148,8 @@
       const month = d.toLocaleDateString('en-GB', { month: 'short' });
       const slotCount = state.slots[date].length;
       const availability =
-        slotCount >= 10 ? { label: 'High', color: '#16a34a' } :
-        slotCount >= 4  ? { label: 'Medium', color: 'var(--color-primary)' } :
+        slotCount >= 12 ? { label: 'High', color: '#16a34a' } :
+        slotCount >= 5  ? { label: 'Medium', color: 'var(--color-primary)' } :
                           { label: 'Low', color: '#d97706' };
 
       const btn = document.createElement('button');
