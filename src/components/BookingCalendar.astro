@@ -27,6 +27,12 @@
     <div id="cal-dates">
       <p class="font-medium text-[var(--color-text)] mb-3">Select a date:</p>
       <div id="cal-date-grid" class="grid grid-cols-3 sm:grid-cols-4 md:grid-cols-5 gap-2"></div>
+      <button type="button" id="cal-show-more" class="hidden mt-3 inline-flex items-center gap-1 text-[var(--color-primary)] font-medium text-[var(--text-sm)] no-underline hover:underline">
+        <span id="cal-show-more-text">Show more dates</span>
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7" />
+        </svg>
+      </button>
     </div>
 
     <!-- Step 2: Time selection -->
@@ -136,12 +142,16 @@
     }
   }
 
+  // Show roughly 2 rows of dates initially (fits 2 rows at md+ breakpoint,
+  // a bit more on mobile). Rest are revealed by the "Show more" button.
+  const VISIBLE_INITIAL = 10;
+
   function renderDates() {
     const grid = $('cal-date-grid')!;
     grid.innerHTML = '';
     const dates = Object.keys(state.slots).sort();
 
-    for (const date of dates) {
+    dates.forEach((date, i) => {
       const d = new Date(date + 'T00:00:00');
       const dayName = d.toLocaleDateString('en-GB', { weekday: 'short' });
       const dayNum = d.getDate();
@@ -156,6 +166,7 @@
       btn.type = 'button';
       btn.className =
         'p-3 rounded-[var(--radius)] border border-[var(--color-bg-alt)] hover:border-[var(--color-primary)] hover:bg-[var(--color-primary)]/5 transition-all text-center min-h-[44px]';
+      if (i >= VISIBLE_INITIAL) btn.classList.add('hidden', 'date-overflow');
       btn.innerHTML = `
         <span class="block text-xs text-[var(--color-text-light)]">${dayName}</span>
         <span class="block text-lg font-bold text-[var(--color-secondary)]">${dayNum}</span>
@@ -164,8 +175,23 @@
       `;
       btn.addEventListener('click', () => selectDate(date));
       grid.appendChild(btn);
+    });
+
+    const showMore = $('cal-show-more');
+    const showMoreText = $('cal-show-more-text');
+    const hidden = dates.length - VISIBLE_INITIAL;
+    if (hidden > 0) {
+      showMore!.classList.remove('hidden');
+      showMoreText!.textContent = `Show ${hidden} more date${hidden === 1 ? '' : 's'}`;
+    } else {
+      showMore?.classList.add('hidden');
     }
   }
+
+  $('cal-show-more')?.addEventListener('click', () => {
+    document.querySelectorAll('.date-overflow').forEach((el) => el.classList.remove('hidden'));
+    $('cal-show-more')!.classList.add('hidden');
+  });
 
   function selectDate(date: string) {
     state.selectedDate = date;
