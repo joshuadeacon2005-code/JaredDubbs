@@ -321,15 +321,21 @@ async function handleClinikoBook(request, env) {
       patient = await patientRes.json();
     }
 
-    // Book appointment
+    // Book appointment. Cliniko requires starts_at + ends_at + business_id
+    // (not appointment_start as the older code assumed).
+    const startsAt = new Date(appointmentStart).toISOString();
+    const endsAt = new Date(new Date(appointmentStart).getTime() + 15 * 60 * 1000).toISOString();
+    const businessId = env.CLINIKO_BUSINESS_ID || '1407190363445142825';
     const appointmentRes = await fetch(`${base}/individual_appointments`, {
       method: 'POST',
       headers,
       body: JSON.stringify({
-        appointment_start: appointmentStart,
+        starts_at: startsAt,
+        ends_at: endsAt,
         appointment_type_id: appointmentTypeId,
         practitioner_id: practitionerId,
         patient_id: patient.id,
+        business_id: businessId,
         notes: 'Booked via website — 15-min free discovery call',
       }),
     });
