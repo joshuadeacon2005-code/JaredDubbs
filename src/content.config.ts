@@ -15,4 +15,18 @@ const blog = defineCollection({
   }),
 });
 
-export const collections = { blog };
+// Editable text blocks managed via the admin. Each JSON file in
+// src/content/site-copy/ becomes one entry, keyed by filename (slug).
+// Frontend code MUST always include the original hardcoded text as a
+// fallback so the page never renders an empty string.
+const siteCopy = defineCollection({
+  loader: glob({ pattern: '**/*.json', base: './src/content/site-copy' }),
+  schema: z.object({
+    label: z.string(),
+    body: z.string(),
+    page: z.string(),
+    updated: z.string().optional(),
+  }),
+});
+
+export const collections = { blog, siteCopy };

@@ -10,6 +10,20 @@ import HowItWorks from '../components/HowItWorks.astro';
 import BlogPreview from '../components/BlogPreview.astro';
 import HomeFAQ from '../components/HomeFAQ.astro';
 import FinalCTA from '../components/FinalCTA.astro';
+import { siteCopy } from '../lib/site-copy';
+
+const heroHeadline = await siteCopy(
+  'homepage_hero_headline',
+  "You don't have to figure it out alone."
+);
+const heroSubheadline = await siteCopy(
+  'homepage_hero_subheadline',
+  "I'm Jared — a counsellor in Central Hong Kong. I help adults, teens, and couples navigate ADHD, autism, emotional regulation, and life's toughest moments — not just cope, but genuinely feel better."
+);
+const philosophyQuote = await siteCopy(
+  'homepage_philosophy_quote',
+  "I don't believe in one-size-fits-all therapy. I believe in meeting you exactly where you are — and building from there."
+);
 
 const testimonials = [
   {
@@ -81,8 +95,8 @@ const schema = JSON.stringify({
 >
   <!-- 1. Full-bleed cinematic hero -->
   <Hero
-    title="You don't have to figure<br class='hidden md:block' /> it out alone."
-    subtitle="I'm Jared — a counsellor in Central Hong Kong. I help adults, teens, and couples navigate ADHD, autism, emotional regulation, and life's toughest moments — not just cope, but genuinely feel better."
+    title={heroHeadline}
+    subtitle={heroSubheadline}
     ctaText="Book a Free Discovery Call"
     ctaLink="/book"
     secondaryCta="How I Can Help"
@@ -90,11 +104,11 @@ const schema = JSON.stringify({
     bgImage="/images/jared-hero.png"
     showTrustBar={true}
     trustItems={[
-      "Master's in Counselling (Monash)",
-      'ADHD Lived Experience',
-      'Autism & ASD Support',
-      'LGBTQ+ Affirming',
-      'SPACE Trained (Yale)',
+      { label: "Master's in Counselling (Monash)", href: '/about' },
+      { label: 'ADHD Lived Experience', href: '/services/adhd' },
+      { label: 'Autism & ASD Support', href: '/services/asd' },
+      { label: 'LGBTQ+ Affirming', href: '/services/lgbtq' },
+      { label: 'SPACE Trained (Yale)', href: '/services/asd' },
     ]}
   />
 
@@ -163,7 +177,7 @@ const schema = JSON.stringify({
     <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 text-center reveal">
       <div class="w-12 h-1 bg-[var(--color-accent-light)] rounded-full mx-auto mb-8"></div>
       <blockquote class="text-white text-2xl md:text-3xl font-light leading-relaxed italic" style="font-family: var(--font-serif)">
-        "I don't believe in one-size-fits-all therapy. I believe in meeting you exactly where you are — and building from there."
+        "{philosophyQuote}"
       </blockquote>
       <p class="text-[var(--color-accent-light)] mt-8 font-medium tracking-wide text-[var(--text-sm)] uppercase">— Jared Dubbs</p>
     </div>

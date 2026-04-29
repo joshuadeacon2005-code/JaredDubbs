@@ -378,6 +378,32 @@
     }
 
     .tab:hover { color: var(--secondary); }
+
+    /* Settings tab */
+    .settings-prose { font-size: 0.95rem; line-height: 1.6; color: var(--text); }
+    .settings-prose p { margin-bottom: 0.75rem; }
+    .settings-prose ol, .settings-prose ul { margin: 0.5rem 0 0.75rem 1.25rem; }
+    .settings-prose ol li, .settings-prose ul li { margin-bottom: 0.4rem; }
+    .settings-prose code {
+      background: var(--bg-alt);
+      padding: 0.1rem 0.4rem;
+      border-radius: 4px;
+      font-family: 'SF Mono', Menlo, Consolas, monospace;
+      font-size: 0.85em;
+      color: var(--secondary);
+    }
+    .settings-prose a { color: var(--primary); text-decoration: none; font-weight: 600; }
+    .settings-prose a:hover { text-decoration: underline; }
+    .settings-prose strong { color: var(--secondary); }
+    .callout {
+      border-left: 3px solid var(--primary);
+      background: rgba(155,133,68,0.06);
+      padding: 0.75rem 1rem;
+      border-radius: 0 6px 6px 0;
+      margin: 0.75rem 0;
+      font-size: 0.9rem;
+    }
+    .callout strong { display: block; margin-bottom: 0.25rem; color: var(--primary); }
   </style>
 </head>
 <body>
@@ -410,6 +436,8 @@
     <div class="tabs">
       <button class="tab active" data-tab="new">New Post</button>
       <button class="tab" data-tab="existing">Existing Posts</button>
+      <button class="tab" data-tab="copy">Site Copy</button>
+      <button class="tab" data-tab="settings">Settings</button>
     </div>
 
     <!-- New Post Form -->
@@ -495,6 +523,169 @@
         <ul class="posts-list" id="posts-list"></ul>
       </div>
     </div>
+
+    <!-- Settings Tab -->
+    <div id="tab-settings" style="display:none">
+
+      <div class="form-section">
+        <h2>Your password</h2>
+        <div class="settings-prose">
+          <p>Your admin password is stored as a Cloudflare Worker <strong>secret</strong>. To rotate it:</p>
+          <ol>
+            <li>Open the
+              <a href="https://dash.cloudflare.com/?to=/:account/workers/services/view/jaredbubbsv2/production/settings" target="_blank" rel="noopener">Cloudflare Worker settings page</a>.
+            </li>
+            <li>Scroll to <strong>Variables and Secrets</strong>.</li>
+            <li>Find <code>ADMIN_PASSWORD</code>, click <strong>Edit</strong>, set a new value, save.</li>
+            <li>Wait ~30 seconds for the change to propagate, then come back here and log in with the new password.</li>
+          </ol>
+          <div class="callout">
+            <strong>This logs out every device.</strong>
+            Old admin sessions stop working the moment the password changes. There's no way to log out a single other browser without rotating — but rotating is fine and instant.
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h2>Block out time on your calendar</h2>
+        <div class="settings-prose">
+          <p>The website pulls availability from your Cliniko calendar. To stop the booking page from offering specific times:</p>
+          <ol>
+            <li>Open <a href="https://au4.cliniko.com" target="_blank" rel="noopener">Cliniko</a> and go to <strong>Calendar</strong>.</li>
+            <li>Click and drag on an empty area to create an <strong>Unavailable block</strong>.</li>
+            <li>Use that for lunch breaks, supervision, holidays, "no Mondays this month" — anything you don't want booked.</li>
+            <li>For recurring blocks (e.g. lunch every weekday), tick <strong>Repeat</strong> when creating it.</li>
+          </ol>
+          <p>The website checks your Cliniko availability live, so changes show up on the next page load.</p>
+          <div class="callout">
+            <strong>Already-booked patient appointments</strong> are blocked automatically with a 30-minute buffer either side. You don't need to do anything for those.
+          </div>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h2>Change discovery call length or hours</h2>
+        <div class="settings-prose">
+          <p><strong>Length of the call</strong> (currently 15 minutes) — set on the appointment type in Cliniko:</p>
+          <ol>
+            <li>Cliniko → <strong>Settings</strong> → <strong>Appointment types</strong>.</li>
+            <li>Open the discovery / introductory call type.</li>
+            <li>Change <strong>Duration</strong>, save.</li>
+          </ol>
+          <p><strong>Booking hours</strong> (currently 9am to 9pm Hong Kong time) — set as Cloudflare Worker variables:</p>
+          <ol>
+            <li>Open the
+              <a href="https://dash.cloudflare.com/?to=/:account/workers/services/view/jaredbubbsv2/production/settings" target="_blank" rel="noopener">Cloudflare Worker settings page</a>.</li>
+            <li>Under <strong>Variables and Secrets</strong>, find or add:
+              <ul>
+                <li><code>BOOKING_HOUR_START</code> — first hour of the booking window (9 = 9:00am)</li>
+                <li><code>BOOKING_HOUR_END</code> — first hour <em>not</em> offered (21 = last slot ends 9:00pm)</li>
+              </ul>
+            </li>
+            <li>Save. Changes are live in ~30 seconds.</li>
+          </ol>
+          <p>The website always offers slots in 30-minute steps within those hours, on any day Cliniko shows you as available.</p>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h2>Pause online bookings</h2>
+        <div class="settings-prose">
+          <p>If you need to stop the website from accepting bookings entirely (going on extended leave, system maintenance, etc.):</p>
+          <ol>
+            <li>Cliniko → <strong>Settings</strong> → <strong>Appointment types</strong> → open the discovery call type.</li>
+            <li>Untick <strong>Show in online bookings</strong>, save.</li>
+            <li>The website will show "Online booking is currently unavailable" and offer phone / WhatsApp instead.</li>
+          </ol>
+          <p>To restart bookings, re-tick the same checkbox.</p>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h2>Where booking notification emails go</h2>
+        <div class="settings-prose">
+          <p>When someone books a discovery call, an email is sent to <code>hello@jareddubbs.com</code> by default. To send to a different address:</p>
+          <ol>
+            <li>Open the
+              <a href="https://dash.cloudflare.com/?to=/:account/workers/services/view/jaredbubbsv2/production/settings" target="_blank" rel="noopener">Cloudflare Worker settings page</a>.</li>
+            <li>Set <code>NOTIFY_EMAIL</code> to the address you want.</li>
+            <li>Save. Live in ~30 seconds.</li>
+          </ol>
+          <p>The email is sent via <a href="https://resend.com" target="_blank" rel="noopener">Resend</a>. If you ever rotate that key, update <code>RESEND_API_KEY</code> the same way.</p>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h2>If bookings stop working</h2>
+        <div class="settings-prose">
+          <p>The booking page reads from Cliniko live. If the calendar shows "Online booking is currently unavailable" or no times appear, work through these in order:</p>
+          <ol>
+            <li><strong>Check Cliniko itself.</strong> Log in to <a href="https://au4.cliniko.com" target="_blank" rel="noopener">Cliniko</a> and confirm: appointment type still exists, you're still listed as a practitioner, your business is still active.</li>
+            <li><strong>Check your free time.</strong> If your calendar is fully booked or fully blocked for the next 4 weeks, the website will show no slots. Add unavailable blocks back if you've removed something Cliniko was treating as available.</li>
+            <li><strong>API key rotated?</strong> If you regenerated the Cliniko API key, update <code>CLINIKO_API_KEY</code> in the
+              <a href="https://dash.cloudflare.com/?to=/:account/workers/services/view/jaredbubbsv2/production/settings" target="_blank" rel="noopener">Worker settings</a>.
+              The key ends in <code>-au4</code> (or another shard) — that suffix matters; the website uses it to find the right Cliniko region.
+            </li>
+            <li><strong>Renamed the appointment type?</strong> The website finds the discovery call by looking for "discovery", "introductory", "initial", or "free" in the name. If you've renamed it to something else (e.g. "Phone consult"), either rename it back or set <code>CLINIKO_APPOINTMENT_TYPE_ID</code> in Worker settings to lock it explicitly.</li>
+            <li><strong>Still broken?</strong> Send the developer the URL <code>jareddubbs.com/api/cliniko/available-times</code> response (open it in a browser tab) — the JSON shows exactly what's failing.</li>
+          </ol>
+        </div>
+      </div>
+
+      <div class="form-section">
+        <h2>Editing other things on the site</h2>
+        <div class="settings-prose">
+          <p><strong>Editable from this admin:</strong></p>
+          <ul>
+            <li>Blog posts — <strong>New Post</strong> and <strong>Existing Posts</strong> tabs.</li>
+            <li>Specific pieces of page text — <strong>Site Copy</strong> tab.</li>
+          </ul>
+          <p><strong>Needs a developer to change:</strong></p>
+          <ul>
+            <li>The credentials bar at the top of the homepage (Master's, ADHD, Autism, LGBTQ+, SPACE).</li>
+            <li>Navigation menu items.</li>
+            <li>Footer links and contact details.</li>
+            <li>Page layouts and adding/removing sections.</li>
+            <li>Service pages beyond their intro paragraph (testimonials, FAQ, etc.).</li>
+            <li>Images and photos.</li>
+          </ul>
+          <p>If you need any of those changed, message the developer with what you'd like and where it is on the site.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- Site Copy Tab -->
+    <div id="tab-copy" style="display:none">
+      <!-- List view -->
+      <div id="copy-list-view">
+        <div class="form-section" style="background:transparent;box-shadow:none;padding:0 0 1rem">
+          <p style="color:var(--text-light);font-size:0.9rem;margin-bottom:0">
+            Edit the text shown on the live site. Saves commit to GitHub and the site
+            rebuilds in about a minute.
+          </p>
+        </div>
+        <div id="copy-loading" style="text-align:center;padding:2rem;color:var(--text-light)">Loading copy blocks...</div>
+        <div id="copy-groups"></div>
+      </div>
+
+      <!-- Edit view (hidden until a block is opened) -->
+      <div id="copy-edit-view" style="display:none">
+        <div class="form-section">
+          <h2 id="copy-edit-page" style="margin-bottom:0.25rem">Page</h2>
+          <h3 id="copy-edit-label" style="font-size:1.05rem;color:var(--secondary);margin-bottom:1rem"></h3>
+          <div class="field">
+            <label for="copy-edit-body">Text</label>
+            <textarea id="copy-edit-body" rows="6" style="min-height:140px;font-family:var(--font);line-height:1.5"></textarea>
+            <div class="hint" id="copy-edit-meta" style="margin-top:0.5rem"></div>
+          </div>
+          <div style="display:flex;gap:0.75rem;justify-content:flex-end">
+            <button type="button" class="btn btn-secondary" id="copy-cancel">Cancel</button>
+            <button type="button" class="btn btn-primary" id="copy-save">Save</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </main>
 </div>
 
@@ -574,7 +765,10 @@
       const target = tab.dataset.tab;
       document.getElementById('tab-new').style.display = target === 'new' ? '' : 'none';
       document.getElementById('tab-existing').style.display = target === 'existing' ? '' : 'none';
+      document.getElementById('tab-copy').style.display = target === 'copy' ? '' : 'none';
+      document.getElementById('tab-settings').style.display = target === 'settings' ? '' : 'none';
       if (target === 'existing') loadPosts();
+      if (target === 'copy') loadCopyBlocks();
     });
   });
 
@@ -702,6 +896,117 @@
     document.getElementById('image-drop').querySelector('.upload-text').style.display = '';
     document.getElementById('post-date').valueAsDate = new Date();
   }
+
+  // ── Site Copy ──
+  let copyBlocksCache = [];
+  let editingSlug = null;
+
+  function escapeHtml(s) {
+    return String(s).replace(/[&<>"']/g, (c) => (
+      { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]
+    ));
+  }
+
+  function showCopyList() {
+    document.getElementById('copy-list-view').style.display = '';
+    document.getElementById('copy-edit-view').style.display = 'none';
+    editingSlug = null;
+  }
+
+  async function loadCopyBlocks() {
+    const loading = document.getElementById('copy-loading');
+    const groups = document.getElementById('copy-groups');
+    loading.style.display = '';
+    groups.innerHTML = '';
+    showCopyList();
+
+    try {
+      const data = await api('/list-copy', {});
+      loading.style.display = 'none';
+      copyBlocksCache = data.blocks || [];
+
+      if (copyBlocksCache.length === 0) {
+        groups.innerHTML = '<div class="form-section" style="text-align:center;color:var(--text-light)">No editable copy blocks yet.</div>';
+        return;
+      }
+
+      // Group by page
+      const byPage = {};
+      for (const b of copyBlocksCache) {
+        if (!byPage[b.page]) byPage[b.page] = [];
+        byPage[b.page].push(b);
+      }
+
+      const pageOrder = Object.keys(byPage).sort();
+      for (const page of pageOrder) {
+        const section = document.createElement('div');
+        section.className = 'form-section';
+        const items = byPage[page]
+          .map((b) => {
+            const preview = b.body.length > 90 ? b.body.slice(0, 90) + '…' : b.body;
+            return `
+              <li style="padding:0.85rem 0;border-bottom:1px solid var(--bg-alt);display:flex;justify-content:space-between;gap:1rem;align-items:flex-start">
+                <div style="min-width:0;flex:1">
+                  <div style="font-weight:600;color:var(--secondary);font-size:0.95rem">${escapeHtml(b.label)}</div>
+                  <div style="color:var(--text-light);font-size:0.85rem;margin-top:0.25rem;line-height:1.45">${escapeHtml(preview)}</div>
+                </div>
+                <button type="button" class="btn btn-secondary" data-edit-slug="${escapeHtml(b.slug)}" style="flex-shrink:0;align-self:center">Edit</button>
+              </li>`;
+          })
+          .join('');
+        section.innerHTML = `
+          <h2>${escapeHtml(page)}</h2>
+          <ul style="list-style:none">${items}</ul>
+        `;
+        groups.appendChild(section);
+      }
+
+      // Wire up Edit buttons
+      groups.querySelectorAll('[data-edit-slug]').forEach((btn) => {
+        btn.addEventListener('click', () => openCopyEditor(btn.dataset.editSlug));
+      });
+    } catch (err) {
+      loading.textContent = 'Could not load copy blocks: ' + err.message;
+    }
+  }
+
+  function openCopyEditor(slug) {
+    const block = copyBlocksCache.find((b) => b.slug === slug);
+    if (!block) return;
+    editingSlug = slug;
+    document.getElementById('copy-edit-page').textContent = block.page;
+    document.getElementById('copy-edit-label').textContent = block.label;
+    document.getElementById('copy-edit-body').value = block.body;
+    document.getElementById('copy-edit-meta').textContent = block.updated
+      ? `Last updated ${new Date(block.updated).toLocaleString()}`
+      : 'Not edited yet';
+    document.getElementById('copy-list-view').style.display = 'none';
+    document.getElementById('copy-edit-view').style.display = '';
+  }
+
+  document.getElementById('copy-cancel').addEventListener('click', showCopyList);
+
+  document.getElementById('copy-save').addEventListener('click', async () => {
+    if (!editingSlug) return;
+    const body = document.getElementById('copy-edit-body').value;
+    if (!body.trim()) {
+      toast('Text cannot be empty — the page would render blank.', 'error');
+      return;
+    }
+    const btn = document.getElementById('copy-save');
+    btn.disabled = true;
+    btn.textContent = 'Saving...';
+    try {
+      await api('/save-copy', { slug: editingSlug, body });
+      toast('Saved — your change will be live in about a minute.');
+      await loadCopyBlocks();
+    } catch (err) {
+      toast(err.message, 'error');
+    } finally {
+      btn.disabled = false;
+      btn.textContent = 'Save';
+    }
+  });
 
   // ── Load existing posts ──
   async function loadPosts() {

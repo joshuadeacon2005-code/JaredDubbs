@@ -3,6 +3,12 @@ import BaseLayout from '../../layouts/BaseLayout.astro';
 import Hero from '../../components/Hero.astro';
 import FAQAccordion from '../../components/FAQAccordion.astro';
 import FinalCTA from '../../components/FinalCTA.astro';
+import { siteCopy } from '../../lib/site-copy';
+
+const intro = await siteCopy(
+  'service_couples_intro',
+  "Whether you're a couple navigating conflict or a parent struggling to connect with your teen, therapy provides a safe space to rebuild communication and understanding."
+);
 
 const schema = JSON.stringify({
   '@context': 'https://schema.org',
@@ -60,7 +66,7 @@ const faqItems = [
 
   <Hero
     title="Relationships take work — having the right support makes all the difference"
-    subtitle="Whether you're a couple navigating conflict or a parent struggling to connect with your teen, therapy provides a safe space to rebuild communication and understanding."
+    subtitle={intro}
     compact={true}
   />
 

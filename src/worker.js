@@ -54,14 +54,14 @@ function getRepo(env) {
 // Sends Jared an email when a discovery call is booked. Uses Resend; if
 // RESEND_API_KEY is unset, logs and returns silently — the booking still
 // succeeds, the email just doesn't go out.
-async function notifyBooking(env, { name, email, phone, displayDate, displayTime }) {
+async function notifyBooking(env, { name, email, phone, reason, displayDate, displayTime }) {
   const resendKey = env.RESEND_API_KEY;
   const to = env.NOTIFY_EMAIL || 'hello@jareddubbs.com';
   const from = env.RESEND_FROM || 'Jared Dubbs <discovery@jareddubbs.com>';
 
   if (!resendKey) {
     console.log('Booking notification (RESEND_API_KEY not set):', {
-      name, email, phone, displayDate, displayTime,
+      name, email, phone, reason, displayDate, displayTime,
     });
     return;
   }
@@ -70,21 +70,25 @@ async function notifyBooking(env, { name, email, phone, displayDate, displayTime
     String(s).replace(/[&<>"']/g, (c) => ({
       '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
     })[c]);
+  // Preserve line breaks the visitor entered when rendering as HTML.
+  const reasonHtml = reason ? escape(reason).replace(/\n/g, '<br>') : '';
 
   const html = `
     <h2>New discovery call booked</h2>
     <p><strong>${escape(name)}</strong> just booked a 15-minute discovery call.</p>
-    <p><strong>When:</strong> ${escape(displayDate)} at ${escape(displayTime)} (HKT)</p>
     <p><strong>Email:</strong> <a href="mailto:${escape(email)}">${escape(email)}</a></p>
     ${phone ? `<p><strong>Phone:</strong> ${escape(phone)}</p>` : ''}
+    ${reason ? `<p><strong>How can I help?</strong></p><blockquote style="margin:0 0 1em;padding:0.75em 1em;border-left:3px solid #9B8544;background:#F9F7F3;color:#2C3E50;">${reasonHtml}</blockquote>` : ''}
+    <p><strong>When:</strong> ${escape(displayDate)} at ${escape(displayTime)} (HKT)</p>
     <p>The appointment has been added to your Cliniko calendar.</p>
   `;
   const text =
     `New discovery call booked\n\n` +
     `${name} just booked a 15-minute discovery call.\n\n` +
-    `When: ${displayDate} at ${displayTime} (HKT)\n` +
     `Email: ${email}\n` +
     (phone ? `Phone: ${phone}\n` : '') +
+    (reason ? `\nHow can I help?\n${reason}\n` : '') +
+    `\nWhen: ${displayDate} at ${displayTime} (HKT)\n` +
     `\nThe appointment has been added to your Cliniko calendar.`;
 
   try {
@@ -267,11 +271,24 @@ async function handleClinikoBook(request, env) {
     }
 
     const body = await request.json();
-    const { name, email, phone, appointmentStart, appointmentTypeId, practitionerId } = body;
+    const { name, email, phone, reason, appointmentStart, appointmentTypeId, practitionerId } = body;
 
     if (!name?.trim()) return Response.json({ error: 'Name is required' }, { status: 400 });
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       return Response.json({ error: 'Valid email is required' }, { status: 400 });
+    }
+    const trimmedReason = (reason ?? '').trim();
+    if (trimmedReason.length < 30) {
+      return Response.json(
+        { error: 'Please tell me a little more about what brings you here (at least 30 characters).' },
+        { status: 400 }
+      );
+    }
+    if (trimmedReason.length > 1000) {
+      return Response.json(
+        { error: 'Please keep your message under 1000 characters.' },
+        { status: 400 }
+      );
     }
     if (!appointmentStart || !appointmentTypeId || !practitionerId) {
       return Response.json({ error: 'Appointment details are required' }, { status: 400 });
@@ -336,7 +353,7 @@ async function handleClinikoBook(request, env) {
         practitioner_id: practitionerId,
         patient_id: patient.id,
         business_id: businessId,
-        notes: 'Booked via website — 15-min free discovery call',
+        notes: `Booked via website — 15-min free discovery call\n\nHow can I help?\n${trimmedReason}`,
       }),
     });
 
@@ -363,7 +380,7 @@ async function handleClinikoBook(request, env) {
       hour: '2-digit', minute: '2-digit', hour12: true, timeZone: 'Asia/Hong_Kong',
     });
 
-    await notifyBooking(env, { name, email, phone, displayDate, displayTime });
+    await notifyBooking(env, { name, email, phone, reason: trimmedReason, displayDate, displayTime });
 
     return Response.json({
       success: true,
@@ -601,6 +618,116 @@ async function handleAdminUploadImage(request, env) {
   }
 }
 
+// ─── Site-copy CMS (editable text blocks) ────────────────────────────────────
+//
+// Each block is one JSON file under src/content/site-copy/{slug}.json with
+// shape { label, page, body, updated }. The admin reads, lists, and writes
+// them via the GitHub Contents API — same flow as the blog publish handler.
+
+const SITE_COPY_DIR = 'src/content/site-copy';
+
+async function handleAdminListCopy(request, env) {
+  if (!verifyAuth(request, env)) {
+    return Response.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+  try {
+    const repo = getRepo(env);
+    const ghHeaders = githubHeaders(env);
+    const res = await fetch(`https://api.github.com/repos/${repo}/contents/${SITE_COPY_DIR}`, {
+      headers: ghHeaders,
+    });
+    if (!res.ok) return Response.json({ blocks: [] });
+
+    const files = await res.json();
+    const blocks = [];
+    for (const file of files) {
+      if (!file.name.endsWith('.json')) continue;
+      const fileRes = await fetch(file.url, { headers: ghHeaders });
+      if (!fileRes.ok) continue;
+      const fileData = await fileRes.json();
+      try {
+        const decoded = decodeURIComponent(escape(atob(fileData.content.replace(/\n/g, ''))));
+        const parsed = JSON.parse(decoded);
+        blocks.push({
+          slug: file.name.replace(/\.json$/, ''),
+          label: parsed.label || file.name,
+          page: parsed.page || 'Other',
+          body: parsed.body || '',
+          updated: parsed.updated || '',
+        });
+      } catch {
+        // Skip malformed files rather than failing the whole list.
+      }
+    }
+    blocks.sort((a, b) => (a.page + a.label).localeCompare(b.page + b.label));
+    return Response.json({ blocks });
+  } catch (err) {
+    return Response.json({ error: err.message }, { status: 500 });
+  }
+}
+
+async function handleAdminSaveCopy(request, env) {
+  if (!verifyAuth(request, env)) {
+    return Response.json({ error: 'Unauthorized' }, { status: 401 });
+  }
+  try {
+    const { slug, body } = await request.json();
+    if (!slug || typeof body !== 'string') {
+      return Response.json({ error: 'slug and body are required' }, { status: 400 });
+    }
+    if (!/^[a-z0-9_]+$/.test(slug)) {
+      return Response.json({ error: 'Invalid slug' }, { status: 400 });
+    }
+
+    const repo = getRepo(env);
+    const path = `${SITE_COPY_DIR}/${slug}.json`;
+    const ghHeaders = githubHeaders(env);
+
+    // Block must exist — admin only edits existing blocks; new slugs come
+    // from a developer adding the JSON file + wiring up the frontend.
+    const existsRes = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
+      headers: ghHeaders,
+    });
+    if (!existsRes.ok) {
+      return Response.json({ error: 'Unknown copy block' }, { status: 404 });
+    }
+    const existing = await existsRes.json();
+    const currentDecoded = decodeURIComponent(escape(atob(existing.content.replace(/\n/g, ''))));
+    let current;
+    try {
+      current = JSON.parse(currentDecoded);
+    } catch {
+      return Response.json({ error: 'Existing block is not valid JSON' }, { status: 500 });
+    }
+
+    const next = {
+      label: current.label,
+      page: current.page,
+      body,
+      updated: new Date().toISOString(),
+    };
+    const json = JSON.stringify(next, null, 2) + '\n';
+
+    const commitRes = await fetch(`https://api.github.com/repos/${repo}/contents/${path}`, {
+      method: 'PUT',
+      headers: ghHeaders,
+      body: JSON.stringify({
+        message: `Update site copy: ${slug}`,
+        content: btoa(unescape(encodeURIComponent(json))),
+        sha: existing.sha,
+        branch: 'main',
+      }),
+    });
+    if (!commitRes.ok) {
+      const err = await commitRes.json();
+      return Response.json({ error: err.message || 'Failed to save' }, { status: 500 });
+    }
+    return Response.json({ success: true, slug, updated: next.updated });
+  } catch (err) {
+    return Response.json({ error: err.message }, { status: 500 });
+  }
+}
+
 // ─── Main fetch handler ───────────────────────────────────────────────────────
 
 export default {
@@ -644,6 +771,12 @@ export default {
     }
     if (pathname === '/api/admin/upload-image' && method === 'POST') {
       return handleAdminUploadImage(request, env);
+    }
+    if (pathname === '/api/admin/list-copy' && method === 'POST') {
+      return handleAdminListCopy(request, env);
+    }
+    if (pathname === '/api/admin/save-copy' && method === 'POST') {
+      return handleAdminSaveCopy(request, env);
     }
 
     // Unknown /api/ route

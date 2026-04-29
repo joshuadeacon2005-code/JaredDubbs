@@ -4,6 +4,12 @@ import Hero from '../../components/Hero.astro';
 import FAQAccordion from '../../components/FAQAccordion.astro';
 import Testimonials from '../../components/Testimonials.astro';
 import FinalCTA from '../../components/FinalCTA.astro';
+import { siteCopy } from '../../lib/site-copy';
+
+const intro = await siteCopy(
+  'service_individual_intro',
+  "Individual counselling tailored to your needs, whether you're dealing with anxiety, depression, ADHD, identity questions, or simply feeling stuck. Sessions available in person or online."
+);
 
 const schema = JSON.stringify({
   '@context': 'https://schema.org',
@@ -103,7 +109,7 @@ const faqItems = [
 
   <Hero
     title="A space that's entirely yours — to explore, process, and grow"
-    subtitle="Individual counselling tailored to your needs, whether you're dealing with anxiety, depression, ADHD, identity questions, or simply feeling stuck. Sessions available in person or online."
+    subtitle={intro}
     compact={true}
   />
 

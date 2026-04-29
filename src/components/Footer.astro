@@ -1,4 +1,11 @@
 ---
+import { siteCopy } from '../lib/site-copy';
+
+const tagline = await siteCopy(
+  'footer_tagline',
+  'Counsellor specialising in ADHD, autism, and LGBTQ+ affirming therapy in Central, Hong Kong. Helping adults, teens, and couples build the skills to feel better.'
+);
+
 const quickLinks = [
   { name: 'Home', href: '/' },
   { name: 'About', href: '/about' },
@@ -25,7 +32,7 @@ const quickLinks = [
         <img src="/images/logo.png" alt="Jared Dubbs Counselling" width="240" height="240" class="w-60 h-60 mb-4 brightness-200" />
         <p class="text-white font-semibold text-lg mb-2">Jared Dubbs Counselling</p>
         <p class="text-white/70 text-[var(--text-sm)] leading-relaxed">
-          Counsellor specialising in ADHD, autism, and LGBTQ+ affirming therapy in Central, Hong Kong. Helping adults, teens, and couples build the skills to feel better.
+          {tagline}
         </p>
       </div>
 

@@ -4,6 +4,12 @@ import Hero from '../../components/Hero.astro';
 import FAQAccordion from '../../components/FAQAccordion.astro';
 import Testimonials from '../../components/Testimonials.astro';
 import FinalCTA from '../../components/FinalCTA.astro';
+import { siteCopy } from '../../lib/site-copy';
+
+const intro = await siteCopy(
+  'service_adhd_intro',
+  "I've struggled with ADHD my whole life. That lived experience, combined with professional training, means I understand what you're going through in a way that textbooks can't teach."
+);
 
 const testimonials = [
   {
@@ -95,7 +101,7 @@ const schema = JSON.stringify({
 
   <Hero
     title="ADHD therapy from someone who truly gets it — because I live it too"
-    subtitle="I've struggled with ADHD my whole life. That lived experience, combined with professional training, means I understand what you're going through in a way that textbooks can't teach."
+    subtitle={intro}
     ctaText="Book a Free Discovery Call"
     ctaLink="/book"
     showPhoto={true}

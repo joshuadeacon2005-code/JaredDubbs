@@ -88,18 +88,20 @@ const fullTitle = withFull.length <= 70 ? withFull : withShort.length <= 70 ? wi
     </main>
     <Footer />
 
-    <!-- Floating CTA — bottom right -->
-    <a
-      href="/book"
-      class="floating-cta fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-[var(--color-primary)] text-white font-semibold rounded-[var(--radius-full)] shadow-lg hover:shadow-xl no-underline transition-all duration-300 px-5 py-4 hover:pr-7"
-      aria-label="Get Started — book a free chat"
-    >
-      <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
-        <path stroke-linecap="round" stroke-linejoin="round" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
-      </svg>
-      <span class="text-[var(--text-sm)]">Get Started</span>
-      <span class="floating-cta-extra max-w-0 overflow-hidden whitespace-nowrap opacity-0 transition-all duration-300 text-white/80 text-[var(--text-sm)] font-normal">— free 15-min chat</span>
-    </a>
+    <!-- Floating CTA — bottom right (hidden on /book to avoid linking to current page) -->
+    {Astro.url.pathname !== '/book' && Astro.url.pathname !== '/book/' && (
+      <a
+        href="/book"
+        class="floating-cta fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-[var(--color-primary)] text-white font-semibold rounded-[var(--radius-full)] shadow-lg hover:shadow-xl no-underline transition-all duration-300 px-5 py-4 hover:pr-7"
+        aria-label="Book Now — free 15-min discovery call"
+      >
+        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
+        </svg>
+        <span class="text-[var(--text-sm)]">Book Now</span>
+        <span class="floating-cta-extra max-w-0 overflow-hidden whitespace-nowrap opacity-0 transition-all duration-300 text-white/80 text-[var(--text-sm)] font-normal">— free 15-min chat</span>
+      </a>
+    )}
 
     <style is:global>
       .floating-cta:hover .floating-cta-extra {

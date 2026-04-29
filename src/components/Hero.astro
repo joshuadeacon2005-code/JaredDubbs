@@ -1,4 +1,6 @@
 ---
+type TrustItem = string | { label: string; href?: string };
+
 interface Props {
   title: string;
   subtitle?: string;
@@ -7,13 +9,17 @@ interface Props {
   secondaryCta?: string;
   secondaryCtaLink?: string;
   showTrustBar?: boolean;
-  trustItems?: string[];
+  trustItems?: TrustItem[];
   showPhoto?: boolean;
   photoSrc?: string;
   photoAlt?: string;
   bgImage?: string;
   bgColor?: 'default' | 'alt';
   compact?: boolean;
+}
+
+function trustParts(item: TrustItem): { label: string; href?: string } {
+  return typeof item === 'string' ? { label: item } : item;
 }
 
 const {
@@ -34,7 +40,7 @@ const {
 } = Astro.props;
 
 const isFullBleed = !!bgImage;
-const paddingClass = compact ? 'py-16 md:py-20' : 'py-24 md:py-36';
+const paddingClass = compact ? 'py-16 md:py-20' : 'py-16 md:py-36';
 ---
 
 {isFullBleed ? (
@@ -43,23 +49,39 @@ const paddingClass = compact ? 'py-16 md:py-20' : 'py-24 md:py-36';
     <img
       src={bgImage}
       alt=""
-      class="absolute inset-0 w-full h-full object-cover object-top"
+      class="absolute inset-0 w-full h-full object-cover object-[78%_center] md:object-top"
       loading="eager"
     />
-    <div class="absolute inset-0 bg-gradient-to-r from-[var(--color-secondary)]/90 via-[var(--color-secondary)]/70 to-[var(--color-secondary)]/40"></div>
+    {/* Stronger overlay on mobile so the headline stays readable when Jared's face is under the text */}
+    <div class="absolute inset-0 bg-gradient-to-b from-[var(--color-secondary)]/85 via-[var(--color-secondary)]/70 to-[var(--color-secondary)]/60 md:bg-gradient-to-r md:from-[var(--color-secondary)]/90 md:via-[var(--color-secondary)]/70 md:to-[var(--color-secondary)]/40"></div>
 
     {/* Credentials banner — full width across the top */}
     {showTrustBar && trustItems.length > 0 && (
       <div class="relative bg-black/10 backdrop-blur-[2px] border-b border-white/5">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex items-center justify-center gap-5 md:gap-8 flex-wrap">
-          {trustItems.map((item) => (
-            <span class="flex items-center gap-2 text-white/90 text-xs md:text-sm font-medium tracking-wide uppercase">
-              <svg class="w-4 h-4 text-[var(--color-gold)] shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-              </svg>
-              {item}
-            </span>
-          ))}
+          {trustItems.map((raw) => {
+            const { label, href } = trustParts(raw);
+            const inner = (
+              <>
+                <svg class="w-4 h-4 text-[var(--color-gold)] shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                  <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                </svg>
+                {label}
+              </>
+            );
+            return href ? (
+              <a
+                href={href}
+                class="trust-link flex items-center gap-2 text-white/90 text-xs md:text-sm font-medium tracking-wide uppercase no-underline hover:text-white hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-gold)] rounded-sm transition-colors"
+              >
+                {inner}
+              </a>
+            ) : (
+              <span class="flex items-center gap-2 text-white/90 text-xs md:text-sm font-medium tracking-wide uppercase">
+                {inner}
+              </span>
+            );
+          })}
         </div>
       </div>
     )}
@@ -130,14 +152,29 @@ const paddingClass = compact ? 'py-16 md:py-20' : 'py-24 md:py-36';
 
           {showTrustBar && trustItems.length > 0 && (
             <div class="flex flex-wrap gap-x-4 gap-y-2 text-[var(--text-sm)] text-[var(--color-text-light)] reveal-stagger">
-              {trustItems.map((item) => (
-                <span class="flex items-center gap-1.5 reveal-item">
-                  <svg class="w-4 h-4 text-[var(--color-primary)] shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
-                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
-                  </svg>
-                  {item}
-                </span>
-              ))}
+              {trustItems.map((raw) => {
+                const { label, href } = trustParts(raw);
+                const inner = (
+                  <>
+                    <svg class="w-4 h-4 text-[var(--color-primary)] shrink-0" fill="currentColor" viewBox="0 0 20 20" aria-hidden="true">
+                      <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd" />
+                    </svg>
+                    {label}
+                  </>
+                );
+                return href ? (
+                  <a
+                    href={href}
+                    class="reveal-item flex items-center gap-1.5 no-underline text-[var(--color-text-light)] hover:text-[var(--color-primary)] hover:underline focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-[var(--color-primary)] rounded-sm transition-colors"
+                  >
+                    {inner}
+                  </a>
+                ) : (
+                  <span class="flex items-center gap-1.5 reveal-item">
+                    {inner}
+                  </span>
+                );
+              })}
             </div>
           )}
         </div>

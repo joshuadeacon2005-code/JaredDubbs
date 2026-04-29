@@ -81,6 +81,18 @@
             class="w-full px-4 py-3 border border-[var(--color-bg-alt)] rounded-[var(--radius)] text-[var(--color-text)] bg-white focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/20 outline-none transition-colors min-h-[44px]"
             placeholder="+852 XXXX XXXX" />
         </div>
+        <div>
+          <label for="cal-reason" class="block text-[var(--text-sm)] font-medium text-[var(--color-text)] mb-1.5">
+            How can I help? <span class="text-[var(--color-error)]" aria-hidden="true">*</span>
+          </label>
+          <textarea id="cal-reason" name="reason" required rows="3" maxlength="1000"
+            class="w-full px-4 py-3 border border-[var(--color-bg-alt)] rounded-[var(--radius)] text-[var(--color-text)] bg-white focus:border-[var(--color-primary)] focus:ring-2 focus:ring-[var(--color-primary)]/20 outline-none transition-colors resize-y"
+            placeholder="Briefly tell me what brings you here — a few sentences is plenty."></textarea>
+          <div class="flex justify-between mt-1">
+            <p class="text-[var(--text-sm)] text-[var(--color-text-light)]">A few sentences so I can prepare for our call.</p>
+            <p id="cal-reason-count" class="text-[var(--text-sm)] text-[var(--color-text-light)] tabular-nums">0 / 1000</p>
+          </div>
+        </div>
         <div class="flex flex-col sm:flex-row gap-3">
           <button type="submit" id="cal-submit"
             class="px-8 py-4 bg-[var(--color-primary)] text-white font-semibold rounded-[var(--radius)] hover:bg-[var(--color-primary-hover)] transition-colors min-h-[44px] flex items-center justify-center gap-2">
@@ -255,6 +267,13 @@
     $('cal-times')!.classList.remove('hidden');
   });
 
+  // Live char counter for the reason textarea
+  const reasonEl = $('cal-reason') as HTMLTextAreaElement | null;
+  const reasonCount = $('cal-reason-count');
+  reasonEl?.addEventListener('input', () => {
+    if (reasonCount) reasonCount.textContent = `${reasonEl.value.length} / 1000`;
+  });
+
   // Form submission
   $('cal-form')?.addEventListener('submit', async (e) => {
     e.preventDefault();
@@ -264,6 +283,7 @@
     const name = ($('cal-name') as HTMLInputElement).value.trim();
     const email = ($('cal-email') as HTMLInputElement).value.trim();
     const phone = ($('cal-phone') as HTMLInputElement).value.trim();
+    const reason = ($('cal-reason') as HTMLTextAreaElement).value.trim();
 
     if (!name) {
       errorEl.textContent = 'Please enter your name';
@@ -273,6 +293,12 @@
     if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
       errorEl.textContent = 'Please enter a valid email';
       errorEl.classList.remove('hidden');
+      return;
+    }
+    if (reason.length < 30) {
+      errorEl.textContent = 'Please tell me a little more about what brings you here (at least 30 characters).';
+      errorEl.classList.remove('hidden');
+      ($('cal-reason') as HTMLTextAreaElement).focus();
       return;
     }
 
@@ -289,6 +315,7 @@
           name,
           email,
           phone: phone || undefined,
+          reason,
           appointmentStart: state.selectedTime,
           appointmentTypeId: state.appointmentTypeId,
           practitionerId: state.practitionerId,

@@ -1,5 +1,10 @@
 ---
+import { siteCopy } from '../lib/site-copy';
 
+const aboutParagraph = await siteCopy(
+  'homepage_about_paragraph',
+  "I'm a counsellor based in Central Hong Kong with a Master's from Monash and a background in education. I work with adults, teens, and couples navigating ADHD, autism and ASD, anxiety, depression, neurodiversity, BPD, and LGBTQ+ challenges."
+);
 ---
 
 <section class="py-16 md:py-20">
@@ -19,7 +24,7 @@
         <div class="w-12 h-1 bg-[var(--color-gold)] rounded-full mb-6"></div>
         <h2 class="mb-6">Meet Jared</h2>
         <p class="text-[var(--color-text-light)] leading-relaxed mb-4">
-          I'm a counsellor based in Central Hong Kong with a Master's from Monash and a background in education. I work with adults, teens, and couples navigating ADHD, autism and ASD, anxiety, depression, neurodiversity, BPD, and LGBTQ+ challenges.
+          {aboutParagraph}
         </p>
         <p class="text-[var(--color-text-light)] leading-relaxed mb-6">
           I'm trained in DBT, ACT, CBT, CBT-i, Schema Therapy, and SPACE from Yale. My approach is warm, inclusive, and built around you — not a textbook.
