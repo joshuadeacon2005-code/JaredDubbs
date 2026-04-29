@@ -88,18 +88,18 @@ const fullTitle = withFull.length <= 70 ? withFull : withShort.length <= 70 ? wi
     </main>
     <Footer />
 
-    <!-- Floating CTA — bottom right (hidden on /book to avoid linking to current page) -->
+    <!-- Floating CTA — bottom right (hidden on /book; icon-only circle on mobile) -->
     {Astro.url.pathname !== '/book' && Astro.url.pathname !== '/book/' && (
       <a
         href="/book"
-        class="floating-cta fixed bottom-6 right-6 z-50 flex items-center gap-3 bg-[var(--color-primary)] text-white font-semibold rounded-[var(--radius-full)] shadow-lg hover:shadow-xl no-underline transition-all duration-300 px-5 py-4 hover:pr-7"
+        class="floating-cta fixed bottom-5 right-5 md:bottom-6 md:right-6 z-50 flex items-center justify-center md:justify-start gap-0 md:gap-3 bg-[var(--color-primary)] text-white font-semibold shadow-lg hover:shadow-xl no-underline transition-all duration-300 w-14 h-14 md:w-auto md:h-auto rounded-full md:rounded-[var(--radius-full)] md:px-5 md:py-4 md:hover:pr-7"
         aria-label="Book Now — free 15-min discovery call"
       >
-        <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
+        <svg class="w-6 h-6 md:w-5 md:h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24" aria-hidden="true">
           <path stroke-linecap="round" stroke-linejoin="round" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
         </svg>
-        <span class="text-[var(--text-sm)]">Book Now</span>
-        <span class="floating-cta-extra max-w-0 overflow-hidden whitespace-nowrap opacity-0 transition-all duration-300 text-white/80 text-[var(--text-sm)] font-normal">— free 15-min chat</span>
+        <span class="hidden md:inline text-[var(--text-sm)]">Book Now</span>
+        <span class="floating-cta-extra hidden md:inline-block max-w-0 overflow-hidden whitespace-nowrap opacity-0 transition-all duration-300 text-white/80 text-[var(--text-sm)] font-normal">— free 15-min chat</span>
       </a>
     )}
 

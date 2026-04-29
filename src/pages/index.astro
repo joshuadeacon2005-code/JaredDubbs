@@ -127,10 +127,16 @@ const schema = JSON.stringify({
         <h2>What Can We Work on Together?</h2>
         <p class="text-[var(--color-text-light)] mt-4">People come to therapy for all kinds of reasons. Here are some of the most common.</p>
       </div>
+      <style is:inline>
+        /* Mobile: show only the first 3 bullets per card to keep the section scannable */
+        @media (max-width: 767px) {
+          .demographic-bullets li:nth-child(n+4) { display: none; }
+        }
+      </style>
       <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 reveal-stagger">
         <div class="reveal-item bg-white rounded-[var(--radius-lg)] p-6 border-t-4 border-[var(--color-primary)]">
           <h3 class="text-lg font-bold mb-4">Men</h3>
-          <ul class="space-y-2 text-[var(--color-text-light)] text-[var(--text-sm)]">
+          <ul class="demographic-bullets space-y-2 text-[var(--color-text-light)] text-[var(--text-sm)]">
             <li class="flex items-start gap-2"><span class="text-[var(--color-primary)] mt-1 shrink-0">&#9679;</span>Anxiety and stress</li>
             <li class="flex items-start gap-2"><span class="text-[var(--color-primary)] mt-1 shrink-0">&#9679;</span>Depression and mood issues</li>
             <li class="flex items-start gap-2"><span class="text-[var(--color-primary)] mt-1 shrink-0">&#9679;</span>Self-esteem and identity</li>
@@ -140,7 +146,7 @@ const schema = JSON.stringify({
         </div>
         <div class="reveal-item bg-white rounded-[var(--radius-lg)] p-6 border-t-4 border-[var(--color-gold)]">
           <h3 class="text-lg font-bold mb-4">Women</h3>
-          <ul class="space-y-2 text-[var(--color-text-light)] text-[var(--text-sm)]">
+          <ul class="demographic-bullets space-y-2 text-[var(--color-text-light)] text-[var(--text-sm)]">
             <li class="flex items-start gap-2"><span class="text-[var(--color-gold)] mt-1 shrink-0">&#9679;</span>Anxiety and chronic stress</li>
             <li class="flex items-start gap-2"><span class="text-[var(--color-gold)] mt-1 shrink-0">&#9679;</span>Depression and low mood</li>
             <li class="flex items-start gap-2"><span class="text-[var(--color-gold)] mt-1 shrink-0">&#9679;</span>Relationship and family problems</li>
@@ -150,7 +156,7 @@ const schema = JSON.stringify({
         </div>
         <div class="reveal-item bg-white rounded-[var(--radius-lg)] p-6 border-t-4 border-[var(--color-accent)]">
           <h3 class="text-lg font-bold mb-4">Couples</h3>
-          <ul class="space-y-2 text-[var(--color-text-light)] text-[var(--text-sm)]">
+          <ul class="demographic-bullets space-y-2 text-[var(--color-text-light)] text-[var(--text-sm)]">
             <li class="flex items-start gap-2"><span class="text-[var(--color-accent)] mt-1 shrink-0">&#9679;</span>Communication breakdowns</li>
             <li class="flex items-start gap-2"><span class="text-[var(--color-accent)] mt-1 shrink-0">&#9679;</span>Frequent conflicts and arguments</li>
             <li class="flex items-start gap-2"><span class="text-[var(--color-accent)] mt-1 shrink-0">&#9679;</span>Trust issues and betrayal</li>
@@ -160,7 +166,7 @@ const schema = JSON.stringify({
         </div>
         <div class="reveal-item bg-white rounded-[var(--radius-lg)] p-6 border-t-4 border-[var(--color-secondary)]">
           <h3 class="text-lg font-bold mb-4">Teens</h3>
-          <ul class="space-y-2 text-[var(--color-text-light)] text-[var(--text-sm)]">
+          <ul class="demographic-bullets space-y-2 text-[var(--color-text-light)] text-[var(--text-sm)]">
             <li class="flex items-start gap-2"><span class="text-[var(--color-secondary)] mt-1 shrink-0">&#9679;</span>Anxiety and school stress</li>
             <li class="flex items-start gap-2"><span class="text-[var(--color-secondary)] mt-1 shrink-0">&#9679;</span>Depression and mood issues</li>
             <li class="flex items-start gap-2"><span class="text-[var(--color-secondary)] mt-1 shrink-0">&#9679;</span>Self-esteem and body image</li>

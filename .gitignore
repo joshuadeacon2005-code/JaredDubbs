@@ -25,3 +25,6 @@ pnpm-debug.log*
 
 # screenshots for design reference
 screenshots/
+
+# jdcoredev auto-logging link (per-checkout, not source)
+.jdcd-project

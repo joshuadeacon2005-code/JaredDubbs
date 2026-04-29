@@ -40,7 +40,7 @@ const {
 } = Astro.props;
 
 const isFullBleed = !!bgImage;
-const paddingClass = compact ? 'py-16 md:py-20' : 'py-16 md:py-36';
+const paddingClass = compact ? 'py-14 md:py-20' : 'py-12 md:py-36';
 ---
 
 {isFullBleed ? (
@@ -55,9 +55,9 @@ const paddingClass = compact ? 'py-16 md:py-20' : 'py-16 md:py-36';
     {/* Stronger overlay on mobile so the headline stays readable when Jared's face is under the text */}
     <div class="absolute inset-0 bg-gradient-to-b from-[var(--color-secondary)]/85 via-[var(--color-secondary)]/70 to-[var(--color-secondary)]/60 md:bg-gradient-to-r md:from-[var(--color-secondary)]/90 md:via-[var(--color-secondary)]/70 md:to-[var(--color-secondary)]/40"></div>
 
-    {/* Credentials banner — full width across the top */}
+    {/* Credentials banner — full width across the top, hidden on mobile (shown again in About section) */}
     {showTrustBar && trustItems.length > 0 && (
-      <div class="relative bg-black/10 backdrop-blur-[2px] border-b border-white/5">
+      <div class="hidden md:block relative bg-black/10 backdrop-blur-[2px] border-b border-white/5">
         <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-2 flex items-center justify-center gap-5 md:gap-8 flex-wrap">
           {trustItems.map((raw) => {
             const { label, href } = trustParts(raw);

@@ -101,13 +101,13 @@ const faqSchema = JSON.stringify({
   <div class="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8">
     <h2 class="text-center mb-10 reveal" style="font-family: var(--font-serif)">Frequently Asked Questions</h2>
 
-    <!-- Topic pills -->
-    <div class="flex flex-wrap justify-center gap-2 mb-10 reveal" role="tablist" aria-label="FAQ categories">
+    <!-- Topic pills — horizontal scroll on mobile, wrap on desktop -->
+    <div class="faq-pills mb-10 reveal flex md:flex-wrap md:justify-center gap-2 overflow-x-auto md:overflow-visible -mx-4 md:mx-0 px-4 md:px-0 snap-x snap-mandatory" role="tablist" aria-label="FAQ categories">
       {categories.map((cat, i) => (
         <button
           type="button"
           role="tab"
-          class={`faq-tab px-5 py-2.5 rounded-[var(--radius-full)] text-sm font-medium transition-all duration-200 border min-h-[44px] ${
+          class={`faq-tab shrink-0 snap-start px-5 py-2.5 rounded-[var(--radius-full)] text-sm font-medium transition-all duration-200 border min-h-[44px] ${
             i === 0
               ? 'bg-[var(--color-accent)] text-white border-[var(--color-accent)]'
               : 'bg-white text-[var(--color-text)] border-[var(--color-bg-alt)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)]'
