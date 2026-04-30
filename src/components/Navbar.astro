@@ -151,6 +151,7 @@ function isActive(href: string): boolean {
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12" />
           </svg>
         </button>
+        </div>
       </div>
     </div>
   </nav>
@@ -234,31 +235,54 @@ function isActive(href: string): boolean {
 </header>
 
 <script>
-  const btn = document.getElementById('mobile-menu-btn');
-  const menu = document.getElementById('mobile-menu');
-  const iconOpen = document.getElementById('menu-icon-open');
-  const iconClose = document.getElementById('menu-icon-close');
+  function initMobileMenu() {
+    const btn = document.getElementById('mobile-menu-btn');
+    const menu = document.getElementById('mobile-menu');
+    const iconOpen = document.getElementById('menu-icon-open');
+    const iconClose = document.getElementById('menu-icon-close');
 
-  btn?.addEventListener('click', () => {
-    const isOpen = menu?.classList.contains('hidden');
-    menu?.classList.toggle('hidden');
-    iconOpen?.classList.toggle('hidden');
-    iconClose?.classList.toggle('hidden');
-    btn.setAttribute('aria-expanded', String(isOpen));
-    btn.setAttribute('aria-label', isOpen ? 'Close menu' : 'Open menu');
-    document.body.style.overflow = isOpen ? 'hidden' : '';
-  });
+    if (!btn || !menu) return;
 
-  // Close on link click
-  menu?.querySelectorAll('a').forEach((link) => {
-    link.addEventListener('click', () => {
-      menu.classList.add('hidden');
-      iconOpen?.classList.remove('hidden');
-      iconClose?.classList.add('hidden');
-      btn?.setAttribute('aria-expanded', 'false');
-      document.body.style.overflow = '';
+    const setMenuState = (open: boolean) => {
+      if (open) {
+        menu.classList.remove('hidden');
+        iconOpen?.classList.add('hidden');
+        iconClose?.classList.remove('hidden');
+        btn.setAttribute('aria-expanded', 'true');
+        btn.setAttribute('aria-label', 'Close menu');
+        document.body.style.overflow = 'hidden';
+      } else {
+        menu.classList.add('hidden');
+        iconOpen?.classList.remove('hidden');
+        iconClose?.classList.add('hidden');
+        btn.setAttribute('aria-expanded', 'false');
+        btn.setAttribute('aria-label', 'Open menu');
+        document.body.style.overflow = '';
+      }
+    };
+
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      const isCurrentlyHidden = menu.classList.contains('hidden');
+      setMenuState(isCurrentlyHidden);
     });
-  });
+
+    menu.querySelectorAll('a').forEach((link) => {
+      link.addEventListener('click', () => setMenuState(false));
+    });
+
+    document.addEventListener('keydown', (e) => {
+      if (e.key === 'Escape' && !menu.classList.contains('hidden')) {
+        setMenuState(false);
+      }
+    });
+  }
+
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initMobileMenu);
+  } else {
+    initMobileMenu();
+  }
 </script>
 
 <style>
