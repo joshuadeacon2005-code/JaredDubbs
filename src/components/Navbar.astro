@@ -155,9 +155,10 @@ function isActive(href: string): boolean {
       </div>
     </div>
   </nav>
+</header>
 
-  <!-- Mobile Menu Overlay -->
-  <div id="mobile-menu" class="fixed inset-0 top-16 sm:top-20 bg-white z-40 hidden overflow-y-auto" role="dialog" aria-label="Mobile navigation">
+<!-- Mobile Menu Overlay (sibling of header so it isn't trapped in the sticky stacking context) -->
+<div id="mobile-menu" class="fixed inset-0 top-16 sm:top-20 bg-white z-[60] hidden overflow-y-auto" role="dialog" aria-label="Mobile navigation">
     <nav class="px-6 py-8" aria-label="Mobile navigation">
       <a
         href="/book"
@@ -231,8 +232,7 @@ function isActive(href: string): boolean {
         </a>
       </div>
     </nav>
-  </div>
-</header>
+</div>
 
 <script>
   function initMobileMenu() {
