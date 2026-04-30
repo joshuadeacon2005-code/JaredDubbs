@@ -26,11 +26,11 @@ function isActive(href: string): boolean {
 ---
 
 <header class="sticky top-0 z-50 bg-[var(--color-bg)]/95 backdrop-blur-sm border-b border-[var(--color-bg-alt)]">
-  <nav class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8" aria-label="Main navigation">
-    <div class="relative flex items-center justify-between h-22">
+  <nav class="max-w-7xl mx-auto px-3 sm:px-6 lg:px-8" aria-label="Main navigation">
+    <div class="relative flex items-center justify-between gap-2 h-16 sm:h-20 lg:h-22">
       <!-- Logo -->
-      <a href="/" class="flex items-center gap-3 no-underline shrink-0" aria-label="Jared Dubbs Counselling — Home">
-        <img src="/images/logo-icon.png" alt="" width="80" height="62" class="w-20 h-auto" />
+      <a href="/" class="flex items-center gap-2 sm:gap-3 no-underline shrink-0 min-w-0" aria-label="Jared Dubbs Counselling — Home">
+        <img src="/images/logo-icon.png" alt="" width="80" height="62" class="w-12 sm:w-16 lg:w-20 h-auto" />
         <div class="hidden sm:flex flex-col leading-tight">
           <span class="font-semibold text-[var(--color-secondary)] text-xl tracking-tight" style="font-family: var(--font-serif)">Jared Dubbs</span>
           <span class="text-[var(--color-text-light)] text-xs tracking-[0.15em] uppercase">Counselling</span>
@@ -125,13 +125,13 @@ function isActive(href: string): boolean {
         <!-- Book Now CTA — compact, visible on mobile only -->
         <a
           href="/book"
-          class="lg:hidden inline-flex items-center gap-1.5 px-3.5 py-2.5 rounded-[var(--radius-sm)] bg-[var(--color-primary)] text-white text-[var(--text-sm)] font-semibold no-underline hover:bg-[var(--color-primary-hover)] transition-colors min-h-[40px]"
+          class="lg:hidden inline-flex items-center gap-1.5 px-3 py-2 rounded-[var(--radius-sm)] bg-[var(--color-primary)] text-white text-sm font-semibold no-underline hover:bg-[var(--color-primary-hover)] transition-colors min-h-[40px] whitespace-nowrap shrink-0"
           aria-label="Book a free discovery call"
         >
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
+          <svg class="w-4 h-4 shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z" />
           </svg>
-          Book Free Call
+          Book Call
         </a>
 
         <!-- Mobile: Hamburger -->
@@ -156,7 +156,7 @@ function isActive(href: string): boolean {
   </nav>
 
   <!-- Mobile Menu Overlay -->
-  <div id="mobile-menu" class="fixed inset-0 top-[72px] bg-white z-40 hidden overflow-y-auto" role="dialog" aria-label="Mobile navigation">
+  <div id="mobile-menu" class="fixed inset-0 top-16 sm:top-20 bg-white z-40 hidden overflow-y-auto" role="dialog" aria-label="Mobile navigation">
     <nav class="px-6 py-8" aria-label="Mobile navigation">
       <a
         href="/book"
